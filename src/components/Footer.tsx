@@ -14,7 +14,15 @@ export const Footer: React.FC = () => {
             <MapPin className="w-4 h-4 text-[#E5A93C] flex-shrink-0 mt-0.5" />
             <div>
               <span className="text-slate-200 font-bold block">Facility Address</span>
-              <span>Near Old Bus Stand, Station Road, Hubballi, Karnataka - 580020</span>
+              <a
+                href="https://maps.app.goo.gl/dXnSdvRU9gwHd7sAA"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-[#E5A93C] transition-colors"
+                title="View on Google Maps"
+              >
+                Kalidas Nagar, Hubballi, Karnataka 580031 ↗
+              </a>
             </div>
           </div>
           <div className="flex items-start gap-2.5">

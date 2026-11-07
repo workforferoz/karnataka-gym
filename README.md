@@ -7,7 +7,7 @@ A modern, mobile-first Progressive Web App (PWA) built with **Next.js 16**, **Re
 - **Helpline Phone:** `9902667407` (WhatsApp & Call deep links enabled)
 - **Instagram:** `@KARNATAKA_GYM_HUBLI`
 - **Instagram:** [`@riyaz_gokul`](https://www.instagram.com/riyaz_gokul/)
-- **Location:** Near Old Bus Stand, Station Road, Hubballi, Karnataka - 580020
+- **Location:** Kalidas Nagar, Hubballi, Karnataka 580031 ([Google Maps](https://maps.app.goo.gl/dXnSdvRU9gwHd7sAA))
 - **Logo:** Circular black and gold badge with bodybuilder silhouette and stars (`/karnataka-gym-logo.png`)
 - **Aesthetic:** Dark, trustworthy gym aesthetic (`#0B0E14`), high-contrast mobile typography, gold (`#E5A93C`) badges, Hinglish/English microcopy (*"Mera Plan"*, *"Renew Aaj Hi Karein"*, *"Aaj Ka Check-in"*, *"Badhai Ho! 🎉"*).
 

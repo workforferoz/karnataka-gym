@@ -27,7 +27,8 @@ import {
   Dumbbell,
   Check,
   Calendar,
-  AlertCircle
+  AlertCircle,
+  ExternalLink
 } from 'lucide-react';
 
 export default function PublicGymWebsite() {
@@ -105,7 +106,7 @@ export default function PublicGymWebsite() {
                       Hubballi, Karnataka
                     </span>
                     <span className="text-[11px] text-slate-400 font-medium">
-                      Station Road • Established Strength Center
+                      Kalidas Nagar • Established Strength Center
                     </span>
                   </div>
                 </div>
@@ -257,7 +258,7 @@ export default function PublicGymWebsite() {
                   Founded with a dedication to hard work and real results, <strong>Karnataka Gym</strong> stands as Hubballi&apos;s premier destination for fitness enthusiasts, bodybuilders, and everyday people seeking genuine physical transformation.
                 </p>
                 <p>
-                  Located centrally on Station Road near the Old Bus Stand, our gym provides an atmosphere free from ego, gimmicks, or confusing sales pitches. Whether you are deadlifting 200 kg or stepping into a fitness club for the very first time, our coaches provide practical instruction tailored to your body mechanics.
+                  Located centrally at Kalidas Nagar, Hubballi, our gym provides an atmosphere free from ego, gimmicks, or confusing sales pitches. Whether you are deadlifting 200 kg or stepping into a fitness club for the very first time, our coaches provide practical instruction tailored to your body mechanics.
                 </p>
               </div>
 
@@ -609,18 +610,32 @@ export default function PublicGymWebsite() {
                 <h2 className="text-2xl font-black text-white">Location & Operational Hours</h2>
               </div>
 
-              {/* Address Box */}
-              <div className="flex items-start gap-3 p-4 rounded-2xl bg-[#171D2B] border border-[#263147]">
-                <MapPin className="w-5 h-5 text-[#E5A93C] flex-shrink-0 mt-0.5" />
-                <div className="text-xs space-y-1">
-                  <span className="font-extrabold text-white block text-sm">Karnataka Gym</span>
-                  <p className="text-slate-300 leading-relaxed">
-                    Station Road, Near Old Bus Stand, Hubballi, Karnataka - 580020
-                  </p>
-                  <span className="text-[#E5A93C] font-semibold block text-[11px] pt-1">
-                    Landmark: Central Hubballi Commercial Belt
-                  </span>
+              {/* Address Box & Google Maps Link */}
+              <div className="p-4 rounded-2xl bg-[#171D2B] border border-[#263147] space-y-3">
+                <div className="flex items-start gap-3">
+                  <MapPin className="w-5 h-5 text-[#E5A93C] flex-shrink-0 mt-0.5" />
+                  <div className="text-xs space-y-1">
+                    <span className="font-extrabold text-white block text-sm">Karnataka Gym</span>
+                    <p className="text-slate-200 font-semibold leading-relaxed">
+                      Kalidas Nagar, Hubballi, Karnataka 580031
+                    </p>
+                    <span className="text-[#E5A93C] font-medium block text-[11px] pt-0.5">
+                      Direct Facility Location • Hubballi
+                    </span>
+                  </div>
                 </div>
+
+                <a
+                  href="https://maps.app.goo.gl/dXnSdvRU9gwHd7sAA"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full inline-flex items-center justify-center gap-2 bg-[#121622] hover:bg-[#1A202E] border border-[#354360] hover:border-[#E5A93C] text-[#E5A93C] font-bold text-xs py-2.5 px-4 rounded-xl transition-all shadow-sm group cursor-pointer"
+                  title="Open Karnataka Gym in Google Maps"
+                >
+                  <MapPin className="w-4 h-4 text-[#E5A93C] group-hover:scale-110 transition-transform" />
+                  <span>Open in Google Maps &amp; Get Directions</span>
+                  <ExternalLink className="w-3.5 h-3.5 opacity-80" />
+                </a>
               </div>
 
               {/* Timings Table */}

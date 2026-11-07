@@ -120,7 +120,7 @@ export default function DailySummaryPage() {
               <div>
                 <h2 className="text-lg font-black text-white">KARNATAKA GYM • HUBBALLI</h2>
                 <span className="text-[11px] text-slate-400 block">
-                  Official Daily Management Report • Station Road, Hubballi
+                  Official Daily Management Report • Kalidas Nagar, Hubballi
                 </span>
               </div>
             </div>

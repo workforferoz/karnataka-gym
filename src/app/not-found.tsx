@@ -43,7 +43,7 @@ export default function NotFound() {
         </div>
 
         <div className="pt-2 border-t border-[#1C2333] text-[10px] text-slate-500">
-          Karnataka Gym Hubballi • Station Road, Hubballi - 580020
+          Karnataka Gym Hubballi • Kalidas Nagar, Hubballi, Karnataka 580031
         </div>
       </div>
     </div>

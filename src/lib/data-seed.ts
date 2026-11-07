@@ -21,7 +21,8 @@ export const INITIAL_SETTINGS: Settings = {
   gym_name: 'Karnataka Gym',
   gym_phone: '9902667407',
   gym_instagram: '@riyaz_gokul',
-  gym_location: 'Station Road, Hubballi, Karnataka - 580020'
+  gym_location: 'Kalidas Nagar, Hubballi, Karnataka 580031',
+  gym_maps_url: 'https://maps.app.goo.gl/dXnSdvRU9gwHd7sAA'
 };
 
 export const INITIAL_PLANS: Plan[] = [

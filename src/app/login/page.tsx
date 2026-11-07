@@ -140,7 +140,7 @@ function LoginContent() {
             <span>Return to Karnataka Gym Website</span>
           </Link>
           <div className="text-[11px] text-slate-400 hidden sm:block">
-            Station Road, Hubballi • Helpline: <a href="tel:9902667407" className="text-[#E5A93C] font-semibold">9902667407</a>
+            Kalidas Nagar, Hubballi • Helpline: <a href="tel:9902667407" className="text-[#E5A93C] font-semibold">9902667407</a>
           </div>
         </div>
       </div>

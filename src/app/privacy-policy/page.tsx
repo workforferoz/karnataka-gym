@@ -34,7 +34,7 @@ export default function PrivacyPolicyPage() {
           <section className="space-y-2">
             <h2 className="text-sm font-bold text-white uppercase tracking-wider">1. Business Identity</h2>
             <p>
-              This Progressive Web Application (PWA) is owned and operated by <strong>Karnataka Gym</strong>, located near Old Bus Stand, Station Road, Hubballi, Karnataka - 580020.
+              This Progressive Web Application (PWA) is owned and operated by <strong>Karnataka Gym</strong>, located at Kalidas Nagar, Hubballi, Karnataka 580031 (<a href="https://maps.app.goo.gl/dXnSdvRU9gwHd7sAA" target="_blank" rel="noopener noreferrer" className="text-[#E5A93C] underline">Google Maps Location</a>).
               For privacy inquiries, contact our Data Protection Officer at <a href="mailto:karnatakagymhubli@gmail.com" className="text-[#E5A93C] underline">karnatakagymhubli@gmail.com</a> or call <a href="tel:9902667407" className="text-[#E5A93C] underline">9902667407</a>.
             </p>
           </section>
@@ -84,10 +84,10 @@ export default function PrivacyPolicyPage() {
             <h2 className="text-sm font-bold text-white uppercase tracking-wider">6. Contact Information</h2>
             <div className="space-y-1 text-slate-400">
               <div><strong>Facility:</strong> Karnataka Gym Hubballi</div>
-              <div><strong>Address:</strong> Station Road, Near Old Bus Stand, Hubballi, Karnataka - 580020</div>
+              <div><strong>Address:</strong> Kalidas Nagar, Hubballi, Karnataka 580031 (<a href="https://maps.app.goo.gl/dXnSdvRU9gwHd7sAA" target="_blank" rel="noopener noreferrer" className="text-[#E5A93C] underline">Google Maps</a>)</div>
               <div><strong>Helpline:</strong> +91 9902667407</div>
               <div><strong>Official Email:</strong> karnatakagymhubli@gmail.com</div>
-              <div><strong>Instagram:</strong> @KARNATAKA_GYM_HUBLI</div>
+              <div><strong>Instagram:</strong> @riyaz_gokul</div>
             </div>
           </section>
         </div>

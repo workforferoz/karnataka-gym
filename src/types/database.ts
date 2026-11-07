@@ -175,6 +175,7 @@ export interface Settings {
   gym_phone: string;
   gym_instagram: string;
   gym_location: string;
+  gym_maps_url?: string;
 }
 
 export interface AuditLog {
