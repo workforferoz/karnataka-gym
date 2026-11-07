@@ -245,9 +245,6 @@ export default function PublicGymWebsite() {
         <section id="about" className="max-w-6xl mx-auto px-4 scroll-mt-20">
           <div className="rounded-3xl bg-[#121622] border border-[#232B3E] p-6 sm:p-10 space-y-6">
             <div className="max-w-2xl">
-              <span className="text-xs font-black uppercase tracking-widest text-[#E5A93C] block mb-1">
-                About The Gym
-              </span>
               <h2 className="text-2xl sm:text-3xl font-black text-white">
                 Authentic Strength Culture in Hubballi
               </h2>
@@ -271,7 +268,7 @@ export default function PublicGymWebsite() {
                   <span className="text-xs font-extrabold text-[#E5A93C] uppercase tracking-wider block">
                     A Message From Manjunath (Owner)
                   </span>
-                  <p className="text-xs italic text-slate-200">
+                  <p className="text-xs text-slate-200 leading-relaxed">
                     &ldquo;Karnataka Gym was built to give Hubballi a place of discipline and health. We don&apos;t lock you into predatory subscriptions or push useless supplements. We teach you how to train properly, eat right, and stay consistent.&rdquo;
                   </p>
                 </div>
@@ -283,9 +280,6 @@ export default function PublicGymWebsite() {
         {/* 3. FACILITIES & EQUIPMENT ZONES (Structured 4-zone grid, NO 3-box row) */}
         <section id="facilities" className="max-w-6xl mx-auto px-4 scroll-mt-20 space-y-8">
           <div className="text-center max-w-2xl mx-auto space-y-2">
-            <span className="text-xs font-black uppercase tracking-widest text-[#E5A93C] block">
-              Equipment & Training Zones
-            </span>
             <h2 className="text-2xl sm:text-3xl font-black text-white">
               Built for Heavy Work and Real Progress
             </h2>
@@ -344,9 +338,6 @@ export default function PublicGymWebsite() {
         {/* 4. TRANSPARENT MEMBERSHIP PLANS (₹ INR, strictly honest, NO hidden fees) */}
         <section id="plans" className="max-w-6xl mx-auto px-4 scroll-mt-20 space-y-8">
           <div className="text-center max-w-2xl mx-auto space-y-2">
-            <span className="text-xs font-black uppercase tracking-widest text-[#E5A93C] block">
-              Transparent Membership Fees
-            </span>
             <h2 className="text-2xl sm:text-3xl font-black text-white">
               Direct Pricing. No Admission Fees.
             </h2>
@@ -552,9 +543,6 @@ export default function PublicGymWebsite() {
         {/* 5. CERTIFIED COACHES & TRAINERS */}
         <section id="trainers" className="max-w-6xl mx-auto px-4 scroll-mt-20 space-y-8">
           <div className="text-center max-w-2xl mx-auto space-y-2">
-            <span className="text-xs font-black uppercase tracking-widest text-[#E5A93C] block">
-              Certified Coaching Staff
-            </span>
             <h2 className="text-2xl sm:text-3xl font-black text-white">
               Guidance from Experienced Lifters
             </h2>
@@ -611,73 +599,12 @@ export default function PublicGymWebsite() {
           </div>
         </section>
 
-        {/* 6. DIGITAL PWA EXPERIENCE (Why Karnataka Gym has an App) */}
-        <section className="max-w-6xl mx-auto px-4">
-          <div className="rounded-3xl bg-[#121622] border-2 border-[#232B3E] p-6 sm:p-10">
-            <div className="flex flex-col lg:flex-row items-center gap-8 justify-between">
-              <div className="space-y-4 max-w-xl">
-                <span className="text-xs font-black uppercase tracking-widest text-[#E5A93C] block">
-                  Modern Retention Technology
-                </span>
-                <h2 className="text-2xl sm:text-3xl font-black text-white">
-                  The Karnataka Gym Member PWA
-                </h2>
-                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                  Every active member receives direct access to our mobile-first application. No paperwork, no lost cards. Check in via contactless QR code, track workout streaks, and receive automated reminders before expiry.
-                </p>
-
-                <div className="grid grid-cols-2 gap-3 pt-2 text-xs">
-                  <div className="p-3 rounded-xl bg-[#171D2B] border border-[#252E42]">
-                    <span className="font-bold text-white block">Contactless QR</span>
-                    <span className="text-[11px] text-slate-400">Instant scan at front desk</span>
-                  </div>
-                  <div className="p-3 rounded-xl bg-[#171D2B] border border-[#252E42]">
-                    <span className="font-bold text-white block">Daily Streak Pass</span>
-                    <span className="text-[11px] text-slate-400">Keep discipline consistent</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* PWA Membership Benefits Card */}
-              <div className="w-full lg:w-80 bg-[#171D2B] border border-[#2B354C] rounded-2xl p-5 space-y-4 flex-shrink-0 text-center">
-                <span className="text-[11px] font-black uppercase tracking-wider text-[#E5A93C] block">
-                  Included Free With Membership
-                </span>
-                <p className="text-xs text-slate-300 leading-relaxed">
-                  Every active member receives direct access to the Karnataka Gym PWA with contactless QR entry, workout history, and streak discipline rewards.
-                </p>
-                <div className="pt-1 space-y-2">
-                  <a
-                    href="#plans"
-                    className="w-full bg-[#E5A93C] hover:bg-[#F59E0B] text-slate-950 font-black py-3 px-4 rounded-xl text-xs flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer"
-                  >
-                    <span>Explore Membership Plans</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </a>
-                  <a
-                    href="#location"
-                    className="w-full bg-[#121622] hover:bg-[#1C2333] border border-[#2D3950] text-slate-200 font-bold py-2.5 px-4 rounded-xl text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer"
-                  >
-                    <span>Visit Gym on Station Road</span>
-                  </a>
-                </div>
-                <div className="text-[10px] text-slate-400">
-                  Registered members & staff can login anytime via the <strong className="text-slate-300">Login</strong> button in the top menu.
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* 7. LOCATION, TIMINGS & INQUIRY FORM */}
+        {/* 6. LOCATION, TIMINGS & INQUIRY FORM */}
         <section id="location" className="max-w-6xl mx-auto px-4 scroll-mt-20">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Left: Location & Hours Details */}
             <div className="rounded-3xl bg-[#121622] border border-[#232B3E] p-6 sm:p-8 space-y-6">
               <div>
-                <span className="text-xs font-black uppercase tracking-widest text-[#E5A93C] block mb-1">
-                  Visit Us in Hubballi
-                </span>
                 <h2 className="text-2xl font-black text-white">Location & Operational Hours</h2>
               </div>
 
@@ -703,12 +630,12 @@ export default function PublicGymWebsite() {
                 </span>
                 <div className="space-y-2 text-xs">
                   <div className="flex items-center justify-between p-3 rounded-xl bg-[#171D2B] border border-[#263147]">
-                    <span className="font-bold text-white">Monday &ndash; Saturday</span>
-                    <span className="text-[#E5A93C] font-mono font-bold">5:30 AM &ndash; 10:00 PM</span>
+                    <span className="font-bold text-white">Monday - Saturday</span>
+                    <span className="text-[#E5A93C] font-mono font-bold">5:30 AM - 10:00 PM</span>
                   </div>
                   <div className="flex items-center justify-between p-3 rounded-xl bg-[#171D2B] border border-[#263147]">
                     <span className="font-bold text-white">Sunday</span>
-                    <span className="text-amber-400 font-mono font-bold">6:00 AM &ndash; 1:00 PM</span>
+                    <span className="text-amber-400 font-mono font-bold">6:00 AM - 1:00 PM</span>
                   </div>
                 </div>
               </div>
@@ -741,9 +668,6 @@ export default function PublicGymWebsite() {
             {/* Right: Walk-in Inquiry Form */}
             <div className="rounded-3xl bg-[#121622] border border-[#232B3E] p-6 sm:p-8 space-y-6">
               <div>
-                <span className="text-xs font-black uppercase tracking-widest text-[#E5A93C] block mb-1">
-                  Connect With Us
-                </span>
                 <h2 className="text-2xl font-black text-white">Schedule a Gym Walkthrough</h2>
                 <p className="text-xs text-slate-400 mt-1">
                   Visit our facility in Hubballi, inspect the equipment, and discuss your fitness goals.
