@@ -1,0 +1,24 @@
+{
+  "name": "Karnataka Gym - Retention & Attendance PWA",
+  "short_name": "Karnataka Gym",
+  "description": "Smart Gym Attendance, Retention, Renewals & Marketplace for Karnataka Gym, Hubballi",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0B0E14",
+  "theme_color": "#0B0E14",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/karnataka-gym-logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/karnataka-gym-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
