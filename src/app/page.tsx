@@ -8,6 +8,7 @@ import { Footer } from '@/components/Footer';
 import { PWAInstallBanner } from '@/components/PWAInstallBanner';
 import { TestChecklistDrawer } from '@/components/TestChecklistDrawer';
 import { InstagramIcon } from '@/components/InstagramIcon';
+import { WhatsAppIcon } from '@/components/WhatsAppIcon';
 import { sanitizeString, sanitizePhone } from '@/lib/security';
 import {
   Phone,
@@ -648,18 +649,22 @@ export default function PublicGymWebsite() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
                   <a
                     href="tel:9902667407"
-                    className="p-3 rounded-xl bg-[#171D2B] border border-[#263147] hover:border-[#E5A93C] flex items-center gap-2 text-slate-200 font-bold transition-colors"
+                    className="p-3 rounded-xl bg-[#171D2B] border border-[#263147] hover:border-[#E5A93C] flex items-center justify-center sm:justify-start gap-2.5 text-slate-200 font-bold transition-colors group cursor-pointer"
+                    title="Call Karnataka Gym Helpline"
                   >
-                    <Phone className="w-4 h-4 text-[#E5A93C]" />
-                    <span>9902667407</span>
+                    <Phone className="w-4 h-4 text-[#E5A93C] group-hover:scale-110 transition-transform flex-shrink-0" />
+                    <span>Call 9902667407</span>
                   </a>
 
                   <a
-                    href="mailto:karnatakagymhubli@gmail.com"
-                    className="p-3 rounded-xl bg-[#171D2B] border border-[#263147] hover:border-[#E5A93C] flex items-center gap-2 text-slate-200 font-bold transition-colors"
+                    href="https://wa.me/919902667407"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-3 rounded-xl bg-[#171D2B] border border-[#263147] hover:border-emerald-500 flex items-center justify-center sm:justify-start gap-2.5 text-emerald-400 font-bold transition-colors group cursor-pointer"
+                    title="Chat on WhatsApp"
                   >
-                    <Mail className="w-4 h-4 text-[#E5A93C]" />
-                    <span className="truncate">Email Us</span>
+                    <WhatsAppIcon className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform flex-shrink-0" />
+                    <span>WhatsApp Chat</span>
                   </a>
                 </div>
               </div>
