@@ -2,52 +2,78 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useGym } from '@/lib/store';
-import { ShieldAlert, ArrowLeft, Lock, UserCheck } from 'lucide-react';
+import { ShieldAlert, ArrowLeft, Lock, UserCheck, Sparkles, ShieldCheck } from 'lucide-react';
 
 export default function OwnerLayout({ children }: { children: React.ReactNode }) {
-  const { currentUser, switchUser } = useGym();
+  const { currentUser, isLoggedIn, login } = useGym();
 
   const isOwnerOrStaff = currentUser.role === 'owner' || currentUser.role === 'front_desk';
 
-  if (!isOwnerOrStaff) {
+  // Strictly enforce that Owner Cockpit only opens from Owner Login
+  if (!isLoggedIn || !isOwnerOrStaff) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-[#0B0E14] text-slate-100 p-4">
-        <div className="max-w-md w-full bg-[#121622] border-2 border-red-600 rounded-3xl p-6 md:p-8 text-center space-y-5 shadow-2xl">
-          <div className="w-16 h-16 rounded-2xl bg-red-600/15 text-red-500 border border-red-500/30 flex items-center justify-center mx-auto">
-            <Lock className="w-8 h-8" />
+        <div className="max-w-md w-full bg-[#121622] border-2 border-red-600 rounded-3xl p-6 md:p-8 text-center space-y-6 shadow-2xl">
+          {/* Brand Logo */}
+          <div className="relative w-16 h-16 mx-auto drop-shadow-[0_4px_16px_rgba(220,38,38,0.35)]">
+            <Image
+              src="/karnataka-gym-logo.png"
+              alt="Karnataka Gym Hubballi"
+              width={64}
+              height={64}
+              className="object-contain w-full h-full"
+              priority
+            />
           </div>
 
-          <div className="space-y-1.5">
-            <span className="text-[11px] font-black uppercase tracking-widest text-red-400 block">
-              Security Boundary Guard
-            </span>
-            <h1 className="text-xl font-black text-white">403 - Restricted Access</h1>
+          <div className="space-y-2">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-950/80 border border-red-700 text-red-300 text-xs font-bold">
+              <ShieldAlert className="w-3.5 h-3.5 text-red-400" />
+              <span>Owner & Staff Cockpit Guard</span>
+            </div>
+            <h1 className="text-xl md:text-2xl font-black text-white">
+              Restricted Management Zone
+            </h1>
             <p className="text-xs text-slate-300 leading-relaxed">
-              You are currently authenticated as <strong className="text-white">{currentUser.name}</strong> ({currentUser.role}). Owner Cockpit and management tools are strictly restricted to gym administrators.
+              {isLoggedIn ? (
+                <>You are currently authenticated as <strong className="text-white">{currentUser.name}</strong> ({currentUser.role}). Management tools, silent churn recovery, and member overrides require owner or staff authorization.</>
+              ) : (
+                <>Owner Cockpit requires verified administrator credentials. Please authenticate to view churn analytics, financial summaries, and member management.</>
+              )}
             </p>
           </div>
 
-          <div className="pt-2 flex flex-col gap-2.5">
-            <button
-              onClick={() => switchUser('user_owner_manjunath')}
-              className="w-full bg-[#E5A93C] hover:bg-[#F59E0B] text-slate-950 font-black py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg shadow-[#E5A93C]/20 transition-all cursor-pointer"
+          <div className="pt-2 flex flex-col gap-3">
+            <Link
+              href="/login?role=owner"
+              className="w-full bg-red-600 hover:bg-red-700 text-white font-black py-3 rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg shadow-red-600/25 transition-all"
             >
               <UserCheck className="w-4 h-4 stroke-[2.5]" />
-              <span>Switch to Owner (Manjunath)</span>
+              <span>Owner Login Screen</span>
+            </Link>
+
+            <button
+              onClick={() => login('user_owner_manjunath')}
+              className="w-full bg-[#1A2234] hover:bg-[#232D44] border border-[#2B354C] text-slate-200 font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer"
+            >
+              <Sparkles className="w-4 h-4 text-[#E5A93C]" />
+              <span>Quick Demo: Enter as Manjunath (Owner)</span>
             </button>
 
             <Link
-              href="/member/home"
-              className="w-full bg-[#1A2234] hover:bg-[#232D44] border border-[#2B354C] text-slate-200 font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 transition-colors"
+              href="/"
+              className="w-full text-slate-400 hover:text-white font-medium py-2 text-xs flex items-center justify-center gap-1.5 transition-colors"
             >
-              <ArrowLeft className="w-4 h-4" />
-              <span>Return to Member Portal</span>
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>Return to Karnataka Gym Website</span>
             </Link>
           </div>
 
-          <div className="pt-2 border-t border-[#1C2333] text-[10px] text-slate-500">
-            Karnataka Gym Hubballi • Strict Role-Based Access Control
+          <div className="pt-3 border-t border-[#1C2333] flex items-center justify-center gap-1.5 text-[10px] text-slate-500">
+            <ShieldCheck className="w-3.5 h-3.5 text-red-400" />
+            <span>Karnataka Gym Hubballi • Strict Role-Based Access Control</span>
           </div>
         </div>
       </div>

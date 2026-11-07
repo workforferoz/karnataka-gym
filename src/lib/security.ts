@@ -92,3 +92,4 @@ export const checkRateLimit = (
 export const isAuthorizedRole = (userRole: UserRole, allowedRoles: UserRole[]): boolean => {
   return allowedRoles.includes(userRole);
 };
+

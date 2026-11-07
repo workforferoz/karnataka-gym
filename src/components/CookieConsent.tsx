@@ -71,3 +71,4 @@ export const CookieConsent: React.FC = () => {
     </div>
   );
 };
+

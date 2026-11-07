@@ -21,7 +21,9 @@ import {
   Shield,
   FileText,
   Mail,
-  Trash2
+  Trash2,
+  Globe,
+  LogOut
 } from 'lucide-react';
 
 interface HeaderProps {
@@ -32,6 +34,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenTests }) => {
   const {
     currentUser,
     switchUser,
+    logout,
     notifications,
     dismissNotification,
     isOnline,
@@ -133,6 +136,16 @@ export const Header: React.FC<HeaderProps> = ({ onOpenTests }) => {
             <Mail className="w-3.5 h-3.5 text-[#E5A93C]" />
             <span>Email</span>
           </a>
+
+          {/* Public Website Link */}
+          <Link
+            href="/"
+            className="hidden sm:flex items-center gap-1.5 bg-[#171D2B] border border-[#232B3E] hover:border-[#E5A93C] text-xs font-semibold px-2.5 py-1.5 rounded-lg text-slate-300 transition-colors"
+            title="View Public Gym Website"
+          >
+            <Globe className="w-3.5 h-3.5 text-[#E5A93C]" />
+            <span className="hidden lg:inline">Gym Website</span>
+          </Link>
 
           {/* Test Checklist Trigger */}
           {onOpenTests && (
@@ -261,9 +274,21 @@ export const Header: React.FC<HeaderProps> = ({ onOpenTests }) => {
                     onClick={() => setShowSwitchMenu(false)}
                     className="text-[11px] text-[#E5A93C] hover:underline flex items-center gap-1"
                   >
-                    All 30 Members List / Login
+                    All 30 Members / Login
                     <ExternalLink className="w-3 h-3" />
                   </Link>
+
+                  <button
+                    onClick={() => {
+                      logout();
+                      setShowSwitchMenu(false);
+                      window.location.href = '/';
+                    }}
+                    className="text-[11px] text-red-400 hover:text-red-300 font-bold flex items-center gap-1 cursor-pointer"
+                  >
+                    <LogOut className="w-3 h-3" />
+                    <span>Log Out</span>
+                  </button>
                 </div>
               </div>
             )}
@@ -372,6 +397,31 @@ export const Header: React.FC<HeaderProps> = ({ onOpenTests }) => {
                   <Shield className="w-4 h-4 text-red-400" />
                   <span>Owner Cockpit</span>
                 </Link>
+              </div>
+
+              <div className="pt-3 border-t border-[#1F2739] mt-3">
+                <span className="text-[10px] uppercase font-bold text-slate-500 tracking-wider px-2 block mb-1">
+                  Public Website & Logout
+                </span>
+                <Link
+                  href="/"
+                  onClick={() => setShowMobileMenu(false)}
+                  className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-slate-200 hover:bg-[#181F2F]"
+                >
+                  <Globe className="w-4 h-4 text-[#E5A93C]" />
+                  <span>Public Gym Website</span>
+                </Link>
+                <button
+                  onClick={() => {
+                    logout();
+                    setShowMobileMenu(false);
+                    window.location.href = '/';
+                  }}
+                  className="w-full text-left flex items-center gap-2.5 px-3 py-2 rounded-xl text-red-400 hover:bg-red-950/30 cursor-pointer"
+                >
+                  <LogOut className="w-4 h-4" />
+                  <span>Log Out of App</span>
+                </button>
               </div>
 
               <div className="pt-3 border-t border-[#1F2739] mt-3">

@@ -59,6 +59,9 @@ interface TestResult {
 
 interface GymContextType {
   currentUser: User;
+  isLoggedIn: boolean;
+  login: (userId: string) => void;
+  logout: () => void;
   switchUser: (userId: string) => void;
   users: User[];
   plans: Plan[];
@@ -120,8 +123,9 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [settings, setSettings] = useState<Settings>(INITIAL_SETTINGS);
   const [auditLogs, setAuditLogs] = useState<AuditLog[]>(INITIAL_AUDIT_LOGS);
 
-  // Active user (default: Rahul Desai)
+  // Active user and auth state
   const [currentUserId, setCurrentUserId] = useState<string>('member_rahul_desai');
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [isOnline, setIsOnline] = useState<boolean>(true);
   const [offlineQueue, setOfflineQueue] = useState<OfflineCheckinQueueItem[]>([]);
   const [testResults, setTestResults] = useState<Record<number, TestResult>>({});
@@ -146,6 +150,16 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         if (parsed.notifications) setNotifications(parsed.notifications);
         if (parsed.settings) setSettings(parsed.settings);
         if (parsed.auditLogs) setAuditLogs(parsed.auditLogs);
+      }
+
+      // Check auth state
+      const authFlag = localStorage.getItem('karnataka_gym_logged_in');
+      if (authFlag === 'true') {
+        setIsLoggedIn(true);
+      }
+      const savedUserId = localStorage.getItem('karnataka_gym_current_user_id');
+      if (savedUserId) {
+        setCurrentUserId(savedUserId);
       }
     } catch (e) {
       console.error('Failed to load store from localStorage', e);
@@ -215,8 +229,35 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return found || users[0] || INITIAL_USERS[0];
   }, [users, currentUserId]);
 
+  const login = (userId: string) => {
+    setCurrentUserId(userId);
+    setIsLoggedIn(true);
+    try {
+      localStorage.setItem('karnataka_gym_logged_in', 'true');
+      localStorage.setItem('karnataka_gym_current_user_id', userId);
+    } catch (e) {
+      console.warn('Error saving login state:', e);
+    }
+  };
+
+  const logout = () => {
+    setIsLoggedIn(false);
+    try {
+      localStorage.setItem('karnataka_gym_logged_in', 'false');
+    } catch (e) {
+      console.warn('Error saving logout state:', e);
+    }
+  };
+
   const switchUser = (userId: string) => {
     setCurrentUserId(userId);
+    setIsLoggedIn(true);
+    try {
+      localStorage.setItem('karnataka_gym_logged_in', 'true');
+      localStorage.setItem('karnataka_gym_current_user_id', userId);
+    } catch (e) {
+      console.warn('Error saving user switch state:', e);
+    }
   };
 
   const resetAllDataToSeed = () => {
@@ -237,7 +278,14 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setOfflineQueue([]);
     setTestResults({});
     setCurrentUserId('member_rahul_desai');
-    localStorage.removeItem(STORAGE_KEY);
+    setIsLoggedIn(false);
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem('karnataka_gym_logged_in');
+      localStorage.removeItem('karnataka_gym_current_user_id');
+    } catch (e) {
+      // ignore
+    }
   };
 
   // Helper to log audit actions
@@ -1202,6 +1250,9 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     <GymContext.Provider
       value={{
         currentUser,
+        isLoggedIn,
+        login,
+        logout,
         switchUser,
         users,
         plans,
