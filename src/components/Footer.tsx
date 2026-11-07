@@ -13,13 +13,13 @@ export const Footer: React.FC = () => {
         {/* Brand Bar */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 pb-6 border-b border-[#182030]">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[#E5A93C] flex-shrink-0 shadow-lg shadow-[#E5A93C]/20">
+            <div className="w-12 h-12 flex-shrink-0 drop-shadow-[0_2px_8px_rgba(229,169,60,0.35)]">
               <Image
                 src="/karnataka-gym-logo.png"
                 alt="Karnataka Gym Hubballi Logo"
                 width={48}
                 height={48}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain"
               />
             </div>
             <div>

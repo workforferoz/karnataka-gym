@@ -62,13 +62,13 @@ export const Header: React.FC<HeaderProps> = ({ onOpenTests }) => {
       <div className="max-w-6xl mx-auto flex items-center justify-between gap-2">
         {/* Logo and Gym Name */}
         <Link href={currentUser.role === 'owner' ? '/owner/dashboard' : '/member/home'} className="flex items-center gap-2.5">
-          <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-[#E5A93C] shadow-lg shadow-[#E5A93C]/20 flex-shrink-0">
+          <div className="relative w-11 h-11 flex-shrink-0 drop-shadow-[0_2px_8px_rgba(229,169,60,0.35)]">
             <Image
               src="/karnataka-gym-logo.png"
               alt="Karnataka Gym Logo"
-              width={40}
-              height={40}
-              className="object-cover w-full h-full"
+              width={44}
+              height={44}
+              className="object-contain w-full h-full"
               priority
             />
           </div>

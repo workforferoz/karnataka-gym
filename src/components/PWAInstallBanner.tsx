@@ -72,13 +72,13 @@ export const PWAInstallBanner: React.FC = () => {
     <div className="fixed top-14 left-0 right-0 z-40 px-3 py-2 animate-in slide-in-from-top duration-300">
       <div className="max-w-md mx-auto bg-gradient-to-r from-[#171D2C] via-[#1E2538] to-[#171D2C] border-2 border-[#E5A93C]/80 rounded-2xl p-3 shadow-2xl shadow-black/80 flex items-center justify-between gap-3">
         {/* App Icon */}
-        <div className="relative w-11 h-11 rounded-xl overflow-hidden border border-[#E5A93C] flex-shrink-0 shadow-md">
+        <div className="relative w-11 h-11 flex-shrink-0 drop-shadow-[0_2px_8px_rgba(229,169,60,0.35)]">
           <Image
             src="/karnataka-gym-logo.png"
             alt="Karnataka Gym"
             width={44}
             height={44}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-contain"
           />
         </div>
 

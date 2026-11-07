@@ -88,13 +88,13 @@ export default function LoginPage() {
       <main className="flex-1 max-w-4xl w-full mx-auto px-4 py-8 space-y-8">
         {/* Top Branding Card */}
         <div className="text-center space-y-2">
-          <div className="inline-block relative w-16 h-16 rounded-full overflow-hidden border-2 border-[#E5A93C] shadow-lg shadow-[#E5A93C]/20 mb-1">
+          <div className="inline-block relative w-16 h-16 flex-shrink-0 drop-shadow-[0_4px_12px_rgba(229,169,60,0.35)] mb-1">
             <Image
               src="/karnataka-gym-logo.png"
               alt="Karnataka Gym"
               width={64}
               height={64}
-              className="object-cover w-full h-full"
+              className="object-contain w-full h-full"
             />
           </div>
           <h1 className="text-2xl font-extrabold text-white">

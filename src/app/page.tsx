@@ -43,13 +43,13 @@ export default function HomePage() {
 
           <div className="relative z-10 flex flex-col md:flex-row items-center gap-6 text-center md:text-left">
             {/* Logo */}
-            <div className="relative w-28 h-28 md:w-32 md:h-32 rounded-full overflow-hidden border-4 border-[#E5A93C] shadow-2xl shadow-[#E5A93C]/30 flex-shrink-0 animate-pulse-subtle">
+            <div className="relative w-28 h-28 md:w-36 md:h-36 flex-shrink-0 drop-shadow-[0_8px_24px_rgba(229,169,60,0.35)] animate-pulse-subtle">
               <Image
                 src="/karnataka-gym-logo.png"
                 alt="Karnataka Gym Hubballi Logo"
-                width={128}
-                height={128}
-                className="w-full h-full object-cover"
+                width={144}
+                height={144}
+                className="w-full h-full object-contain"
                 priority
               />
             </div>
