@@ -72,3 +72,4 @@ export const triggerConfetti = () => {
     console.debug('Confetti error (non-fatal):', e);
   }
 };
+

@@ -186,3 +186,4 @@ export interface AuditLog {
   reason: string;
   details?: Record<string, unknown>;
 }
+

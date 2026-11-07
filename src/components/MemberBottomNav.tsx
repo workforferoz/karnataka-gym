@@ -70,3 +70,4 @@ export const MemberBottomNav: React.FC = () => {
     </nav>
   );
 };
+

@@ -180,3 +180,4 @@ CREATE INDEX IF NOT EXISTS idx_attendance_user_time ON attendance(user_id, check
 CREATE INDEX IF NOT EXISTS idx_no_show_cases_status ON no_show_cases(status);
 CREATE INDEX IF NOT EXISTS idx_payments_tx ON payments(transaction_id);
 CREATE INDEX IF NOT EXISTS idx_audit_logs_actor ON audit_logs(actor_id);
+
