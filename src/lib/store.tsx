@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState, useMemo, useCallback } from 'react';
+import React, { createContext, useContext, useEffect, useState, useMemo, useCallback, useRef } from 'react';
 import {
   User,
   Plan,
@@ -60,6 +60,7 @@ interface TestResult {
 interface GymContextType {
   currentUser: User;
   isLoggedIn: boolean;
+  isHydrated: boolean;
   login: (userId: string) => void;
   logout: () => void;
   switchUser: (userId: string) => void;
@@ -126,9 +127,12 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // Active user and auth state
   const [currentUserId, setCurrentUserId] = useState<string>('member_rahul_desai');
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [isHydrated, setIsHydrated] = useState<boolean>(false);
   const [isOnline, setIsOnline] = useState<boolean>(true);
   const [offlineQueue, setOfflineQueue] = useState<OfflineCheckinQueueItem[]>([]);
   const [testResults, setTestResults] = useState<Record<number, TestResult>>({});
+
+  const isLoadedRef = useRef<boolean>(false);
 
   // 1. Initial Load from LocalStorage
   useEffect(() => {
@@ -163,6 +167,9 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       }
     } catch (e) {
       console.error('Failed to load store from localStorage', e);
+    } finally {
+      isLoadedRef.current = true;
+      setIsHydrated(true);
     }
 
     // Network listeners
@@ -179,8 +186,9 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   }, []);
 
-  // 2. Persist state changes to LocalStorage
+  // 2. Persist state changes to LocalStorage (only after initial load has finished)
   const persistState = useCallback(() => {
+    if (!isLoadedRef.current) return;
     try {
       const dataToSave = {
         users,
@@ -220,7 +228,9 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   ]);
 
   useEffect(() => {
-    persistState();
+    if (isLoadedRef.current) {
+      persistState();
+    }
   }, [persistState]);
 
   // Active user object
@@ -1251,6 +1261,7 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       value={{
         currentUser,
         isLoggedIn,
+        isHydrated,
         login,
         logout,
         switchUser,

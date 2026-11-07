@@ -37,7 +37,7 @@ const securityHeaders = [
       base-uri 'self';
       form-action 'self';
       frame-ancestors 'none';
-      connect-src 'self' https://*.supabase.co;
+      connect-src 'self' ws: wss: http://localhost:* ws://localhost:* http://127.0.0.1:* ws://127.0.0.1:* https://*.supabase.co;
     `.replace(/\s{2,}/g, " ").trim(),
   },
 ];

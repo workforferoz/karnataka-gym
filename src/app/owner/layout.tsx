@@ -7,7 +7,11 @@ import { useGym } from '@/lib/store';
 import { ShieldAlert, ArrowLeft, Lock, UserCheck, Sparkles, ShieldCheck } from 'lucide-react';
 
 export default function OwnerLayout({ children }: { children: React.ReactNode }) {
-  const { currentUser, isLoggedIn, login } = useGym();
+  const { currentUser, isLoggedIn, isHydrated, login } = useGym();
+
+  if (!isHydrated) {
+    return <div className="min-h-screen bg-[#0B0E14]" />;
+  }
 
   const isOwnerOrStaff = currentUser.role === 'owner' || currentUser.role === 'front_desk';
 

@@ -7,7 +7,11 @@ import { useGym } from '@/lib/store';
 import { Lock, UserCheck, ArrowLeft, ShieldCheck, Sparkles } from 'lucide-react';
 
 export default function MemberLayout({ children }: { children: React.ReactNode }) {
-  const { currentUser, isLoggedIn, login } = useGym();
+  const { currentUser, isLoggedIn, isHydrated, login } = useGym();
+
+  if (!isHydrated) {
+    return <div className="min-h-screen bg-[#0B0E14]" />;
+  }
 
   const isMember = currentUser.role === 'member';
 
@@ -78,3 +82,4 @@ export default function MemberLayout({ children }: { children: React.ReactNode }
 
   return <>{children}</>;
 }
+

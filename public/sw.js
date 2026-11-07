@@ -43,6 +43,11 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
+  const url = new URL(event.request.url);
+  // Never intercept internal Next.js assets, HMR web sockets, or local development
+  if (url.pathname.startsWith('/_next') || url.hostname === 'localhost' || url.hostname === '127.0.0.1') {
+    return;
+  }
   event.respondWith(
     caches.match(event.request).then((response) => {
       return (
