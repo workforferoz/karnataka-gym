@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Phone, Mail, MapPin, Clock, ShieldCheck, FileText, Trash2 } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock, ShieldCheck, FileText, Trash2, Code } from 'lucide-react';
 import { InstagramIcon } from './InstagramIcon';
 
 export const Footer: React.FC = () => {
@@ -98,18 +98,35 @@ export const Footer: React.FC = () => {
             </div>
           </div>
           <div className="flex items-start gap-2.5">
-            <ShieldCheck className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" />
+            <Code className="w-4 h-4 text-[#E5A93C] flex-shrink-0 mt-0.5" />
             <div>
-              <span className="text-slate-200 font-bold block">Digital Compliance</span>
-              <span>DPDP Act (India) Protected • Zero Third-Party Advertising Trackers</span>
+              <span className="text-slate-200 font-bold block">Designed and Developed By</span>
+              <span className="text-slate-300">
+                Ayesha Tech Studio • Contact:{' '}
+                <a
+                  href="tel:9663396058"
+                  className="text-[#E5A93C] hover:underline font-bold"
+                >
+                  9663396058
+                </a>
+              </span>
             </div>
           </div>
         </div>
 
         {/* Legal & Compliance Links */}
         <div className="pt-4 border-t border-[#141B28] flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-400">
-          <div className="flex items-center gap-1">
+          <div className="flex flex-wrap items-center gap-1.5">
             <span>© 2026 Karnataka Gym Hubballi. All rights reserved.</span>
+            <span className="text-slate-600 hidden sm:inline">•</span>
+            <span>
+              Crafted by{' '}
+              <strong className="text-slate-300 font-bold">Ayesha Tech Studio</strong> (
+              <a href="tel:9663396058" className="text-[#E5A93C] hover:underline font-bold">
+                9663396058
+              </a>
+              )
+            </span>
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-4">
