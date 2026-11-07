@@ -64,18 +64,18 @@ export const Footer: React.FC = () => {
 
             {/* Clickable Instagram */}
             <a
-              href="https://instagram.com/KARNATAKA_GYM_HUBLI"
+              href="https://www.instagram.com/riyaz_gokul/"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 bg-[#121724] border border-[#232B3E] hover:border-pink-500 px-3.5 py-2 rounded-xl text-white font-semibold transition-all group"
-              title="Follow Karnataka Gym on Instagram"
+              title="Follow Riyaz Gokul / Karnataka Gym on Instagram"
             >
               <div className="p-1.5 rounded-full bg-pink-500/20 text-pink-400 group-hover:scale-105 transition-transform">
                 <InstagramIcon className="w-4 h-4" />
               </div>
               <div className="text-left">
                 <span className="block text-[9px] uppercase tracking-wider text-slate-400 font-bold">Follow Us</span>
-                <span className="text-xs text-pink-300 font-bold">@KARNATAKA_GYM_HUBLI</span>
+                <span className="text-xs text-pink-300 font-bold">@riyaz_gokul</span>
               </div>
             </a>
           </div>

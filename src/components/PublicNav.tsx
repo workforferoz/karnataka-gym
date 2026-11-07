@@ -283,13 +283,13 @@ export const PublicNav: React.FC<PublicNavProps> = ({ onOpenTests }) => {
               </a>
 
               <a
-                href="https://instagram.com/KARNATAKA_GYM_HUBLI"
+                href="https://www.instagram.com/riyaz_gokul/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 p-2.5 rounded-xl bg-[#171D2B] text-pink-400 font-bold hover:border-pink-500 border border-transparent transition-colors"
               >
                 <InstagramIcon className="w-4 h-4" />
-                <span>@KARNATAKA_GYM_HUBLI</span>
+                <span>@riyaz_gokul</span>
               </a>
             </div>
           </div>

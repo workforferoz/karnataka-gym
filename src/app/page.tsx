@@ -166,13 +166,13 @@ export default function PublicGymWebsite() {
                   </a>
 
                   <a
-                    href="https://instagram.com/KARNATAKA_GYM_HUBLI"
+                    href="https://www.instagram.com/riyaz_gokul/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-1.5 bg-[#121622] border border-[#232B3E] hover:border-pink-500 px-3 py-1.5 rounded-lg text-pink-400 font-bold transition-colors"
                   >
                     <InstagramIcon className="w-3.5 h-3.5" />
-                    <span>@KARNATAKA_GYM_HUBLI</span>
+                    <span>@riyaz_gokul</span>
                   </a>
                 </div>
               </div>

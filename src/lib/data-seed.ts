@@ -20,7 +20,7 @@ export const INITIAL_SETTINGS: Settings = {
   duplicate_window_minutes: 5,
   gym_name: 'Karnataka Gym',
   gym_phone: '9902667407',
-  gym_instagram: '@KARNATAKA_GYM_HUBLI',
+  gym_instagram: '@riyaz_gokul',
   gym_location: 'Station Road, Hubballi, Karnataka - 580020'
 };
 
