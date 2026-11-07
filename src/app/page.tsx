@@ -119,38 +119,22 @@ export default function PublicGymWebsite() {
                   Hubballi&apos;s home for serious lifters, functional athletes, and beginner fitness journeys. Heavy Olympic free weights, pin-loaded resistance machines, certified coaching, and transparent fees in Indian Rupees.
                 </p>
 
-                {/* Direct Action Gateways */}
-                <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 pt-2">
-                  <Link
-                    href="/login?role=member"
-                    className="w-full sm:w-auto bg-[#E5A93C] hover:bg-[#F59E0B] text-slate-950 font-black px-5 py-3.5 rounded-xl text-sm flex items-center justify-center gap-2 shadow-lg shadow-[#E5A93C]/20 transition-all cursor-pointer"
-                  >
-                    <UserCheck className="w-4 h-4 stroke-[2.5]" />
-                    <span>Member Login</span>
-                  </Link>
-
-                  <Link
-                    href="/login?role=trainer"
-                    className="w-full sm:w-auto bg-[#14231E] hover:bg-[#1a3029] border border-emerald-700/80 text-emerald-300 font-extrabold px-4 py-3.5 rounded-xl text-sm flex items-center justify-center gap-2 transition-colors cursor-pointer"
-                  >
-                    <Dumbbell className="w-4 h-4 text-emerald-400" />
-                    <span>Trainer Login</span>
-                  </Link>
-
-                  <Link
-                    href="/login?role=owner"
-                    className="w-full sm:w-auto bg-[#161D2C] hover:bg-[#1E273A] border border-[#2D3950] text-slate-200 font-extrabold px-4 py-3.5 rounded-xl text-sm flex items-center justify-center gap-2 transition-colors cursor-pointer"
-                  >
-                    <Lock className="w-4 h-4 text-red-400" />
-                    <span>Owner Login</span>
-                  </Link>
-
+                {/* Direct Action Gateways for Website Visitors */}
+                <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 pt-2">
                   <a
                     href="#plans"
-                    className="w-full sm:w-auto text-slate-400 hover:text-white font-bold px-4 py-3 text-xs flex items-center justify-center gap-1.5 transition-colors"
+                    className="w-full sm:w-auto bg-[#E5A93C] hover:bg-[#F59E0B] text-slate-950 font-black px-6 py-3.5 rounded-xl text-sm flex items-center justify-center gap-2 shadow-lg shadow-[#E5A93C]/20 transition-all cursor-pointer"
                   >
-                    <span>View Plans (₹)</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
+                    <Dumbbell className="w-4 h-4 stroke-[2.5]" />
+                    <span>Explore Membership Plans (₹)</span>
+                  </a>
+
+                  <a
+                    href="#location"
+                    className="w-full sm:w-auto bg-[#161D2C] hover:bg-[#1E273A] border border-[#2D3950] text-slate-200 font-extrabold px-5 py-3.5 rounded-xl text-sm flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                  >
+                    <Calendar className="w-4 h-4 text-[#E5A93C]" />
+                    <span>Book Free Trial Session</span>
                   </a>
                 </div>
 
@@ -243,13 +227,13 @@ export default function PublicGymWebsite() {
                   </div>
 
                   <div className="pt-2">
-                    <Link
-                      href="/login?role=member"
-                      className="w-full bg-[#1A2234] hover:bg-[#222C42] border border-[#2D3950] text-[#E5A93C] font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors"
+                    <a
+                      href="#plans"
+                      className="w-full bg-[#1A2234] hover:bg-[#222C42] border border-[#2D3950] text-[#E5A93C] font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                     >
-                      <span>Member Access Portal</span>
+                      <span>Explore Facilities & Plans</span>
                       <ArrowRight className="w-3.5 h-3.5" />
-                    </Link>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -406,13 +390,13 @@ export default function PublicGymWebsite() {
                 </div>
               </div>
 
-              <Link
-                href="/login?role=member"
-                className="w-full bg-[#1A2234] hover:bg-[#232D44] border border-[#2D3950] text-slate-200 font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors"
+              <a
+                href="#location"
+                className="w-full bg-[#1A2234] hover:bg-[#232D44] border border-[#2D3950] text-slate-200 font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
               >
-                <span>Join / Member Login</span>
+                <span>Get Started / Inquire</span>
                 <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
+              </a>
             </div>
 
             {/* Quarterly (3 Months) */}
@@ -454,13 +438,13 @@ export default function PublicGymWebsite() {
                 </div>
               </div>
 
-              <Link
-                href="/login?role=member"
-                className="w-full bg-[#1A2234] hover:bg-[#232D44] border border-[#2D3950] text-slate-200 font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors"
+              <a
+                href="#location"
+                className="w-full bg-[#1A2234] hover:bg-[#232D44] border border-[#2D3950] text-slate-200 font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
               >
-                <span>Join / Member Login</span>
+                <span>Get Started / Inquire</span>
                 <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
+              </a>
             </div>
 
             {/* Half-Yearly (6 Months) - Highlighted */}
@@ -502,13 +486,13 @@ export default function PublicGymWebsite() {
                 </div>
               </div>
 
-              <Link
-                href="/login?role=member"
-                className="w-full bg-[#E5A93C] hover:bg-[#F59E0B] text-slate-950 font-black py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-all shadow-md shadow-[#E5A93C]/20"
+              <a
+                href="#location"
+                className="w-full bg-[#E5A93C] hover:bg-[#F59E0B] text-slate-950 font-black py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-all shadow-md shadow-[#E5A93C]/20 cursor-pointer"
               >
-                <span>Join / Member Login</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
+                <span>Join Most Popular Plan</span>
+                <ArrowRight className="w-3.5 h-3.5 stroke-[2.5]" />
+              </a>
             </div>
 
             {/* Yearly (12 Months) */}
@@ -550,13 +534,13 @@ export default function PublicGymWebsite() {
                 </div>
               </div>
 
-              <Link
-                href="/login?role=member"
-                className="w-full bg-[#1A2234] hover:bg-[#232D44] border border-[#2D3950] text-slate-200 font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors"
+              <a
+                href="#location"
+                className="w-full bg-[#1A2234] hover:bg-[#232D44] border border-[#2D3950] text-slate-200 font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
               >
-                <span>Join / Member Login</span>
+                <span>Get Annual Membership</span>
                 <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
+              </a>
             </div>
           </div>
 
@@ -654,47 +638,31 @@ export default function PublicGymWebsite() {
                 </div>
               </div>
 
-              {/* Dual Action Gateway Card */}
-              <div className="w-full lg:w-80 bg-[#171D2B] border border-[#2B354C] rounded-2xl p-5 space-y-3 flex-shrink-0">
-                <span className="text-[11px] font-black uppercase tracking-wider text-slate-400 block">
-                  Select Portal to Enter
+              {/* PWA Membership Benefits Card */}
+              <div className="w-full lg:w-80 bg-[#171D2B] border border-[#2B354C] rounded-2xl p-5 space-y-4 flex-shrink-0 text-center">
+                <span className="text-[11px] font-black uppercase tracking-wider text-[#E5A93C] block">
+                  Included Free With Membership
                 </span>
-
-                <Link
-                  href="/login?role=member"
-                  className="w-full bg-[#E5A93C] hover:bg-[#F59E0B] text-slate-950 font-black py-3 px-4 rounded-xl text-xs flex items-center justify-between shadow-md"
-                >
-                  <div className="flex items-center gap-2">
-                    <UserCheck className="w-4 h-4 stroke-[2.5]" />
-                    <span>Member Login</span>
-                  </div>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
-
-                <Link
-                  href="/login?role=trainer"
-                  className="w-full bg-[#162420] hover:bg-[#1e342c] border border-emerald-800 text-emerald-300 font-bold py-3 px-4 rounded-xl text-xs flex items-center justify-between"
-                >
-                  <div className="flex items-center gap-2">
-                    <Dumbbell className="w-4 h-4 text-emerald-400" />
-                    <span>Trainer Login</span>
-                  </div>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
-
-                <Link
-                  href="/login?role=owner"
-                  className="w-full bg-[#1F2738] hover:bg-red-950/60 border border-red-800/80 text-red-200 font-bold py-3 px-4 rounded-xl text-xs flex items-center justify-between"
-                >
-                  <div className="flex items-center gap-2">
-                    <Lock className="w-4 h-4 text-red-400" />
-                    <span>Owner Login</span>
-                  </div>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
-
-                <div className="text-[10px] text-slate-400 text-center pt-1">
-                  Works on iOS, Android, and desktop browsers as a Progressive Web App.
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  Every active member receives direct access to the Karnataka Gym PWA with contactless QR entry, workout history, and streak discipline rewards.
+                </p>
+                <div className="pt-1 space-y-2">
+                  <a
+                    href="#plans"
+                    className="w-full bg-[#E5A93C] hover:bg-[#F59E0B] text-slate-950 font-black py-3 px-4 rounded-xl text-xs flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer"
+                  >
+                    <span>Explore Membership Plans</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </a>
+                  <a
+                    href="#location"
+                    className="w-full bg-[#121622] hover:bg-[#1C2333] border border-[#2D3950] text-slate-200 font-bold py-2.5 px-4 rounded-xl text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                  >
+                    <span>Visit Gym on Station Road</span>
+                  </a>
+                </div>
+                <div className="text-[10px] text-slate-400">
+                  Registered members & staff can login anytime via the <strong className="text-slate-300">Login</strong> button in the top menu.
                 </div>
               </div>
             </div>
