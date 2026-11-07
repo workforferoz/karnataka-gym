@@ -13,7 +13,7 @@ export default function OwnerLayout({ children }: { children: React.ReactNode })
     return <div className="min-h-screen bg-[#0B0E14]" />;
   }
 
-  const isOwnerOrStaff = currentUser.role === 'owner' || currentUser.role === 'front_desk';
+  const isOwnerOrStaff = currentUser.role === 'owner' || currentUser.role === 'front_desk' || currentUser.role === 'trainer';
 
   // Strictly enforce that Owner Cockpit only opens from Owner Login
   if (!isLoggedIn || !isOwnerOrStaff) {

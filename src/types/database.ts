@@ -1,4 +1,4 @@
-export type UserRole = 'member' | 'owner' | 'front_desk';
+export type UserRole = 'member' | 'owner' | 'front_desk' | 'trainer';
 
 export type MembershipStatus = 'active' | 'frozen' | 'cancelled' | 'expired';
 

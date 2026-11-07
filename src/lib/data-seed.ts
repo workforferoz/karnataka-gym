@@ -211,7 +211,7 @@ export const INITIAL_USERS: User[] = [
   // 3 Trainers
   {
     id: 'user_trainer_vikram',
-    role: 'front_desk',
+    role: 'trainer',
     phone: '9845011111',
     name: 'Vikram (Coach - Strength)',
     marketing_opt_in: true,
@@ -221,7 +221,7 @@ export const INITIAL_USERS: User[] = [
   },
   {
     id: 'user_trainer_pooja',
-    role: 'front_desk',
+    role: 'trainer',
     phone: '9845022222',
     name: 'Pooja (Coach - HIIT/Diet)',
     marketing_opt_in: true,
@@ -231,7 +231,7 @@ export const INITIAL_USERS: User[] = [
   },
   {
     id: 'user_trainer_rakesh',
-    role: 'front_desk',
+    role: 'trainer',
     phone: '9845033333',
     name: 'Rakesh (Coach - Hypertrophy)',
     marketing_opt_in: true,

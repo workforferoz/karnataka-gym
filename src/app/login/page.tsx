@@ -5,7 +5,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useGym } from '@/lib/store';
-import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { sanitizePhone, checkRateLimit } from '@/lib/security';
 import {
@@ -19,17 +18,20 @@ import {
   Sparkles,
   ArrowLeft,
   Lock,
-  LayoutDashboard
+  LayoutDashboard,
+  Dumbbell,
+  Award,
+  LogIn
 } from 'lucide-react';
 
 function LoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const requestedRole = searchParams.get('role'); // 'member' | 'owner'
+  const requestedRole = searchParams.get('role'); // 'member' | 'trainer' | 'owner'
 
   const { users, login, memberships, noShowCases } = useGym();
 
-  const [activeTab, setActiveTab] = useState<'member' | 'owner'>('member');
+  const [activeTab, setActiveTab] = useState<'member' | 'trainer' | 'owner'>('member');
   const [phoneInput, setPhoneInput] = useState('');
   const [otpStep, setOtpStep] = useState(false);
   const [otpCode, setOtpCode] = useState('');
@@ -42,6 +44,8 @@ function LoginContent() {
   useEffect(() => {
     if (requestedRole === 'owner') {
       setActiveTab('owner');
+    } else if (requestedRole === 'trainer') {
+      setActiveTab('trainer');
     } else {
       setActiveTab('member');
     }
@@ -79,7 +83,7 @@ function LoginContent() {
     e.preventDefault();
     if (matchedUser) {
       login(matchedUser.id);
-      if (matchedUser.role === 'owner' || matchedUser.role === 'front_desk') {
+      if (matchedUser.role === 'owner' || matchedUser.role === 'front_desk' || matchedUser.role === 'trainer') {
         router.push('/owner/dashboard');
       } else {
         router.push('/member/home');
@@ -89,18 +93,19 @@ function LoginContent() {
 
   const handleDirectSelect = (user: typeof users[0]) => {
     login(user.id);
-    if (user.role === 'owner' || user.role === 'front_desk') {
+    if (user.role === 'owner' || user.role === 'front_desk' || user.role === 'trainer') {
       router.push('/owner/dashboard');
     } else {
       router.push('/member/home');
     }
   };
 
-  // Staff and Owner users
-  const staffAndOwnerUsers = users.filter((u) => u.role === 'owner' || u.role === 'front_desk');
+  // Grouped users
+  const trainerUsers = users.filter((u) => u.role === 'trainer');
+  const ownerUsers = users.filter((u) => u.role === 'owner' || u.role === 'front_desk');
+  const memberUsers = users.filter((u) => u.role === 'member');
 
   // Filter member users
-  const memberUsers = users.filter((u) => u.role === 'member');
   const filteredMembers = memberUsers.filter((u) => {
     const matchesQuery =
       u.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -158,36 +163,53 @@ function LoginContent() {
               Karnataka Gym <span className="text-[#E5A93C]">Hubballi</span>
             </h1>
             <p className="text-xs text-slate-400 mt-1">
-              Select your role to access the dedicated member app or owner cockpit.
+              Select your portal below: Member, Trainer, or Owner.
             </p>
           </div>
         </div>
 
-        {/* Role Toggle Tabs */}
-        <div className="max-w-md mx-auto grid grid-cols-2 gap-2 p-1.5 rounded-2xl bg-[#121622] border border-[#232B3E]">
+        {/* 3-Role Toggle Tabs */}
+        <div className="max-w-md mx-auto grid grid-cols-3 gap-2 p-1.5 rounded-2xl bg-[#121622] border border-[#232B3E]">
+          {/* Member Tab */}
           <button
             type="button"
             onClick={() => setActiveTab('member')}
-            className={`py-2.5 px-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+            className={`py-2.5 px-2 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
               activeTab === 'member'
                 ? 'bg-[#E5A93C] text-slate-950 shadow-md'
                 : 'text-slate-400 hover:text-white'
             }`}
           >
-            <UserCheck className="w-4 h-4" />
-            <span>Member Login</span>
+            <UserCheck className="w-4 h-4 stroke-[2.5]" />
+            <span>Member</span>
           </button>
+
+          {/* Trainer Tab */}
+          <button
+            type="button"
+            onClick={() => setActiveTab('trainer')}
+            className={`py-2.5 px-2 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
+              activeTab === 'trainer'
+                ? 'bg-emerald-500 text-slate-950 shadow-md'
+                : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            <Dumbbell className="w-4 h-4 stroke-[2.5]" />
+            <span>Trainer</span>
+          </button>
+
+          {/* Owner Tab */}
           <button
             type="button"
             onClick={() => setActiveTab('owner')}
-            className={`py-2.5 px-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+            className={`py-2.5 px-2 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
               activeTab === 'owner'
                 ? 'bg-red-600 text-white shadow-md'
                 : 'text-slate-400 hover:text-white'
             }`}
           >
-            <Lock className="w-4 h-4" />
-            <span>Owner Cockpit</span>
+            <Lock className="w-4 h-4 stroke-[2.5]" />
+            <span>Owner</span>
           </button>
         </div>
 
@@ -313,7 +335,7 @@ function LoginContent() {
                         : 'text-slate-400 hover:text-white'
                     }`}
                   >
-                    Expiring in 4 Days
+                    Expiring (5)
                   </button>
                   <button
                     onClick={() => setSelectedCategory('churn')}
@@ -323,7 +345,7 @@ function LoginContent() {
                         : 'text-slate-400 hover:text-white'
                     }`}
                   >
-                    Absent / Churn
+                    Absent (6)
                   </button>
                 </div>
               </div>
@@ -394,7 +416,64 @@ function LoginContent() {
           </div>
         )}
 
-        {/* TAB 2: OWNER & STAFF LOGIN */}
+        {/* TAB 2: TRAINER LOGIN */}
+        {activeTab === 'trainer' && (
+          <div className="max-w-md mx-auto space-y-6">
+            <div className="bg-[#121622] border-2 border-emerald-800/60 rounded-2xl p-6 shadow-xl space-y-5">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-xl bg-emerald-600/15 border border-emerald-600/30 text-emerald-400 flex items-center justify-center">
+                  <Dumbbell className="w-6 h-6" />
+                </div>
+                <div>
+                  <h2 className="text-base font-extrabold text-white">Trainer & Coach Portal</h2>
+                  <p className="text-xs text-slate-400">Hubballi certified coaches: Vikram, Pooja & Rakesh</p>
+                </div>
+              </div>
+
+              <div className="space-y-3 pt-2">
+                <span className="text-xs font-bold text-slate-300 block uppercase tracking-wider">
+                  Select Certified Trainer:
+                </span>
+
+                {trainerUsers.map((trainer) => (
+                  <button
+                    key={trainer.id}
+                    onClick={() => handleDirectSelect(trainer)}
+                    className="w-full p-4 rounded-xl bg-[#171D2B] border border-[#28354A] hover:border-emerald-500 text-left flex items-center justify-between transition-all group cursor-pointer"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-emerald-950/60 border border-emerald-700 text-emerald-300 font-black flex items-center justify-center text-sm">
+                        {trainer.name.charAt(0)}
+                      </div>
+                      <div>
+                        <span className="text-sm font-extrabold text-white block group-hover:text-emerald-400 transition-colors">
+                          {trainer.name}
+                        </span>
+                        <span className="text-xs text-slate-400 font-mono">
+                          +91 {trainer.phone} • Certified Floor Coach
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-1 text-xs font-bold text-emerald-400">
+                      <span>Enter Desk</span>
+                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </button>
+                ))}
+              </div>
+
+              <div className="p-3 rounded-xl bg-emerald-950/30 border border-emerald-900/50 text-[11px] text-emerald-300 flex items-start gap-2">
+                <Award className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" />
+                <span>
+                  Trainers have full permissions to view active members, conduct assisted check-ins at reception, and assign diet charts.
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* TAB 3: OWNER & STAFF LOGIN */}
         {activeTab === 'owner' && (
           <div className="max-w-md mx-auto space-y-6">
             <div className="bg-[#121622] border-2 border-red-900/60 rounded-2xl p-6 shadow-xl space-y-5">
@@ -413,7 +492,7 @@ function LoginContent() {
                   Select Staff / Owner Account:
                 </span>
 
-                {staffAndOwnerUsers.map((staffUser) => (
+                {ownerUsers.map((staffUser) => (
                   <button
                     key={staffUser.id}
                     onClick={() => handleDirectSelect(staffUser)}

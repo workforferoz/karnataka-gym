@@ -255,11 +255,11 @@ export default function MemberCheckInPage() {
 
               {/* Center gym logo & QR grid illustration */}
               <div className="relative flex flex-col items-center justify-center space-y-1">
-                <div className="w-16 h-16 flex-shrink-0 drop-shadow-md">
+                <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0 drop-shadow-md">
                   <img
-                    src="/karnataka-gym-logo.png"
-                    alt="Karnataka Gym"
-                    className="w-full h-full object-contain"
+                    src="/karnataka-gym-badge.png"
+                    alt="Karnataka Gym Hubballi"
+                    className="w-full h-full object-contain rounded-full"
                   />
                 </div>
                 <div className="text-[9px] font-black font-mono text-slate-900 bg-amber-100 px-2 py-0.5 rounded">

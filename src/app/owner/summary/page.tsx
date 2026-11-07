@@ -108,13 +108,13 @@ export default function DailySummaryPage() {
           {/* Gym Official Letterhead */}
           <div className="flex items-center justify-between border-b border-[#232B3E] pb-4">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 flex-shrink-0 drop-shadow-md">
+              <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 drop-shadow-md">
                 <Image
-                  src="/karnataka-gym-logo.png"
+                  src="/karnataka-gym-badge.png"
                   alt="Karnataka Gym"
                   width={48}
                   height={48}
-                  className="w-full h-full object-contain"
+                  className="w-full h-full object-contain rounded-full"
                 />
               </div>
               <div>

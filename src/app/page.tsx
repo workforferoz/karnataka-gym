@@ -120,21 +120,29 @@ export default function PublicGymWebsite() {
                 </p>
 
                 {/* Direct Action Gateways */}
-                <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 pt-2">
+                <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 pt-2">
                   <Link
                     href="/login?role=member"
-                    className="w-full sm:w-auto bg-[#E5A93C] hover:bg-[#F59E0B] text-slate-950 font-black px-6 py-3.5 rounded-xl text-sm flex items-center justify-center gap-2 shadow-lg shadow-[#E5A93C]/20 transition-all cursor-pointer"
+                    className="w-full sm:w-auto bg-[#E5A93C] hover:bg-[#F59E0B] text-slate-950 font-black px-5 py-3.5 rounded-xl text-sm flex items-center justify-center gap-2 shadow-lg shadow-[#E5A93C]/20 transition-all cursor-pointer"
                   >
                     <UserCheck className="w-4 h-4 stroke-[2.5]" />
-                    <span>Member Login (Open App)</span>
+                    <span>Member Login</span>
+                  </Link>
+
+                  <Link
+                    href="/login?role=trainer"
+                    className="w-full sm:w-auto bg-[#14231E] hover:bg-[#1a3029] border border-emerald-700/80 text-emerald-300 font-extrabold px-4 py-3.5 rounded-xl text-sm flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                  >
+                    <Dumbbell className="w-4 h-4 text-emerald-400" />
+                    <span>Trainer Login</span>
                   </Link>
 
                   <Link
                     href="/login?role=owner"
-                    className="w-full sm:w-auto bg-[#161D2C] hover:bg-[#1E273A] border border-[#2D3950] text-slate-200 font-extrabold px-5 py-3.5 rounded-xl text-sm flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                    className="w-full sm:w-auto bg-[#161D2C] hover:bg-[#1E273A] border border-[#2D3950] text-slate-200 font-extrabold px-4 py-3.5 rounded-xl text-sm flex items-center justify-center gap-2 transition-colors cursor-pointer"
                   >
                     <Lock className="w-4 h-4 text-red-400" />
-                    <span>Owner Cockpit</span>
+                    <span>Owner Login</span>
                   </Link>
 
                   <a
@@ -664,12 +672,23 @@ export default function PublicGymWebsite() {
                 </Link>
 
                 <Link
+                  href="/login?role=trainer"
+                  className="w-full bg-[#162420] hover:bg-[#1e342c] border border-emerald-800 text-emerald-300 font-bold py-3 px-4 rounded-xl text-xs flex items-center justify-between"
+                >
+                  <div className="flex items-center gap-2">
+                    <Dumbbell className="w-4 h-4 text-emerald-400" />
+                    <span>Trainer Login</span>
+                  </div>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+
+                <Link
                   href="/login?role=owner"
                   className="w-full bg-[#1F2738] hover:bg-red-950/60 border border-red-800/80 text-red-200 font-bold py-3 px-4 rounded-xl text-xs flex items-center justify-between"
                 >
                   <div className="flex items-center gap-2">
                     <Lock className="w-4 h-4 text-red-400" />
-                    <span>Owner Cockpit</span>
+                    <span>Owner Login</span>
                   </div>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>

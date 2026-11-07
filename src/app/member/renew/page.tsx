@@ -250,8 +250,8 @@ export default function MemberRenewPage() {
             <div className="bg-[#121622] border-2 border-[#E5A93C] rounded-3xl p-6 max-w-sm w-full space-y-4 shadow-2xl relative">
               <div className="flex items-center justify-between border-b border-[#232B3E] pb-3">
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 flex-shrink-0 drop-shadow-sm">
-                    <img src="/karnataka-gym-logo.png" alt="KG" className="w-full h-full object-contain" />
+                  <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 drop-shadow-sm">
+                    <img src="/karnataka-gym-badge.png" alt="KG" className="w-full h-full object-contain rounded-full" />
                   </div>
                   <div>
                     <h3 className="text-xs font-black text-white">Razorpay / UPI Gateway</h3>

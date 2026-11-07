@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -10,11 +10,12 @@ import {
   X,
   UserCheck,
   Lock,
+  ChevronDown,
   ChevronRight,
   ShieldCheck,
-  Calendar,
-  Sparkles,
-  MapPin
+  Dumbbell,
+  User,
+  LogIn
 } from 'lucide-react';
 import { InstagramIcon } from '@/components/InstagramIcon';
 
@@ -24,6 +25,19 @@ interface PublicNavProps {
 
 export const PublicNav: React.FC<PublicNavProps> = ({ onOpenTests }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [loginMenuOpen, setLoginMenuOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdown on click outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setLoginMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   return (
     <nav className="sticky top-0 z-40 bg-[#0B0E14]/95 border-b border-[#232B3E] backdrop-blur-md px-4 py-3">
@@ -76,8 +90,8 @@ export const PublicNav: React.FC<PublicNavProps> = ({ onOpenTests }) => {
           </a>
         </div>
 
-        {/* Desktop CTA Gateways & Helpline */}
-        <div className="hidden md:flex items-center gap-2.5">
+        {/* Desktop Right Controls: Phone + Single Unified Login Dropdown */}
+        <div className="hidden md:flex items-center gap-3">
           {/* Clickable Phone */}
           <a
             href="tel:9902667407"
@@ -88,44 +102,97 @@ export const PublicNav: React.FC<PublicNavProps> = ({ onOpenTests }) => {
             <span>9902667407</span>
           </a>
 
-          {/* Test Runner Button */}
-          {onOpenTests && (
+          {/* Unified Login Icon & Dropdown */}
+          <div className="relative" ref={dropdownRef}>
             <button
-              onClick={onOpenTests}
-              className="flex items-center gap-1.5 bg-[#142025] hover:bg-[#1a2d34] border border-teal-800/80 text-teal-300 text-xs font-bold px-3 py-2 rounded-xl transition-colors cursor-pointer"
-              title="Open 12-Item Test Checklist"
+              onClick={() => setLoginMenuOpen(!loginMenuOpen)}
+              className="bg-[#E5A93C] hover:bg-[#F59E0B] text-slate-950 text-xs font-black px-4 py-2 rounded-xl flex items-center gap-2 shadow-md shadow-[#E5A93C]/20 transition-all cursor-pointer"
+              aria-label="Open Login Portals"
+              aria-expanded={loginMenuOpen}
             >
-              <ShieldCheck className="w-3.5 h-3.5 text-teal-400" />
-              <span>Tests (12)</span>
+              <LogIn className="w-4 h-4 stroke-[2.5]" />
+              <span>Login</span>
+              <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${loginMenuOpen ? 'rotate-180' : ''}`} />
             </button>
-          )}
 
-          {/* Member Login Button */}
-          <Link
-            href="/login?role=member"
-            className="bg-[#E5A93C] hover:bg-[#F59E0B] text-slate-950 text-xs font-black px-4 py-2 rounded-xl flex items-center gap-1.5 shadow-md shadow-[#E5A93C]/20 transition-all cursor-pointer"
-          >
-            <UserCheck className="w-3.5 h-3.5 stroke-[2.5]" />
-            <span>Member Login</span>
-          </Link>
+            {/* Dropdown Menu */}
+            {loginMenuOpen && (
+              <div className="absolute right-0 mt-2 w-64 bg-[#121622] border-2 border-[#232B3E] rounded-2xl shadow-2xl p-2 z-50 animate-in fade-in zoom-in-95 duration-150">
+                <div className="px-3 py-1.5 border-b border-[#232B3E] mb-1">
+                  <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">
+                    Select Login Portal
+                  </span>
+                </div>
 
-          {/* Owner Cockpit Button */}
-          <Link
-            href="/login?role=owner"
-            className="bg-[#181F2F] hover:bg-red-950/60 border border-red-800/70 text-red-200 text-xs font-bold px-3 py-2 rounded-xl flex items-center gap-1.5 transition-colors cursor-pointer"
-          >
-            <Lock className="w-3.5 h-3.5 text-red-400" />
-            <span>Owner Cockpit</span>
-          </Link>
+                {/* 1. Member Login */}
+                <Link
+                  href="/login?role=member"
+                  onClick={() => setLoginMenuOpen(false)}
+                  className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-[#181F2F] group transition-colors"
+                >
+                  <div className="w-8 h-8 rounded-lg bg-[#E5A93C]/15 border border-[#E5A93C]/30 text-[#E5A93C] flex items-center justify-center flex-shrink-0">
+                    <UserCheck className="w-4 h-4 stroke-[2.5]" />
+                  </div>
+                  <div>
+                    <span className="text-xs font-extrabold text-white group-hover:text-[#E5A93C] transition-colors block">
+                      Member Login
+                    </span>
+                    <span className="text-[10px] text-slate-400 block leading-tight">
+                      QR check-in, streak & renewals
+                    </span>
+                  </div>
+                </Link>
+
+                {/* 2. Trainer Login */}
+                <Link
+                  href="/login?role=trainer"
+                  onClick={() => setLoginMenuOpen(false)}
+                  className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-[#181F2F] group transition-colors"
+                >
+                  <div className="w-8 h-8 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 flex items-center justify-center flex-shrink-0">
+                    <Dumbbell className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <span className="text-xs font-extrabold text-white group-hover:text-emerald-400 transition-colors block">
+                      Trainer Login
+                    </span>
+                    <span className="text-[10px] text-slate-400 block leading-tight">
+                      Coach Vikram, Pooja & Rakesh
+                    </span>
+                  </div>
+                </Link>
+
+                {/* 3. Owner Login */}
+                <Link
+                  href="/login?role=owner"
+                  onClick={() => setLoginMenuOpen(false)}
+                  className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-[#181F2F] group transition-colors"
+                >
+                  <div className="w-8 h-8 rounded-lg bg-red-500/15 border border-red-500/30 text-red-400 flex items-center justify-center flex-shrink-0">
+                    <Lock className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <span className="text-xs font-extrabold text-white group-hover:text-red-400 transition-colors block">
+                      Owner Login
+                    </span>
+                    <span className="text-[10px] text-slate-400 block leading-tight">
+                      Cockpit, reports & churn alerts
+                    </span>
+                  </div>
+                </Link>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Mobile Action Controls */}
         <div className="flex md:hidden items-center gap-2">
+          {/* Mobile Login Button */}
           <Link
-            href="/login?role=member"
-            className="bg-[#E5A93C] text-slate-950 text-xs font-black px-3 py-1.5 rounded-lg flex items-center gap-1"
+            href="/login"
+            className="bg-[#E5A93C] text-slate-950 text-xs font-black px-3 py-1.5 rounded-lg flex items-center gap-1.5"
           >
-            <UserCheck className="w-3.5 h-3.5" />
+            <LogIn className="w-3.5 h-3.5 stroke-[2.5]" />
             <span>Login</span>
           </Link>
 
@@ -169,23 +236,39 @@ export const PublicNav: React.FC<PublicNavProps> = ({ onOpenTests }) => {
               </button>
             </div>
 
-            {/* Portal Action Buttons in Mobile Menu */}
+            {/* Portal Action Buttons in Mobile Menu: Member, Trainer, Owner */}
             <div className="py-4 space-y-2 border-b border-[#232B3E]">
               <span className="text-[10px] uppercase font-bold text-slate-500 tracking-wider block mb-1">
-                Portals & App Entry
+                Select Login Portal
               </span>
+
+              {/* 1. Member Login */}
               <Link
                 href="/login?role=member"
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-full bg-[#E5A93C] hover:bg-[#F59E0B] text-slate-950 font-extrabold py-2.5 px-3 rounded-xl text-xs flex items-center justify-between"
+                className="w-full bg-[#E5A93C] hover:bg-[#F59E0B] text-slate-950 font-extrabold py-2.5 px-3 rounded-xl text-xs flex items-center justify-between shadow-sm"
               >
                 <div className="flex items-center gap-2">
                   <UserCheck className="w-4 h-4 stroke-[2.5]" />
-                  <span>Member Portal Login</span>
+                  <span>Member Login</span>
                 </div>
                 <ChevronRight className="w-4 h-4" />
               </Link>
 
+              {/* 2. Trainer Login */}
+              <Link
+                href="/login?role=trainer"
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-full bg-[#162420] border border-emerald-800 text-emerald-300 font-bold py-2.5 px-3 rounded-xl text-xs flex items-center justify-between"
+              >
+                <div className="flex items-center gap-2">
+                  <Dumbbell className="w-4 h-4 text-emerald-400" />
+                  <span>Trainer Login</span>
+                </div>
+                <ChevronRight className="w-4 h-4" />
+              </Link>
+
+              {/* 3. Owner Login */}
               <Link
                 href="/login?role=owner"
                 onClick={() => setMobileMenuOpen(false)}
@@ -193,7 +276,7 @@ export const PublicNav: React.FC<PublicNavProps> = ({ onOpenTests }) => {
               >
                 <div className="flex items-center gap-2">
                   <Lock className="w-4 h-4 text-red-400" />
-                  <span>Owner Cockpit</span>
+                  <span>Owner Login</span>
                 </div>
                 <ChevronRight className="w-4 h-4" />
               </Link>
@@ -254,7 +337,7 @@ export const PublicNav: React.FC<PublicNavProps> = ({ onOpenTests }) => {
                       setMobileMenuOpen(false);
                       onOpenTests();
                     }}
-                    className="w-full text-left px-3 py-2 rounded-lg text-teal-400 bg-teal-950/30 border border-teal-800 flex items-center justify-between"
+                    className="w-full text-left px-3 py-2 rounded-lg text-teal-400 bg-teal-950/30 border border-teal-800 flex items-center justify-between cursor-pointer"
                   >
                     <span>Run 12-Item Test Checklist</span>
                     <ShieldCheck className="w-4 h-4" />
@@ -298,4 +381,3 @@ export const PublicNav: React.FC<PublicNavProps> = ({ onOpenTests }) => {
     </nav>
   );
 };
-
