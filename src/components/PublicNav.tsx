@@ -34,13 +34,13 @@ export const PublicNav: React.FC<PublicNavProps> = ({ onOpenTests }) => {
           className="flex items-center gap-3 focus-visible:outline-none group flex-shrink-0"
           aria-label="Karnataka Gym Hubballi Home"
         >
-          <div className="relative w-11 h-11 flex-shrink-0 drop-shadow-[0_2px_10px_rgba(229,169,60,0.35)]">
+          <div className="relative w-11 h-11 rounded-full overflow-hidden flex-shrink-0 drop-shadow-[0_2px_10px_rgba(229,169,60,0.35)]">
             <Image
-              src="/karnataka-gym-logo.png"
+              src="/karnataka-gym-badge.png"
               alt="Karnataka Gym Hubballi Logo"
               width={44}
               height={44}
-              className="object-contain w-full h-full"
+              className="object-contain w-full h-full rounded-full"
               priority
             />
           </div>
@@ -146,13 +146,13 @@ export const PublicNav: React.FC<PublicNavProps> = ({ onOpenTests }) => {
             {/* Header */}
             <div className="flex items-center justify-between pb-4 border-b border-[#232B3E]">
               <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 relative">
+                <div className="w-9 h-9 relative rounded-full overflow-hidden flex-shrink-0">
                   <Image
-                    src="/karnataka-gym-logo.png"
+                    src="/karnataka-gym-badge.png"
                     alt="Karnataka Gym"
                     width={36}
                     height={36}
-                    className="object-contain w-full h-full"
+                    className="object-contain w-full h-full rounded-full"
                   />
                 </div>
                 <div>

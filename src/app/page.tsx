@@ -89,13 +89,13 @@ export default function PublicGymWebsite() {
               <div className="flex-1 space-y-6 text-center lg:text-left">
                 {/* Brand Logo & Location Flag */}
                 <div className="flex items-center justify-center lg:justify-start gap-3">
-                  <div className="relative w-14 h-14 flex-shrink-0 drop-shadow-[0_4px_16px_rgba(229,169,60,0.4)]">
+                  <div className="relative w-14 h-14 rounded-full overflow-hidden flex-shrink-0 drop-shadow-[0_4px_16px_rgba(229,169,60,0.4)]">
                     <Image
-                      src="/karnataka-gym-logo.png"
+                      src="/karnataka-gym-badge.png"
                       alt="Karnataka Gym Hubballi Badge"
                       width={56}
                       height={56}
-                      className="object-contain w-full h-full"
+                      className="object-contain w-full h-full rounded-full"
                       priority
                     />
                   </div>

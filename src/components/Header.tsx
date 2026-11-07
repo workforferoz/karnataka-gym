@@ -76,13 +76,13 @@ export const Header: React.FC<HeaderProps> = ({ onOpenTests }) => {
           className="flex items-center gap-2.5 focus-visible:outline-none"
           aria-label="Karnataka Gym Hubballi Home"
         >
-          <div className="relative w-11 h-11 flex-shrink-0 drop-shadow-[0_2px_8px_rgba(229,169,60,0.35)]">
+          <div className="relative w-11 h-11 rounded-full overflow-hidden flex-shrink-0 drop-shadow-[0_2px_8px_rgba(229,169,60,0.35)]">
             <Image
-              src="/karnataka-gym-logo.png"
+              src="/karnataka-gym-badge.png"
               alt="Karnataka Gym Hubballi"
               width={44}
               height={44}
-              className="object-contain w-full h-full"
+              className="object-contain w-full h-full rounded-full"
               priority
             />
           </div>
@@ -311,13 +311,13 @@ export const Header: React.FC<HeaderProps> = ({ onOpenTests }) => {
           <div className="w-72 bg-[#101420] border-l border-[#232B3E] h-full flex flex-col p-4 shadow-2xl animate-in slide-in-from-right duration-250">
             <div className="flex items-center justify-between pb-3 border-b border-[#232B3E]">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 flex-shrink-0">
+                <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
                   <Image
-                    src="/karnataka-gym-logo.png"
+                    src="/karnataka-gym-badge.png"
                     alt="Karnataka Gym"
                     width={32}
                     height={32}
-                    className="object-contain w-full h-full"
+                    className="object-contain w-full h-full rounded-full"
                   />
                 </div>
                 <span className="text-sm font-bold text-white">Karnataka Gym</span>
