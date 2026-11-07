@@ -6,6 +6,7 @@ import { useGym } from '@/lib/store';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { MemberBottomNav } from '@/components/MemberBottomNav';
+import { checkRateLimit } from '@/lib/security';
 import {
   RefreshCcw,
   CheckCircle,
@@ -56,6 +57,15 @@ export default function MemberRenewPage() {
   };
 
   const handleExecutePayment = async (status: 'paid' | 'failed' | 'pending') => {
+    const rateCheck = checkRateLimit(`pay_${currentUser.id}`, 6, 60000);
+    if (!rateCheck.allowed) {
+      setPaymentResult({
+        success: false,
+        message: `Too many payment attempts. Please wait ${rateCheck.retryAfterSeconds}s.`
+      });
+      return;
+    }
+
     setIsProcessing(true);
     setPaymentResult(null);
 

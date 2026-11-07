@@ -7,6 +7,7 @@ import { useGym } from '@/lib/store';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { MemberBottomNav } from '@/components/MemberBottomNav';
+import { sanitizeString, sanitizePhone } from '@/lib/security';
 import {
   User,
   Phone,
@@ -46,11 +47,15 @@ export default function MemberProfilePage() {
     setIsSaving(true);
     setSaveSuccess(false);
 
+    const cleanName = sanitizeString(name);
+    const cleanPhone = sanitizePhone(phone).sanitized || phone;
+    const cleanEmergency = sanitizePhone(emergencyContact).sanitized || emergencyContact;
+
     try {
       await updateUserProfile(currentUser.id, {
-        name,
-        phone,
-        emergency_contact: emergencyContact,
+        name: cleanName,
+        phone: cleanPhone,
+        emergency_contact: cleanEmergency,
         comm_preference: commPreference,
         marketing_opt_in: marketingOptIn,
         profile_image: selectedAvatar

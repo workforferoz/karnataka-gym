@@ -6,6 +6,7 @@ import { useGym } from '@/lib/store';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { OwnerBottomNav } from '@/components/OwnerBottomNav';
+import { sanitizeString } from '@/lib/security';
 import {
   UserCheck,
   Search,
@@ -46,7 +47,8 @@ export default function AssistedCheckinPage() {
       return;
     }
 
-    const finalReason = assistedReason === 'Other' ? customReason : assistedReason;
+    const rawReason = assistedReason === 'Other' ? customReason : assistedReason;
+    const finalReason = sanitizeString(rawReason);
     if (!finalReason || finalReason.trim().length === 0) {
       setResultMessage({
         success: false,

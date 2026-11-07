@@ -14,10 +14,10 @@ import {
   LayoutDashboard,
   AlertCircle,
   Phone,
+  Mail,
   ShieldCheck,
   ChevronRight,
   ArrowRight,
-  Sparkles,
   Award,
   Zap,
   Users
@@ -32,21 +32,19 @@ export default function HomePage() {
   const currentStreak = streaks.find((s) => s.user_id === currentUser.id)?.current_streak || 14;
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#0B0E14] text-slate-100 selection:bg-[#E5A93C] selection:text-slate-950">
+    <div className="min-h-screen flex flex-col bg-[#0B0E14] text-slate-100">
       <Header onOpenTests={() => setShowTests(true)} />
       <PWAInstallBanner />
 
       <main className="flex-1 max-w-4xl w-full mx-auto px-4 py-6 md:py-10 space-y-8">
-        {/* Hero Branding Card with Circular Gold Logo */}
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-b from-[#181F2F] to-[#101420] border-2 border-[#E5A93C]/40 p-6 md:p-8 shadow-2xl">
-          <div className="absolute top-0 right-0 w-80 h-80 bg-[#E5A93C]/10 rounded-full blur-3xl pointer-events-none" />
-
-          <div className="relative z-10 flex flex-col md:flex-row items-center gap-6 text-center md:text-left">
+        {/* Hero Branding Card */}
+        <div className="rounded-3xl bg-[#121622] border-2 border-[#232B3E] p-6 md:p-8 shadow-xl">
+          <div className="flex flex-col md:flex-row items-center gap-6 text-center md:text-left">
             {/* Logo */}
-            <div className="relative w-28 h-28 md:w-36 md:h-36 flex-shrink-0 drop-shadow-[0_8px_24px_rgba(229,169,60,0.35)] animate-pulse-subtle">
+            <div className="relative w-28 h-28 md:w-36 md:h-36 flex-shrink-0 drop-shadow-[0_8px_24px_rgba(229,169,60,0.35)]">
               <Image
                 src="/karnataka-gym-logo.png"
-                alt="Karnataka Gym Hubballi Logo"
+                alt="Karnataka Gym Hubballi"
                 width={144}
                 height={144}
                 className="w-full h-full object-contain"
@@ -54,33 +52,41 @@ export default function HomePage() {
               />
             </div>
 
-            {/* Title & Tagline */}
-            <div className="space-y-2">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E5A93C]/15 border border-[#E5A93C]/30 text-[#E5A93C] text-xs font-bold tracking-wide">
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>HUBBALLI&apos;S PREMIER RETENTION PWA</span>
-              </div>
-              <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-white">
-                KARNATAKA <span className="gold-gradient-text">GYM</span>
+            {/* Title & Tagline (Clean typography, no gradient text, no badge above headline) */}
+            <div className="space-y-2.5">
+              <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-white leading-tight">
+                KARNATAKA <span className="text-[#E5A93C]">GYM</span>
               </h1>
-              <p className="text-sm md:text-base text-slate-300 max-w-lg">
-                Silent churn detection, visible attendance streaks, instant QR check-in & transparent renewals.
+              <p className="text-sm md:text-base text-slate-300 max-w-lg leading-relaxed">
+                Hubballi attendance verification, silent churn alerts, workout streak tracking, and transparent membership renewals.
               </p>
 
-              {/* Contact Pill Bar */}
-              <div className="flex flex-wrap items-center justify-center md:justify-start gap-2.5 pt-2">
+              {/* Clickable Contact Bar */}
+              <div className="flex flex-wrap items-center justify-center md:justify-start gap-2.5 pt-1">
                 <a
                   href="tel:9902667407"
-                  className="flex items-center gap-1.5 bg-[#171D2B] border border-[#2D3950] px-3 py-1.5 rounded-lg text-xs font-bold text-slate-200 hover:border-[#E5A93C]"
+                  className="flex items-center gap-1.5 bg-[#171D2B] border border-[#2D3950] px-3 py-1.5 rounded-lg text-xs font-bold text-slate-200 hover:border-[#E5A93C] transition-colors"
+                  title="Call Karnataka Gym Helpline"
                 >
                   <Phone className="w-3.5 h-3.5 text-[#E5A93C]" />
                   <span>9902667407</span>
                 </a>
+
+                <a
+                  href="mailto:karnatakagymhubli@gmail.com"
+                  className="flex items-center gap-1.5 bg-[#171D2B] border border-[#2D3950] px-3 py-1.5 rounded-lg text-xs font-bold text-slate-200 hover:border-[#E5A93C] transition-colors"
+                  title="Email Karnataka Gym"
+                >
+                  <Mail className="w-3.5 h-3.5 text-[#E5A93C]" />
+                  <span>Email</span>
+                </a>
+
                 <a
                   href="https://instagram.com/KARNATAKA_GYM_HUBLI"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 bg-[#171D2B] border border-[#2D3950] px-3 py-1.5 rounded-lg text-xs font-bold text-slate-200 hover:border-pink-500"
+                  className="flex items-center gap-1.5 bg-[#171D2B] border border-[#2D3950] px-3 py-1.5 rounded-lg text-xs font-bold text-slate-200 hover:border-pink-500 transition-colors"
+                  title="Instagram Handle"
                 >
                   <InstagramIcon className="w-3.5 h-3.5 text-pink-400" />
                   <span>@KARNATAKA_GYM_HUBLI</span>
@@ -99,11 +105,11 @@ export default function HomePage() {
           >
             <div>
               <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#E5A93C] to-[#F59E0B] text-slate-950 flex items-center justify-center font-black shadow-lg shadow-[#E5A93C]/20">
+                <div className="w-12 h-12 rounded-2xl bg-[#E5A93C] text-slate-950 flex items-center justify-center font-black shadow-lg">
                   <QrCode className="w-6 h-6 stroke-[2.5]" />
                 </div>
                 <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#1C2436] border border-[#2C3852] text-xs font-bold text-[#E5A93C]">
-                  <Flame className="w-4 h-4 fill-amber-500 text-amber-500" />
+                  <Flame className="w-4 h-4 text-amber-500" />
                   <span>{currentStreak} Day Streak</span>
                 </div>
               </div>
@@ -113,7 +119,7 @@ export default function HomePage() {
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </h2>
               <p className="text-xs text-slate-400 mt-1">
-                Aaj Ka Check-in, session QR pass, active plan expiry countdown & transparent diet/PT add-ons.
+                Daily attendance check-in, dynamic QR pass, active plan expiry countdown, and transparent add-ons.
               </p>
             </div>
 
@@ -126,15 +132,15 @@ export default function HomePage() {
           {/* Owner Cockpit Gateway */}
           <Link
             href="/owner/dashboard"
-            className="group relative p-6 rounded-2xl bg-[#121622] hover:bg-[#161C2C] border border-[#232B3E] hover:border-red-500/80 transition-all shadow-lg flex flex-col justify-between"
+            className="group relative p-6 rounded-2xl bg-[#121622] hover:bg-[#161C2C] border border-[#232B3E] hover:border-red-500 transition-all shadow-lg flex flex-col justify-between"
           >
             <div>
               <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-red-600 to-rose-700 text-white flex items-center justify-center font-black shadow-lg shadow-red-950/40">
+                <div className="w-12 h-12 rounded-2xl bg-[#DC2626] text-white flex items-center justify-center font-black shadow-lg">
                   <LayoutDashboard className="w-6 h-6 stroke-[2.5]" />
                 </div>
                 {openNoShows > 0 && (
-                  <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-red-950/80 border border-red-700 text-xs font-bold text-red-200 animate-pulse">
+                  <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-red-950/80 border border-red-700 text-xs font-bold text-red-200">
                     <AlertCircle className="w-4 h-4 text-red-400" />
                     <span>{openNoShows} Churn Alerts</span>
                   </div>
@@ -146,7 +152,7 @@ export default function HomePage() {
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </h2>
               <p className="text-xs text-slate-400 mt-1">
-                10-Day silent no-shows red list, WhatsApp deep links, assisted front desk check-in & audit logs.
+                10-Day silent no-shows red list, direct WhatsApp follow-up links, assisted front desk check-in, and audit logs.
               </p>
             </div>
 
@@ -157,13 +163,13 @@ export default function HomePage() {
           </Link>
         </div>
 
-        {/* Quick Features Row */}
+        {/* Quick Navigation Cards */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <Link
             href="/member/check-in"
             className="p-3.5 rounded-xl bg-[#131824] border border-[#202738] hover:border-[#E5A93C] transition-colors flex flex-col items-center text-center group"
           >
-            <div className="w-9 h-9 rounded-lg bg-[#E5A93C]/15 text-[#E5A93C] flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+            <div className="w-9 h-9 rounded-lg bg-[#E5A93C]/15 text-[#E5A93C] flex items-center justify-center mb-2">
               <QrCode className="w-5 h-5" />
             </div>
             <span className="text-xs font-bold text-white">QR Check-in</span>
@@ -174,33 +180,33 @@ export default function HomePage() {
             href="/member/renew"
             className="p-3.5 rounded-xl bg-[#131824] border border-[#202738] hover:border-[#E5A93C] transition-colors flex flex-col items-center text-center group"
           >
-            <div className="w-9 h-9 rounded-lg bg-emerald-500/15 text-emerald-400 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+            <div className="w-9 h-9 rounded-lg bg-emerald-500/15 text-emerald-400 flex items-center justify-center mb-2">
               <Zap className="w-5 h-5" />
             </div>
-            <span className="text-xs font-bold text-white">Renew Aaj Hi</span>
-            <span className="text-[10px] text-slate-400">7-Day Alert</span>
+            <span className="text-xs font-bold text-white">Renew Membership</span>
+            <span className="text-[10px] text-slate-400">Online Gateways</span>
           </Link>
 
           <Link
             href="/owner/churn-risk"
             className="p-3.5 rounded-xl bg-[#131824] border border-[#202738] hover:border-red-500 transition-colors flex flex-col items-center text-center group"
           >
-            <div className="w-9 h-9 rounded-lg bg-red-500/15 text-red-400 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+            <div className="w-9 h-9 rounded-lg bg-red-500/15 text-red-400 flex items-center justify-center mb-2">
               <AlertCircle className="w-5 h-5" />
             </div>
             <span className="text-xs font-bold text-white">Red-List</span>
-            <span className="text-[10px] text-slate-400">No-Shows Rescue</span>
+            <span className="text-[10px] text-slate-400">Absent Members</span>
           </Link>
 
           <button
             onClick={() => setShowTests(true)}
             className="p-3.5 rounded-xl bg-[#131824] border border-[#202738] hover:border-teal-500 transition-colors flex flex-col items-center text-center group cursor-pointer"
           >
-            <div className="w-9 h-9 rounded-lg bg-teal-500/15 text-teal-400 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+            <div className="w-9 h-9 rounded-lg bg-teal-500/15 text-teal-400 flex items-center justify-center mb-2">
               <ShieldCheck className="w-5 h-5" />
             </div>
             <span className="text-xs font-bold text-white">Test Checklist</span>
-            <span className="text-[10px] text-slate-400">12 Guardrails</span>
+            <span className="text-[10px] text-slate-400">12 System Checks</span>
           </button>
         </div>
       </main>

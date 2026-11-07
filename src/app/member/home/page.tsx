@@ -134,7 +134,7 @@ export default function MemberHomePage() {
                 Mera Gym Dashboard
               </span>
               <h1 className="text-xl font-extrabold text-white">
-                Namaste, {currentUser.name.split(' ')[0]}! 💪
+                Namaste, {currentUser.name.split(' ')[0]}
               </h1>
             </div>
           </div>

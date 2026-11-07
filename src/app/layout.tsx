@@ -1,10 +1,14 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { GymProvider } from "@/lib/store";
+import { CookieConsent } from "@/components/CookieConsent";
 
 export const metadata: Metadata = {
-  title: "Karnataka Gym | Retention & Attendance PWA - Hubballi",
-  description: "Modern gym attendance, retention cockpit, instant QR check-in & membership renewals for Karnataka Gym Hubballi. Call: 9902667407",
+  title: {
+    default: "Karnataka Gym | Retention & Attendance PWA - Hubballi",
+    template: "%s | Karnataka Gym Hubballi",
+  },
+  description: "Official gym attendance, retention cockpit, instant QR check-in & membership renewals for Karnataka Gym Hubballi. Contact: 9902667407",
   manifest: "/manifest.json",
   icons: {
     icon: "/karnataka-gym-logo.png",
@@ -38,6 +42,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-[#0B0E14] text-slate-100 select-none">
         <GymProvider>
           {children}
+          <CookieConsent />
         </GymProvider>
         <script
           dangerouslySetInnerHTML={{

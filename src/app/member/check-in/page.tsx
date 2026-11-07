@@ -6,6 +6,7 @@ import { useGym } from '@/lib/store';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { MemberBottomNav } from '@/components/MemberBottomNav';
+import { checkRateLimit } from '@/lib/security';
 import {
   QrCode,
   Camera,
@@ -56,6 +57,16 @@ export default function MemberCheckInPage() {
 
   // Handle Scan Action
   const handleSimulateScan = async () => {
+    // Rate limit check
+    const rateCheck = checkRateLimit(`scan_${currentUser.id}`, 8, 30000);
+    if (!rateCheck.allowed) {
+      setScanResult({
+        status: 'duplicate',
+        message: `Too many rapid scan requests. Please wait ${rateCheck.retryAfterSeconds}s before retrying.`
+      });
+      return;
+    }
+
     setIsProcessing(true);
     setScanResult({ status: 'idle', message: '' });
 

@@ -7,6 +7,7 @@ import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { OwnerBottomNav } from '@/components/OwnerBottomNav';
 import { FollowUpOutcome } from '@/types/database';
+import { sanitizeString } from '@/lib/security';
 import {
   AlertTriangle,
   Phone,
@@ -79,7 +80,7 @@ export default function ChurnRiskPage() {
     setIsSubmitting(true);
 
     try {
-      await markFollowUpOutcome(selectedCaseId, outcome, followUpDate, notes);
+      await markFollowUpOutcome(selectedCaseId, outcome, followUpDate, sanitizeString(notes));
       setSelectedCaseId(null);
     } finally {
       setIsSubmitting(false);
@@ -164,7 +165,7 @@ export default function ChurnRiskPage() {
           {filteredCases.length === 0 ? (
             <div className="p-8 text-center rounded-2xl bg-[#121622] border border-[#232B3E] space-y-2">
               <CheckCircle className="w-8 h-8 text-emerald-400 mx-auto" />
-              <h3 className="text-sm font-bold text-white">No absent members in this filter! 💪</h3>
+              <h3 className="text-sm font-bold text-white">No absent members in this filter</h3>
               <p className="text-xs text-slate-400">
                 Hubballi gym attendance discipline is running strong.
               </p>

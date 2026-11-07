@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useGym } from '@/lib/store';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
+import { sanitizePhone, checkRateLimit } from '@/lib/security';
 import { Phone, ArrowRight, ShieldCheck, CheckCircle, Search, UserCheck, KeyRound, Sparkles } from 'lucide-react';
 
 export default function LoginPage() {
@@ -23,15 +24,28 @@ export default function LoginPage() {
   const handlePhoneSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg('');
-    const cleanPhone = phoneInput.trim().replace(/\D/g, '');
-    const found = users.find((u) => u.phone.includes(cleanPhone) || u.phone === cleanPhone);
+
+    // Rate limiting check
+    const rateCheck = checkRateLimit('login_otp', 5, 60000);
+    if (!rateCheck.allowed) {
+      setErrorMsg(`Too many lookup attempts. Please wait ${rateCheck.retryAfterSeconds} seconds before trying again.`);
+      return;
+    }
+
+    const { sanitized, isValid } = sanitizePhone(phoneInput);
+    if (!sanitized) {
+      setErrorMsg('Please enter a valid mobile number.');
+      return;
+    }
+
+    const found = users.find((u) => u.phone === sanitized || u.phone.includes(sanitized));
 
     if (found) {
       setMatchedUser(found);
       setOtpStep(true);
       setOtpCode('1234'); // auto-fill demo OTP
     } else {
-      setErrorMsg('Yeh mobile number register nahi hai. Niche diye gaye demo accounts se select karein.');
+      setErrorMsg('Mobile number not found in register. Please select from the seeded demo accounts below.');
     }
   };
 
