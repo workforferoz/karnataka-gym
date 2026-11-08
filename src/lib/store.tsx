@@ -167,31 +167,46 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       if (stored) {
         const parsed = JSON.parse(stored);
         if (parsed.users) {
-          if (parsed.users.length >= 10) {
-            setUsers(parsed.users);
-          } else {
-            const merged = [...INITIAL_USERS];
-            parsed.users.forEach((u: User) => {
-              if (!merged.some((m) => m.id === u.id)) merged.push(u);
-            });
-            setUsers(merged);
+          const dummyIdsToRemove = new Set([
+            'member_priya_patil', 'member_rohan_kulkarni', 'member_sneha_joshi', 'member_manoj_nayak',
+            'member_amit_sharma', 'member_prakash_hubli', 'member_sunita_rao', 'member_vinod_angadi',
+            'member_ramesh_pujari', 'member_deepak_hiremath', 'member_kavya_hegde', 'user_staff_suresh',
+            'm13', 'm14', 'm15', 'm16', 'm17', 'm18', 'm19', 'm20', 'm21', 'm22', 'm23', 'm24', 'm25', 'm26', 'm27', 'm28', 'm29', 'm30'
+          ]);
+          const cleanedUsers = (parsed.users as User[]).filter((u) => !dummyIdsToRemove.has(u.id));
+          if (!cleanedUsers.some((u) => u.id === 'member_rahul_desai')) {
+            const rahul = INITIAL_USERS.find((u) => u.id === 'member_rahul_desai');
+            if (rahul) cleanedUsers.push(rahul);
           }
+          if (!cleanedUsers.some((u) => u.id === 'user_owner_manjunath')) {
+            const owner = INITIAL_USERS.find((u) => u.id === 'user_owner_manjunath');
+            if (owner) cleanedUsers.unshift(owner);
+          }
+          setUsers(cleanedUsers);
         }
         if (parsed.plans) setPlans(parsed.plans);
         if (parsed.memberships) {
-          if (parsed.memberships.length >= 10) {
-            setMemberships(parsed.memberships);
-          } else {
-            const mergedMems = [...INITIAL_MEMBERSHIPS];
-            parsed.memberships.forEach((m: Membership) => {
-              if (!mergedMems.some((x) => x.id === m.id)) mergedMems.push(m);
-            });
-            setMemberships(mergedMems);
+          const dummyIdsToRemove = new Set([
+            'member_priya_patil', 'member_rohan_kulkarni', 'member_sneha_joshi', 'member_manoj_nayak',
+            'member_amit_sharma', 'member_prakash_hubli', 'member_sunita_rao', 'member_vinod_angadi',
+            'member_ramesh_pujari', 'member_deepak_hiremath', 'member_kavya_hegde',
+            'm13', 'm14', 'm15', 'm16', 'm17', 'm18', 'm19', 'm20', 'm21', 'm22', 'm23', 'm24', 'm25', 'm26', 'm27', 'm28', 'm29', 'm30'
+          ]);
+          const cleanedMems = (parsed.memberships as Membership[]).filter((m) => !dummyIdsToRemove.has(m.user_id));
+          if (!cleanedMems.some((m) => m.user_id === 'member_rahul_desai')) {
+            cleanedMems.push(INITIAL_MEMBERSHIPS[0]);
           }
+          setMemberships(cleanedMems);
         }
-        if (parsed.attendance) setAttendance(parsed.attendance);
-        if (parsed.streaks) setStreaks(parsed.streaks);
-        if (parsed.noShowCases) setNoShowCases(parsed.noShowCases);
+        if (parsed.attendance) {
+          setAttendance((parsed.attendance as Attendance[]).filter((a) => a.user_id === 'member_rahul_desai' || !a.user_id.startsWith('m')));
+        }
+        if (parsed.streaks) {
+          setStreaks((parsed.streaks as Streak[]).filter((s) => s.user_id === 'member_rahul_desai'));
+        }
+        if (parsed.noShowCases) {
+          setNoShowCases((parsed.noShowCases as NoShowCase[]).filter((c) => c.user_id === 'member_rahul_desai'));
+        }
         if (parsed.followUps) setFollowUps(parsed.followUps);
         if (parsed.payments) setPayments(parsed.payments);
         if (parsed.renewalOrders) setRenewalOrders(parsed.renewalOrders);
@@ -240,18 +255,18 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       try {
         const remoteData = await fetchGymDataFromSupabase();
         if (isCancelled || !remoteData) return;
-        if (remoteData.users && remoteData.users.length > 0) setUsers(remoteData.users);
+        if (remoteData.users) setUsers(remoteData.users);
         if (remoteData.plans && remoteData.plans.length > 0) setPlans(remoteData.plans);
-        if (remoteData.memberships && remoteData.memberships.length > 0) setMemberships(remoteData.memberships);
-        if (remoteData.attendance && remoteData.attendance.length > 0) setAttendance(remoteData.attendance);
-        if (remoteData.streaks && remoteData.streaks.length > 0) setStreaks(remoteData.streaks);
-        if (remoteData.noShowCases && remoteData.noShowCases.length > 0) setNoShowCases(remoteData.noShowCases);
-        if (remoteData.followUps && remoteData.followUps.length > 0) setFollowUps(remoteData.followUps);
-        if (remoteData.payments && remoteData.payments.length > 0) setPayments(remoteData.payments);
-        if (remoteData.renewalOrders && remoteData.renewalOrders.length > 0) setRenewalOrders(remoteData.renewalOrders);
+        if (remoteData.memberships) setMemberships(remoteData.memberships);
+        if (remoteData.attendance) setAttendance(remoteData.attendance);
+        if (remoteData.streaks) setStreaks(remoteData.streaks);
+        if (remoteData.noShowCases !== undefined) setNoShowCases(remoteData.noShowCases);
+        if (remoteData.followUps !== undefined) setFollowUps(remoteData.followUps);
+        if (remoteData.payments) setPayments(remoteData.payments);
+        if (remoteData.renewalOrders !== undefined) setRenewalOrders(remoteData.renewalOrders);
         if (remoteData.addOns && remoteData.addOns.length > 0) setAddOns(remoteData.addOns);
-        if (remoteData.addOnOrders && remoteData.addOnOrders.length > 0) setAddOnOrders(remoteData.addOnOrders);
-        if (remoteData.notifications && remoteData.notifications.length > 0) setNotifications(remoteData.notifications);
+        if (remoteData.addOnOrders !== undefined) setAddOnOrders(remoteData.addOnOrders);
+        if (remoteData.notifications !== undefined) setNotifications(remoteData.notifications);
         if (remoteData.settings) setSettings(remoteData.settings);
         if (remoteData.auditLogs && remoteData.auditLogs.length > 0) setAuditLogs(remoteData.auditLogs);
       } catch (err) {

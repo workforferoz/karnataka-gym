@@ -233,8 +233,26 @@ INSERT INTO add_ons (id, type, name, price, validity_days, stock, trainer_name, 
 ('addon_creatine', 'supplement', 'Creatine Monohydrate 250g', 999, 365, 8, NULL, '100% micronized creatine monohydrate for ATP regeneration and raw strength output.', 'Supplements', true),
 ('addon_bcaa', 'supplement', 'BCAA Recovery Fuel 300g (Watermelon)', 1499, 365, 0, NULL, '2:1:1 branched-chain amino acids for intra-workout hydration.', 'Supplements', false);
 
--- 8. Seed Users (Owner Riyaz)
+-- 8. Seed Users (Owner Manjunath, 3 Coaches & 1 Member: Rahul Desai)
 INSERT INTO users (id, role, phone, name, profile_image, marketing_opt_in, emergency_contact, comm_preference, assigned_trainer, active_diet_plan, created_at) VALUES
-('user_owner_riyaz', 'owner', '9902667407', 'Riyaz (Gym Owner)', NULL, TRUE, '9902667407', 'whatsapp', NULL, NULL, '2025-01-01');
+('user_owner_manjunath', 'owner', '9902667407', 'Manjunath (Gym Owner)', NULL, TRUE, '9902667407', 'whatsapp', NULL, NULL, '2025-01-01'),
+('user_trainer_vikram', 'trainer', '9845011111', 'Vikram (Coach - Strength)', NULL, TRUE, '9902667407', 'whatsapp', NULL, NULL, '2025-01-05'),
+('user_trainer_pooja', 'trainer', '9845022222', 'Pooja (Coach - HIIT/Diet)', NULL, TRUE, '9902667407', 'whatsapp', NULL, NULL, '2025-01-05'),
+('user_trainer_rakesh', 'trainer', '9845033333', 'Rakesh (Coach - Hypertrophy)', NULL, TRUE, '9902667407', 'call', NULL, NULL, '2025-01-05'),
+('member_rahul_desai', 'member', '9743247790', 'Rahul Desai', NULL, TRUE, '9902667407', 'whatsapp', 'Vikram', 'Muscle Gain Diet Plan', '2025-02-15')
+ON CONFLICT (id) DO UPDATE SET
+  name = EXCLUDED.name,
+  phone = EXCLUDED.phone,
+  role = EXCLUDED.role;
 
--- Done! 34 Users, Plans, Memberships, Attendance, Streaks & Settings ready in Supabase.
+-- 9. Seed Active Membership for Rahul Desai
+INSERT INTO memberships (id, user_id, plan_id, start_date, expiry_date, status) VALUES
+('mem_rahul', 'member_rahul_desai', 'plan_yearly', CURRENT_DATE - INTERVAL '10 months', CURRENT_DATE + INTERVAL '2 months', 'active')
+ON CONFLICT (id) DO NOTHING;
+
+-- 10. Seed Streak for Rahul Desai
+INSERT INTO streaks (id, user_id, current_streak, highest_streak, last_update, weekly_goal_target, weekly_goal_completed) VALUES
+('streak_rahul', 'member_rahul_desai', 14, 28, CURRENT_DATE, 5, 4)
+ON CONFLICT (id) DO NOTHING;
+
+-- Done! Only Rahul Desai as member + Owner & Coaches configured.
