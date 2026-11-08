@@ -162,10 +162,42 @@ const TRANSFORMATIONS = [
   },
 ];
 
+const TRAINER_PHOTOS = [
+  {
+    id: 'trainer-photo-1',
+    src: '/trainers/coach-riyaz-conditioning.webp',
+    title: 'Peak Conditioning & Core Striations',
+    tag: 'Discipline & Definition',
+    desc: 'Elite core definition, serratus cuts, and competition-level conditioning built through years of disciplined, progressive weight training.',
+  },
+  {
+    id: 'trainer-photo-2',
+    src: '/trainers/coach-riyaz-side-chest.webp',
+    title: 'Side Chest & Arm Hypertrophy',
+    tag: 'Karnataka Gym Floor',
+    desc: 'Classic bodybuilding side chest pose on the Karnataka Gym floor, showing chest fullness, shoulder striations, and tricep separation.',
+  },
+  {
+    id: 'trainer-photo-3',
+    src: '/trainers/coach-riyaz-dumbbells.webp',
+    title: 'Olympic Dumbbell Bicep Training',
+    tag: 'Free Weight Mastery',
+    desc: 'Vascular dumbbell training on the main gym floor. Teaching members proper tempo, peak contraction, and zero-momentum form.',
+  },
+  {
+    id: 'trainer-photo-4',
+    src: '/trainers/coach-riyaz-most-muscular.webp',
+    title: 'Most Muscular & Quadricep Power',
+    tag: 'Competition-Ready Physique',
+    desc: 'Front most muscular pose showcasing quad separation, abdominal vascularity, and thick traps forged with heavy compound training.',
+  },
+];
+
 export default function PublicGymWebsite() {
   const [showTests, setShowTests] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState<typeof FACILITY_PHOTOS[0] | null>(null);
   const [selectedTransformation, setSelectedTransformation] = useState<typeof TRANSFORMATIONS[0] | null>(null);
+  const [selectedTrainerPhoto, setSelectedTrainerPhoto] = useState<typeof TRAINER_PHOTOS[0] | null>(null);
 
   // Inquiry form states
   const [inquiryName, setInquiryName] = useState('');
@@ -828,6 +860,207 @@ export default function PublicGymWebsite() {
                     >
                       <WhatsAppIcon className="w-3.5 h-3.5" />
                       <span>Inquire on WhatsApp</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </section>
+
+        {/* 4C. HEAD COACH & TRAINERS */}
+        <section id="trainer" className="max-w-6xl mx-auto px-4 scroll-mt-20 space-y-8">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[#232B3E] pb-6">
+            <div className="space-y-2 max-w-2xl">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E5A93C]/10 border border-[#E5A93C]/30 text-[#E5A93C] text-xs font-bold uppercase tracking-wider">
+                <Dumbbell className="w-3.5 h-3.5" />
+                <span>Head Coach &amp; Founder • Hubballi</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-black text-white">
+                Lead By Example: Meet Head Coach Riyaz
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+                At Karnataka Gym, we don&apos;t preach theories from a desk. Train directly under competition-proven bodybuilding discipline, biomechanically sound lifting mechanics, and authentic Indian diet planning.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-3 text-xs text-slate-400 flex-shrink-0">
+              <a
+                href="https://www.instagram.com/riyaz_gokul/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#121622] border border-[#232B3E] hover:border-pink-500/50 text-slate-200 hover:text-pink-400 transition-colors group cursor-pointer"
+              >
+                <InstagramIcon className="w-4 h-4 text-pink-400 group-hover:scale-110 transition-transform" />
+                <span className="font-bold">@riyaz_gokul</span>
+              </a>
+            </div>
+          </div>
+
+          {/* Coach Highlights Pills */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div className="p-3.5 rounded-2xl bg-[#121622] border border-[#232B3E] space-y-1">
+              <span className="text-base sm:text-lg font-black text-[#E5A93C] block">15+ Years</span>
+              <span className="text-[11px] text-slate-300 font-bold block leading-tight">Coaching Experience</span>
+              <span className="text-[10px] text-slate-500 block">Training Hubballi since 2011</span>
+            </div>
+            <div className="p-3.5 rounded-2xl bg-[#121622] border border-[#232B3E] space-y-1">
+              <span className="text-base sm:text-lg font-black text-emerald-400 block">Form First</span>
+              <span className="text-[11px] text-slate-300 font-bold block leading-tight">Zero-Injury Biomechanics</span>
+              <span className="text-[10px] text-slate-500 block">Safe compound overload</span>
+            </div>
+            <div className="p-3.5 rounded-2xl bg-[#121622] border border-[#232B3E] space-y-1">
+              <span className="text-base sm:text-lg font-black text-blue-400 block">Real Nutrition</span>
+              <span className="text-[11px] text-slate-300 font-bold block leading-tight">Indian Home Meal Plans</span>
+              <span className="text-[10px] text-slate-500 block">Roti, dal, eggs &amp; paneer</span>
+            </div>
+            <div className="p-3.5 rounded-2xl bg-[#121622] border border-[#232B3E] space-y-1">
+              <span className="text-base sm:text-lg font-black text-purple-400 block">Daily Access</span>
+              <span className="text-[11px] text-slate-300 font-bold block leading-tight">Floor Accountability</span>
+              <span className="text-[10px] text-slate-500 block">Direct supervision daily</span>
+            </div>
+          </div>
+
+          {/* 4 Trainer Photo Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {TRAINER_PHOTOS.map((photo) => (
+              <div
+                key={photo.id}
+                onClick={() => setSelectedTrainerPhoto(photo)}
+                className="group relative bg-[#121622] border-2 border-[#232B3E] hover:border-[#E5A93C] rounded-3xl overflow-hidden shadow-xl transition-all duration-300 cursor-pointer flex flex-col"
+              >
+                {/* Image Container with 4:5 aspect ratio */}
+                <div className="relative aspect-[4/5] w-full overflow-hidden bg-[#0A0D14]">
+                  <Image
+                    src={photo.src}
+                    alt={photo.title}
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                    className="object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0B0E14] via-transparent to-black/30 pointer-events-none" />
+
+                  {/* Top Tag */}
+                  <div className="absolute top-2.5 left-2.5">
+                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-[#0B0E14]/90 text-[#E5A93C] border border-[#E5A93C]/40 backdrop-blur-sm shadow-md">
+                      {photo.tag}
+                    </span>
+                  </div>
+
+                  {/* Expand icon top-right */}
+                  <div className="absolute top-2.5 right-2.5 opacity-90 group-hover:opacity-100 transition-opacity">
+                    <span className="w-7 h-7 rounded-full bg-black/75 border border-white/20 text-white flex items-center justify-center backdrop-blur-sm shadow-md group-hover:border-[#E5A93C] group-hover:text-[#E5A93C] transition-colors">
+                      <Maximize2 className="w-3.5 h-3.5" />
+                    </span>
+                  </div>
+                </div>
+
+                {/* Content Details */}
+                <div className="p-4 flex-1 flex flex-col justify-between space-y-2">
+                  <div>
+                    <h3 className="text-sm font-black text-white group-hover:text-[#E5A93C] transition-colors leading-snug">
+                      {photo.title}
+                    </h3>
+                    <p className="text-[11px] text-slate-300 mt-1 line-clamp-2 leading-relaxed">
+                      {photo.desc}
+                    </p>
+                  </div>
+                  <div className="pt-2 border-t border-[#1F2637] flex items-center justify-between text-[10px]">
+                    <span className="text-slate-400 font-medium">Head Coach Riyaz</span>
+                    <span className="text-[#E5A93C] font-bold group-hover:underline flex items-center gap-1">
+                      <span>Enlarge</span>
+                      <Maximize2 className="w-2.5 h-2.5" />
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Trainer Consultation CTA Banner */}
+          <div className="rounded-2xl bg-gradient-to-r from-[#171D2B] via-[#121622] to-[#171D2B] border border-[#2D3950] p-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+            <div className="space-y-1">
+              <h4 className="text-base font-black text-white flex items-center justify-center sm:justify-start gap-2">
+                <Award className="w-4 h-4 text-[#E5A93C]" />
+                <span>Want 1-on-1 Guidance from Head Coach Riyaz?</span>
+              </h4>
+              <p className="text-xs text-slate-300 max-w-xl">
+                Whether you need beginner form instruction, competition prep, or targeted fat loss, Coach Riyaz provides direct personal coaching at Kalidas Nagar.
+              </p>
+            </div>
+            <div className="flex items-center gap-2.5 flex-shrink-0">
+              <a
+                href="https://wa.me/919902667407?text=Hi%20Coach%20Riyaz%2C%20I%20want%20to%20discuss%20training%20at%20Karnataka%20Gym."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-2.5 rounded-xl text-xs transition-colors inline-flex items-center gap-1.5 shadow-md"
+              >
+                <WhatsAppIcon className="w-3.5 h-3.5" />
+                <span>Chat with Coach</span>
+              </a>
+              <a
+                href="#location"
+                className="bg-[#1A2234] hover:bg-[#232E44] border border-[#374561] text-[#E5A93C] font-bold px-4 py-2.5 rounded-xl text-xs transition-colors"
+              >
+                Visit Gym Floor
+              </a>
+            </div>
+          </div>
+
+          {/* Trainer Modal Lightbox */}
+          {selectedTrainerPhoto && (
+            <div
+              className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200"
+              onClick={() => setSelectedTrainerPhoto(null)}
+            >
+              <div
+                className="relative max-w-2xl w-full bg-[#121622] border-2 border-[#232B3E] rounded-3xl overflow-hidden shadow-2xl animate-in zoom-in-95 duration-200 max-h-[92vh] flex flex-col"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Modal Header */}
+                <div className="flex items-center justify-between p-4 border-b border-[#232B3E] bg-[#0F131D]">
+                  <div className="flex items-center gap-2">
+                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase bg-[#E5A93C]/15 text-[#E5A93C] border border-[#E5A93C]/30">
+                      {selectedTrainerPhoto.tag}
+                    </span>
+                    <h4 className="text-sm sm:text-base font-black text-white">
+                      {selectedTrainerPhoto.title}
+                    </h4>
+                  </div>
+                  <button
+                    onClick={() => setSelectedTrainerPhoto(null)}
+                    className="p-1.5 rounded-xl bg-[#1A2234] hover:bg-[#232E44] text-slate-300 hover:text-white transition-colors cursor-pointer"
+                    aria-label="Close trainer preview"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+
+                {/* Modal Image */}
+                <div className="relative aspect-[4/5] w-full bg-black max-h-[60vh]">
+                  <Image
+                    src={selectedTrainerPhoto.src}
+                    alt={selectedTrainerPhoto.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 700px"
+                    className="object-contain"
+                  />
+                </div>
+
+                {/* Modal Footer */}
+                <div className="p-4 bg-[#0F131D] border-t border-[#232B3E] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+                  <p className="text-slate-300">
+                    {selectedTrainerPhoto.desc}
+                  </p>
+                  <div className="flex items-center gap-2 flex-shrink-0">
+                    <a
+                      href="https://www.instagram.com/riyaz_gokul/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-pink-400 font-bold hover:underline"
+                    >
+                      <InstagramIcon className="w-3.5 h-3.5" />
+                      <span>@riyaz_gokul</span>
                     </a>
                   </div>
                 </div>
