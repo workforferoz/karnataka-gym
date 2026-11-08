@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { PublicNav } from '@/components/PublicNav';
 import { Footer } from '@/components/Footer';
+import { PWAInstallBanner } from '@/components/PWAInstallBanner';
 import { TestChecklistDrawer } from '@/components/TestChecklistDrawer';
 import { InstagramIcon } from '@/components/InstagramIcon';
 import { WhatsAppIcon } from '@/components/WhatsAppIcon';
@@ -253,6 +254,9 @@ export default function PublicGymWebsite() {
     <div className="min-h-screen flex flex-col bg-[#0B0E14] text-slate-100 font-sans selection:bg-[#E5A93C] selection:text-slate-950">
       {/* Navigation Bar */}
       <PublicNav onOpenTests={() => setShowTests(true)} />
+
+      {/* App Install Banner */}
+      <PWAInstallBanner />
 
       <main className="flex-1 space-y-20 pb-16">
         {/* 1. HERO SECTION */}
