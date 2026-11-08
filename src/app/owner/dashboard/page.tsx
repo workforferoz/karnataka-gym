@@ -396,9 +396,9 @@ export default function OwnerDashboardPage() {
           >
             <div>
               <span className="text-xs font-black text-white group-hover:text-[#E5A93C] transition-colors block">
-                Manage 30 Members (CRUD)
+                Manage Members ({totalMembers})
               </span>
-              <span className="text-[11px] text-slate-400">Edit plans, freeze & override diet</span>
+              <span className="text-[11px] text-slate-400">Enroll, remove, freeze & override plans</span>
             </div>
             <ArrowRight className="w-4 h-4 text-slate-500 group-hover:translate-x-1 group-hover:text-[#E5A93C] transition-all" />
           </Link>

@@ -31,7 +31,7 @@ A modern, mobile-first Progressive Web App (PWA) built with **Next.js 16**, **Re
 ### Owner / Manager Cockpit (`/owner/*`)
 - `/owner/dashboard` - 8 Key Retention Metrics (Active members, today's check-ins, 7-day active, open no-show cases, returned members, renewals due, add-on revenue) + Daily 23:59 scan trigger
 - `/owner/churn-risk` - The Red-List table of members absent for 10+ days (12-18 days). Actions: WhatsApp deep link, Call, and Mark Follow-Up Outcome
-- `/owner/manage/members` - Full CRUD for 30 members. Edit plans, freeze membership (preserves streak!), and override diets/trainers with audit logs
+- `/owner/manage/members` - Full CRUD for gym members. Enroll new members, remove profiles, edit plans, freeze membership (preserves streak!), and override diets/trainers with audit logs
 - `/owner/manage/plans` - Membership tier pricing and discount configurator
 - `/owner/manage/addons` - Personal Training packages, Diet plans, and physical supplement stock inventory management
 - `/owner/assisted-checkin` - Front desk manual check-in with mandatory reason dropdown and audit log creation

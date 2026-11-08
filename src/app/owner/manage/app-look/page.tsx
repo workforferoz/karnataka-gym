@@ -206,9 +206,9 @@ export default function MemberAppLookPage() {
               </div>
               <div>
                 <span className="text-xs font-bold text-white block group-hover:text-blue-400 transition-colors">
-                  Manage 30 Members
+                  Manage Members (Directory)
                 </span>
-                <span className="text-[10px] text-slate-400">Plan overrides, streaks & freezes</span>
+                <span className="text-[10px] text-slate-400">Enroll, remove, streaks & freezes</span>
               </div>
             </div>
             <ExternalLink className="w-3.5 h-3.5 text-slate-500 group-hover:text-blue-400" />
