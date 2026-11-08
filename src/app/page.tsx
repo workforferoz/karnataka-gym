@@ -542,66 +542,7 @@ export default function PublicGymWebsite() {
           </div>
         </section>
 
-        {/* 5. CERTIFIED COACHES & TRAINERS */}
-        <section id="trainers" className="max-w-6xl mx-auto px-4 scroll-mt-20 space-y-8">
-          <div className="text-center max-w-2xl mx-auto space-y-2">
-            <h2 className="text-2xl sm:text-3xl font-black text-white">
-              Guidance from Experienced Lifters
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-400">
-              Our floor coaches correct your lifting posture, prevent injury, and program progressive overload.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Trainer 1 */}
-            <div className="bg-[#121622] border border-[#232B3E] rounded-3xl p-6 space-y-4">
-              <div className="w-14 h-14 rounded-2xl bg-[#1A2234] border border-[#2B354C] text-[#E5A93C] font-black text-xl flex items-center justify-center">
-                VP
-              </div>
-              <div>
-                <h3 className="text-lg font-black text-white">Coach Vikram Patil</h3>
-                <span className="text-xs text-[#E5A93C] font-semibold block">Senior Strength & Conditioning Specialist</span>
-                <span className="text-[11px] text-slate-400">8+ Years Experience • Powerlifting</span>
-              </div>
-              <p className="text-xs text-slate-300 leading-relaxed">
-                Specializes in barbell squat, bench press, deadlift biomechanics, and strength periodization for lifters of all ages.
-              </p>
-            </div>
-
-            {/* Trainer 2 */}
-            <div className="bg-[#121622] border border-[#232B3E] rounded-3xl p-6 space-y-4">
-              <div className="w-14 h-14 rounded-2xl bg-[#1A2234] border border-[#2B354C] text-pink-400 font-black text-xl flex items-center justify-center">
-                PK
-              </div>
-              <div>
-                <h3 className="text-lg font-black text-white">Coach Pooja Kulkarni</h3>
-                <span className="text-xs text-pink-400 font-semibold block">Functional Fitness & Female Transformation</span>
-                <span className="text-[11px] text-slate-400">5+ Years Experience • Nutrition Consultant</span>
-              </div>
-              <p className="text-xs text-slate-300 leading-relaxed">
-                Expert in mobility, sustainable weight management, postpartum conditioning, and Indian dietary structuring.
-              </p>
-            </div>
-
-            {/* Trainer 3 */}
-            <div className="bg-[#121622] border border-[#232B3E] rounded-3xl p-6 space-y-4">
-              <div className="w-14 h-14 rounded-2xl bg-[#1A2234] border border-[#2B354C] text-emerald-400 font-black text-xl flex items-center justify-center">
-                RN
-              </div>
-              <div>
-                <h3 className="text-lg font-black text-white">Coach Rakesh Naik</h3>
-                <span className="text-xs text-emerald-400 font-semibold block">Hypertrophy & Contest Preparation</span>
-                <span className="text-[11px] text-slate-400">7+ Years Experience • Bodybuilding</span>
-              </div>
-              <p className="text-xs text-slate-300 leading-relaxed">
-                Focuses on muscular hypertrophy, muscle isolation, peak contest conditioning, and strict form discipline.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* 6. LOCATION, TIMINGS & INQUIRY FORM */}
+        {/* 5. LOCATION, TIMINGS & INQUIRY FORM */}
         <section id="location" className="max-w-6xl mx-auto px-4 scroll-mt-20">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Left: Location & Hours Details */}

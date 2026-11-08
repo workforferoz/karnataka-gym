@@ -79,9 +79,6 @@ export const PublicNav: React.FC<PublicNavProps> = ({ onOpenTests }) => {
           <a href="#plans" className="hover:text-[#E5A93C] transition-colors">
             Membership Plans
           </a>
-          <a href="#trainers" className="hover:text-[#E5A93C] transition-colors">
-            Coaches
-          </a>
           <a href="#location" className="hover:text-[#E5A93C] transition-colors">
             Location & Hours
           </a>
@@ -307,13 +304,6 @@ export const PublicNav: React.FC<PublicNavProps> = ({ onOpenTests }) => {
                 className="block px-3 py-2 rounded-lg text-slate-300 hover:bg-[#181F2F]"
               >
                 Membership Plans (₹)
-              </a>
-              <a
-                href="#trainers"
-                onClick={() => setMobileMenuOpen(false)}
-                className="block px-3 py-2 rounded-lg text-slate-300 hover:bg-[#181F2F]"
-              >
-                Certified Coaches
               </a>
               <a
                 href="#location"
