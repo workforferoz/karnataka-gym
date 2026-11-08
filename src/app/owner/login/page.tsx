@@ -62,7 +62,7 @@ export default function OwnerLoginPage() {
         name: 'Riyaz (Gym Owner)'
       };
 
-    login(ownerUser.id);
+    login(ownerUser.id, 'owner_gateway');
     router.push('/owner/dashboard');
   };
 

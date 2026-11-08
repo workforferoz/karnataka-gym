@@ -72,7 +72,7 @@ interface GymContextType {
   currentUser: User;
   isLoggedIn: boolean;
   isHydrated: boolean;
-  login: (userId: string) => void;
+  login: (userId: string, method?: string) => void;
   logout: () => void;
   switchUser: (userId: string) => void;
   users: User[];
@@ -388,14 +388,7 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const switchUser = (userId: string) => {
-    setCurrentUserId(userId);
-    setIsLoggedIn(true);
-    try {
-      localStorage.setItem('karnataka_gym_logged_in', 'true');
-      localStorage.setItem('karnataka_gym_current_user_id', userId);
-    } catch (e) {
-      console.warn('Error saving user switch state:', e);
-    }
+    login(userId, 'profile_switch');
   };
 
   const resetAllDataToSeed = () => {
@@ -1334,7 +1327,7 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       };
     }
 
-    login(matched.id);
+    login(matched.id, 'credentials');
     playSuccessChime();
     return {
       success: true,
@@ -1373,7 +1366,7 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         setUsers((prev) => prev.map((u) => (u.id === matched!.id ? updated : u)));
         syncSupabaseUpdate('users', updated, 'id', matched.id);
       }
-      login(matched.id);
+      login(matched.id, 'google');
       playSuccessChime();
       return { success: true, message: `Signed in as ${matched.name} via Google!`, user: matched };
     }
@@ -1441,7 +1434,7 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     syncSupabaseInsert('streaks', newStreak);
     syncSupabaseInsert('notifications', welcomeNotif);
 
-    login(newUser.id);
+    login(newUser.id, 'google_registration');
     playSuccessChime();
     return {
       success: true,
@@ -1550,7 +1543,7 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     syncSupabaseInsert('streaks', newStreak);
     syncSupabaseInsert('notifications', welcomeNotif);
 
-    login(newUser.id);
+    login(newUser.id, 'self_registration');
     playSuccessChime();
 
     return {
