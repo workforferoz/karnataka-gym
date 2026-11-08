@@ -600,13 +600,6 @@ export default function PublicGymWebsite() {
                 No extreme starvation. No synthetic shortcuts. Just honest coaching, progressive overload, and disciplined consistency at Karnataka Gym Hubballi.
               </p>
             </div>
-
-            <div className="flex items-center gap-3 text-xs text-slate-400 flex-shrink-0">
-              <div className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[#121622] border border-[#232B3E]">
-                <Award className="w-3.5 h-3.5 text-[#E5A93C]" />
-                <span className="text-slate-200 font-bold">100% Genuine Member Photos</span>
-              </div>
-            </div>
           </div>
 
           {/* 8 Transformations Grid */}
