@@ -135,19 +135,19 @@ export default function PublicGymWebsite() {
                 {/* Direct Action Gateways for Website Visitors */}
                 <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 pt-2">
                   <a
-                    href="#plans"
+                    href="#location"
                     className="w-full sm:w-auto bg-[#E5A93C] hover:bg-[#F59E0B] text-slate-950 font-black px-6 py-3.5 rounded-xl text-sm flex items-center justify-center gap-2 shadow-lg shadow-[#E5A93C]/20 transition-all cursor-pointer"
                   >
-                    <Dumbbell className="w-4 h-4 stroke-[2.5]" />
-                    <span>Explore Membership Plans (₹)</span>
+                    <Calendar className="w-4 h-4 stroke-[2.5]" />
+                    <span>Schedule Gym Walkthrough</span>
                   </a>
 
                   <a
-                    href="#location"
+                    href="#facilities"
                     className="w-full sm:w-auto bg-[#161D2C] hover:bg-[#1E273A] border border-[#2D3950] text-slate-200 font-extrabold px-5 py-3.5 rounded-xl text-sm flex items-center justify-center gap-2 transition-colors cursor-pointer"
                   >
-                    <Calendar className="w-4 h-4 text-[#E5A93C]" />
-                    <span>Book Free Trial Session</span>
+                    <Dumbbell className="w-4 h-4 text-[#E5A93C]" />
+                    <span>Explore Facilities & Equipment</span>
                   </a>
                 </div>
 
@@ -241,10 +241,10 @@ export default function PublicGymWebsite() {
 
                   <div className="pt-2">
                     <a
-                      href="#plans"
+                      href="#facilities"
                       className="w-full bg-[#1A2234] hover:bg-[#222C42] border border-[#2D3950] text-[#E5A93C] font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                     >
-                      <span>Explore Facilities & Plans</span>
+                      <span>Explore Facilities & Equipment</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </a>
                   </div>
@@ -345,211 +345,6 @@ export default function PublicGymWebsite() {
                 Clean member lockers, water dispensers, hygienic washrooms, and verified genuine whey protein and BCAA nutrition counter.
               </p>
             </div>
-          </div>
-        </section>
-
-        {/* 4. TRANSPARENT MEMBERSHIP PLANS (₹ INR, strictly honest, NO hidden fees) */}
-        <section id="plans" className="max-w-6xl mx-auto px-4 scroll-mt-20 space-y-8">
-          <div className="text-center max-w-2xl mx-auto space-y-2">
-            <h2 className="text-2xl sm:text-3xl font-black text-white">
-              Direct Pricing. No Admission Fees.
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-400">
-              All prices in Indian Rupees (₹). Exactly what you see is what you pay.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {/* Monthly */}
-            <div className="bg-[#121622] border border-[#232B3E] rounded-3xl p-6 flex flex-col justify-between space-y-6">
-              <div className="space-y-4">
-                <span className="text-xs font-extrabold text-slate-400 uppercase tracking-wider block">
-                  Monthly Plan
-                </span>
-                <div>
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-3xl font-black text-white">₹1,500</span>
-                    <span className="text-xs text-slate-400">/ 1 month</span>
-                  </div>
-                  <span className="text-[11px] text-slate-400 block mt-1">Flexible, no long-term contract</span>
-                </div>
-
-                <div className="space-y-2.5 pt-2 border-t border-[#1F2739] text-xs text-slate-300">
-                  <div className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-[#E5A93C] flex-shrink-0" />
-                    <span>Full gym floor access</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-[#E5A93C] flex-shrink-0" />
-                    <span>Cardio suite included</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-[#E5A93C] flex-shrink-0" />
-                    <span>Locker access & drinking water</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-[#E5A93C] flex-shrink-0" />
-                    <span>PWA digital check-in pass</span>
-                  </div>
-                </div>
-              </div>
-
-              <a
-                href="#location"
-                className="w-full bg-[#1A2234] hover:bg-[#232D44] border border-[#2D3950] text-slate-200 font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
-              >
-                <span>Get Started / Inquire</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </a>
-            </div>
-
-            {/* Quarterly (3 Months) */}
-            <div className="bg-[#121622] border border-[#232B3E] rounded-3xl p-6 flex flex-col justify-between space-y-6">
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-extrabold text-slate-400 uppercase tracking-wider block">
-                    Quarterly
-                  </span>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-950/80 border border-emerald-700 text-emerald-300">
-                    Save ₹500
-                  </span>
-                </div>
-                <div>
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-3xl font-black text-white">₹4,000</span>
-                    <span className="text-xs text-slate-400">/ 3 months</span>
-                  </div>
-                  <span className="text-[11px] text-slate-400 block mt-1">₹1,333 / month equivalent</span>
-                </div>
-
-                <div className="space-y-2.5 pt-2 border-t border-[#1F2739] text-xs text-slate-300">
-                  <div className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-[#E5A93C] flex-shrink-0" />
-                    <span>All Monthly plan features</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-[#E5A93C] flex-shrink-0" />
-                    <span>Custom workout split guideline</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-[#E5A93C] flex-shrink-0" />
-                    <span>Baseline fitness evaluation</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-[#E5A93C] flex-shrink-0" />
-                    <span>Streak tracking & badges</span>
-                  </div>
-                </div>
-              </div>
-
-              <a
-                href="#location"
-                className="w-full bg-[#1A2234] hover:bg-[#232D44] border border-[#2D3950] text-slate-200 font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
-              >
-                <span>Get Started / Inquire</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </a>
-            </div>
-
-            {/* Half-Yearly (6 Months) - Highlighted */}
-            <div className="bg-[#121622] border-2 border-[#E5A93C] rounded-3xl p-6 flex flex-col justify-between space-y-6 shadow-xl relative">
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-black text-[#E5A93C] uppercase tracking-wider block">
-                    Half-Yearly
-                  </span>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#E5A93C] text-slate-950">
-                    Save ₹1,500
-                  </span>
-                </div>
-                <div>
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-3xl font-black text-white">₹7,500</span>
-                    <span className="text-xs text-slate-400">/ 6 months</span>
-                  </div>
-                  <span className="text-[11px] text-slate-400 block mt-1">₹1,250 / month equivalent</span>
-                </div>
-
-                <div className="space-y-2.5 pt-2 border-t border-[#1F2739] text-xs text-slate-300">
-                  <div className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-[#E5A93C] flex-shrink-0" />
-                    <span>All Quarterly plan features</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-[#E5A93C] flex-shrink-0" />
-                    <span>1 Complimentary Diet Consultation</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-[#E5A93C] flex-shrink-0" />
-                    <span>15-Day freeze option for exams/travel</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-[#E5A93C] flex-shrink-0" />
-                    <span>Automated renewal discount alerts</span>
-                  </div>
-                </div>
-              </div>
-
-              <a
-                href="#location"
-                className="w-full bg-[#E5A93C] hover:bg-[#F59E0B] text-slate-950 font-black py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-all shadow-md shadow-[#E5A93C]/20 cursor-pointer"
-              >
-                <span>Join Most Popular Plan</span>
-                <ArrowRight className="w-3.5 h-3.5 stroke-[2.5]" />
-              </a>
-            </div>
-
-            {/* Yearly (12 Months) */}
-            <div className="bg-[#121622] border border-[#232B3E] rounded-3xl p-6 flex flex-col justify-between space-y-6">
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-extrabold text-slate-400 uppercase tracking-wider block">
-                    Annual / 1 Year
-                  </span>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-950/80 border border-emerald-700 text-emerald-300">
-                    Save ₹6,000
-                  </span>
-                </div>
-                <div>
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-3xl font-black text-white">₹12,000</span>
-                    <span className="text-xs text-slate-400">/ 12 months</span>
-                  </div>
-                  <span className="text-[11px] text-slate-400 block mt-1">₹1,000 / month equivalent</span>
-                </div>
-
-                <div className="space-y-2.5 pt-2 border-t border-[#1F2739] text-xs text-slate-300">
-                  <div className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-[#E5A93C] flex-shrink-0" />
-                    <span>Best overall value package</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-[#E5A93C] flex-shrink-0" />
-                    <span>1 Free 1-on-1 Personal Training session</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-[#E5A93C] flex-shrink-0" />
-                    <span>30-Day membership freeze allowance</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-[#E5A93C] flex-shrink-0" />
-                    <span>Priority locker allotment</span>
-                  </div>
-                </div>
-              </div>
-
-              <a
-                href="#location"
-                className="w-full bg-[#1A2234] hover:bg-[#232D44] border border-[#2D3950] text-slate-200 font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
-              >
-                <span>Get Annual Membership</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </a>
-            </div>
-          </div>
-
-          <div className="p-4 rounded-2xl bg-[#121622] border border-[#232B3E] text-center text-xs text-slate-400 max-w-2xl mx-auto">
-            Payment modes accepted at front desk: UPI, Cash, Debit/Credit Cards. Zero processing surcharge.
           </div>
         </section>
 

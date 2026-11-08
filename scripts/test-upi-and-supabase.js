@@ -156,3 +156,4 @@ runVerification().catch((err) => {
   console.error('\n[FATAL ERROR]', err.message);
   process.exit(1);
 });
+
