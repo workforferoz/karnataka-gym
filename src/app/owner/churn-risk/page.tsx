@@ -181,7 +181,7 @@ export default function ChurnRiskPage() {
 
               // WhatsApp personalized message deep link
               const waText = encodeURIComponent(
-                `Namaste ${userName}! Karnataka Gym Hubballi se Riyaz baat kar raha hoon. Dekha aap ${item.days_absent} dinon se workout par nahi aaye hain. Sab kushal mangal hai na? Aaj sham aaiye, apke liye slot reserved hai! 💪 Call: 9902667407`
+                `Namaste ${userName}! Karnataka Gym Hubballi se Manjunath baat kar raha hoon. Dekha aap ${item.days_absent} dinon se workout par nahi aaye hain. Sab kushal mangal hai na? Aaj sham aaiye, apke liye slot reserved hai! 💪 Call: 9902667407`
               );
               const waLink = `https://wa.me/91${userPhone}?text=${waText}`;
 

@@ -134,7 +134,7 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [auditLogs, setAuditLogs] = useState<AuditLog[]>(INITIAL_AUDIT_LOGS);
 
   // Active user and auth state
-  const [currentUserId, setCurrentUserId] = useState<string>('user_owner_riyaz');
+  const [currentUserId, setCurrentUserId] = useState<string>('member_rahul_desai');
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [isHydrated, setIsHydrated] = useState<boolean>(false);
   const [isOnline, setIsOnline] = useState<boolean>(true);
@@ -328,7 +328,7 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setAuditLogs(INITIAL_AUDIT_LOGS);
     setOfflineQueue([]);
     setTestResults({});
-    setCurrentUserId('user_owner_riyaz');
+    setCurrentUserId('member_rahul_desai');
     setIsLoggedIn(false);
     try {
       localStorage.removeItem(STORAGE_KEY);
@@ -1052,56 +1052,12 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // -------------------------------------------------------------
   // TEST CHECKLIST AUTOMATION ENGINE (12 Checkpoints)
   // -------------------------------------------------------------
-  const ensureTestMember = (): User => {
-    let member = users.find((u) => u.role === 'member');
-    if (!member) {
-      member = {
-        id: 'member_test_sim',
-        role: 'member',
-        phone: '9876543210',
-        name: 'Simulated Member',
-        marketing_opt_in: true,
-        comm_preference: 'whatsapp',
-        created_at: '2025-01-01'
-      };
-      setUsers((prev) => [...prev, member!]);
-    }
-    if (!memberships.some((m) => m.user_id === member!.id)) {
-      setMemberships((prev) => [
-        ...prev,
-        {
-          id: 'mem_test_sim',
-          user_id: member!.id,
-          plan_id: 'plan_yearly',
-          start_date: '2025-01-01',
-          expiry_date: '2026-12-31',
-          status: 'active'
-        }
-      ]);
-    }
-    if (!streaks.some((s) => s.user_id === member!.id)) {
-      setStreaks((prev) => [
-        ...prev,
-        {
-          id: 'streak_test_sim',
-          user_id: member!.id,
-          current_streak: 14,
-          highest_streak: 20,
-          last_update: new Date().toISOString().split('T')[0],
-          weekly_goal_target: 5,
-          weekly_goal_completed: 4
-        }
-      ]);
-    }
-    return member;
-  };
-
   const runAutomatedTest = async (testId: number): Promise<TestResult> => {
     const now = new Date().toLocaleTimeString();
     switch (testId) {
       case 1: {
         // QR Duplicate Scan within 5 min rejection
-        const testUser = ensureTestMember();
+        const testUser = users.find((u) => u.id === 'member_rahul_desai')!;
         // Ensure recent attendance is right now
         const res1 = await recordCheckin(testUser.id, 'qr');
         // Immediate second scan
@@ -1160,12 +1116,11 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
       case 3: {
         // Membership pause (freeze) preserves streak
-        const testUser = ensureTestMember();
-        const streakBefore = streaks.find((s) => s.user_id === testUser.id)?.current_streak || 14;
-        await freezeMembership(testUser.id, 'Travelling to Bangalore for 10 days');
-        const streakAfter = streaks.find((s) => s.user_id === testUser.id)?.current_streak;
+        const streakBefore = streaks.find((s) => s.user_id === 'member_rahul_desai')?.current_streak || 14;
+        await freezeMembership('member_rahul_desai', 'Travelling to Bangalore for 10 days');
+        const streakAfter = streaks.find((s) => s.user_id === 'member_rahul_desai')?.current_streak;
         const passed = streakBefore === streakAfter && streakBefore > 0;
-        await unfreezeMembership(testUser.id);
+        await unfreezeMembership('member_rahul_desai');
         const result: TestResult = {
           id: '3',
           name: 'Membership Freeze Streak Preservation',
@@ -1181,11 +1136,10 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
       case 4: {
         // Offline sync queue pushes upon reconnection
-        const testUser = ensureTestMember();
         const tempId = `offline_test_${Date.now()}`;
         const queueItem: OfflineCheckinQueueItem = {
           id: tempId,
-          userId: testUser.id,
+          userId: 'member_priya_patil',
           timestamp: new Date().toISOString(),
           method: 'qr'
         };
@@ -1207,11 +1161,10 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
       case 5: {
         // Owner assisted check-in mandatory reason + audit log
-        const testUser = ensureTestMember();
-        const emptyReasonRes = await recordCheckin(testUser.id, 'assisted', '');
-        const validReasonRes = await recordCheckin(testUser.id, 'assisted', 'Phone discharged, manual verification');
+        const emptyReasonRes = await recordCheckin('member_amit_sharma', 'assisted', '');
+        const validReasonRes = await recordCheckin('member_amit_sharma', 'assisted', 'Phone discharged, manual verification');
         const auditFound = auditLogs.some(
-          (a) => a.action === 'assisted_checkin' && a.target_user_id === testUser.id
+          (a) => a.action === 'assisted_checkin' && a.target_user_id === 'member_amit_sharma'
         );
         const passed = !emptyReasonRes.success && validReasonRes.success && auditFound;
         const result: TestResult = {
@@ -1229,11 +1182,10 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
       case 6: {
         // Failed simulated payment does NOT extend membership date
-        const testUser = ensureTestMember();
-        const memBefore = memberships.find((m) => m.user_id === testUser.id)!;
+        const memBefore = memberships.find((m) => m.user_id === 'member_priya_patil')!;
         const dateBefore = memBefore.expiry_date;
-        const payRes = await renewMembership(testUser.id, 'plan_monthly', 'failed');
-        const memAfter = memberships.find((m) => m.user_id === testUser.id)!;
+        const payRes = await renewMembership('member_priya_patil', 'plan_monthly', 'failed');
+        const memAfter = memberships.find((m) => m.user_id === 'member_priya_patil')!;
         const passed = !payRes.success && memAfter.expiry_date === dateBefore;
         const result: TestResult = {
           id: '6',
@@ -1250,8 +1202,7 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
       case 7: {
         // Duplicate webhook callback does not double-extend
-        const testUser = ensureTestMember();
-        const renewRes = await renewMembership(testUser.id, 'plan_monthly', 'paid');
+        const renewRes = await renewMembership('member_rohan_kulkarni', 'plan_monthly', 'paid');
         const txnId = renewRes.payment?.transaction_id || '';
         const dupRes = await simulateDuplicateWebhook(txnId);
         const passed = !dupRes.success && dupRes.message.includes('IDEMPOTENT CHECK PASSED');
@@ -1270,13 +1221,12 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
       case 8: {
         // Refund updates Payments state and adjusts Memberships table
-        const testUser = ensureTestMember();
-        const renewRes = await renewMembership(testUser.id, 'plan_monthly', 'paid');
+        const renewRes = await renewMembership('member_manoj_nayak', 'plan_monthly', 'paid');
         const payId = renewRes.payment?.id || '';
-        const expBeforeRefund = memberships.find((m) => m.user_id === testUser.id)?.expiry_date;
+        const expBeforeRefund = memberships.find((m) => m.user_id === 'member_manoj_nayak')?.expiry_date;
         await processPaymentRefund(payId, 'Customer requested refund within 2 hours');
         const payRecord = payments.find((p) => p.id === payId);
-        const expAfterRefund = memberships.find((m) => m.user_id === testUser.id)?.expiry_date;
+        const expAfterRefund = memberships.find((m) => m.user_id === 'member_manoj_nayak')?.expiry_date;
         const passed = payRecord?.status === 'refunded' && expBeforeRefund !== expAfterRefund;
         const result: TestResult = {
           id: '8',
@@ -1293,8 +1243,7 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
       case 9: {
         // Booking PT with an unavailable trainer throws conflict error
-        const testUser = ensureTestMember();
-        const res = await purchaseAddOn(testUser.id, 'addon_pt_rakesh');
+        const res = await purchaseAddOn('member_rahul_desai', 'addon_pt_rakesh');
         const passed = !res.success && res.message.includes('Booking Conflict');
         const result: TestResult = {
           id: '9',
@@ -1311,8 +1260,7 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
       case 10: {
         // Buying out-of-stock supplement fails with clear message
-        const testUser = ensureTestMember();
-        const res = await purchaseAddOn(testUser.id, 'addon_bcaa'); // stock 0
+        const res = await purchaseAddOn('member_rahul_desai', 'addon_bcaa'); // stock 0
         const passed = !res.success && res.message.includes('Stock Unavailable');
         const result: TestResult = {
           id: '10',
@@ -1329,21 +1277,9 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
       case 11: {
         // Member marketing opt-out stops promotional notifications
-        let optUser = users.find((u) => !u.marketing_opt_in);
-        if (!optUser) {
-          optUser = {
-            id: 'member_optout_test',
-            role: 'member',
-            phone: '9999000022',
-            name: 'Sneha OptOut Test',
-            marketing_opt_in: false,
-            comm_preference: 'whatsapp',
-            created_at: '2025-01-01'
-          };
-          setUsers((prev) => [...prev, optUser!]);
-        }
+        // Sneha Joshi has marketing_opt_in = false
         const sent = sendNotification(
-          optUser.id,
+          'member_sneha_joshi',
           'Huge 50% discount on supplements this Diwali!',
           'promo'
         );
@@ -1363,22 +1299,21 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
       case 12: {
         // Owner can edit a member active diet plan and override trainer with audit log
-        const testUser = ensureTestMember();
         const res = await ownerOverrideMemberPlan(
-          testUser.id,
+          'member_priya_patil',
           undefined,
           'Veg High-Protein Nutrition Guide',
-          'Coach Riyaz',
-          'Upgraded nutrition protocol by Owner Riyaz'
+          'Vikram',
+          'Upgraded nutrition protocol by Owner Manjunath'
         );
-        const updatedUser = users.find((u) => u.id === testUser.id);
+        const updatedUser = users.find((u) => u.id === 'member_priya_patil');
         const auditEntry = auditLogs.find(
-          (a) => a.action === 'profile_override' && a.target_user_id === testUser.id
+          (a) => a.action === 'profile_override' && a.target_user_id === 'member_priya_patil'
         );
         const passed =
           res.success &&
           updatedUser?.active_diet_plan === 'Veg High-Protein Nutrition Guide' &&
-          updatedUser?.assigned_trainer === 'Coach Riyaz' &&
+          updatedUser?.assigned_trainer === 'Vikram' &&
           !!auditEntry;
         const result: TestResult = {
           id: '12',

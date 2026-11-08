@@ -236,91 +236,64 @@ CREATE POLICY "Public read/write audit_logs" ON audit_logs FOR ALL TO anon, auth
 INSERT INTO settings (id, no_show_threshold_days, renewal_reminder_days, duplicate_window_minutes, gym_name, gym_phone, gym_instagram, gym_location, gym_maps_url)
 VALUES ('gym_default', 10, 7, 5, 'Karnataka Gym', '9902667407', '@riyaz_gokul', 'Kalidas Nagar, Hubballi, Karnataka 580031', 'https://maps.app.goo.gl/dXnSdvRU9gwHd7sAA')
 ON CONFLICT (id) DO NOTHING;
+
+-- 6. Seed Plans
+INSERT INTO plans (id, name, duration_months, base_price, discount_amount, tag, features) VALUES
 `;
 
-if (seed.INITIAL_PLANS && seed.INITIAL_PLANS.length > 0) {
-  sql += `-- 6. Seed Plans\nINSERT INTO plans (id, name, duration_months, base_price, discount_amount, tag, features) VALUES\n`;
-  sql += seed.INITIAL_PLANS.map(p => 
-    `(${esc(p.id)}, ${esc(p.name)}, ${p.duration_months}, ${p.base_price}, ${p.discount_amount || 0}, ${esc(p.tag)}, ${esc(p.features)})`
-  ).join(',\n') + ';\n\n';
-}
+sql += seed.INITIAL_PLANS.map(p => 
+  `(${esc(p.id)}, ${esc(p.name)}, ${p.duration_months}, ${p.base_price}, ${p.discount_amount || 0}, ${esc(p.tag)}, ${esc(p.features)})`
+).join(',\n') + ';\n\n';
 
-if (seed.INITIAL_ADDONS && seed.INITIAL_ADDONS.length > 0) {
-  sql += `-- 7. Seed Add-ons\nINSERT INTO add_ons (id, type, name, price, validity_days, stock, trainer_name, description, category_label, is_available) VALUES\n`;
-  sql += seed.INITIAL_ADDONS.map(a =>
-    `(${esc(a.id)}, ${esc(a.type)}, ${esc(a.name)}, ${a.price}, ${a.validity_days || 30}, ${a.stock || 0}, ${esc(a.trainer_name)}, ${esc(a.description)}, ${esc(a.category_label)}, ${a.is_available !== false})`
-  ).join(',\n') + ';\n\n';
-}
+sql += `-- 7. Seed Add-ons\nINSERT INTO add_ons (id, type, name, price, validity_days, stock, trainer_name, description, category_label, is_available) VALUES\n`;
+sql += seed.INITIAL_ADD_ONS.map(a =>
+  `(${esc(a.id)}, ${esc(a.type)}, ${esc(a.name)}, ${a.price}, ${a.validity_days || 30}, ${a.stock || 0}, ${esc(a.trainer_name)}, ${esc(a.description)}, ${esc(a.category_label)}, ${a.is_available !== false})`
+).join(',\n') + ';\n\n';
 
-if (seed.INITIAL_USERS && seed.INITIAL_USERS.length > 0) {
-  sql += `-- 8. Seed Users (Owner Riyaz)\nINSERT INTO users (id, role, phone, name, profile_image, marketing_opt_in, emergency_contact, comm_preference, assigned_trainer, active_diet_plan, created_at) VALUES\n`;
-  sql += seed.INITIAL_USERS.map(u =>
-    `(${esc(u.id)}, ${esc(u.role)}, ${esc(u.phone)}, ${esc(u.name)}, ${esc(u.profile_image)}, ${esc(u.marketing_opt_in)}, ${esc(u.emergency_contact)}, ${esc(u.comm_preference)}, ${esc(u.assigned_trainer)}, ${esc(u.active_diet_plan)}, ${esc(u.created_at || '2025-01-01')})`
-  ).join(',\n') + ';\n\n';
-}
+sql += `-- 8. Seed Users (34 Total: Owner, Staff, 3 Trainers, 30 Hubballi Members)\nINSERT INTO users (id, role, phone, name, profile_image, marketing_opt_in, emergency_contact, comm_preference, assigned_trainer, active_diet_plan, created_at) VALUES\n`;
+sql += seed.INITIAL_USERS.map(u =>
+  `(${esc(u.id)}, ${esc(u.role)}, ${esc(u.phone)}, ${esc(u.name)}, ${esc(u.profile_image)}, ${esc(u.marketing_opt_in)}, ${esc(u.emergency_contact)}, ${esc(u.comm_preference)}, ${esc(u.assigned_trainer)}, ${esc(u.active_diet_plan)}, ${esc(u.created_at || '2025-01-01')})`
+).join(',\n') + ';\n\n';
 
-if (seed.INITIAL_MEMBERSHIPS && seed.INITIAL_MEMBERSHIPS.length > 0) {
-  sql += `-- 9. Seed Memberships\nINSERT INTO memberships (id, user_id, plan_id, start_date, expiry_date, status, freeze_reason, frozen_at) VALUES\n`;
-  sql += seed.INITIAL_MEMBERSHIPS.map(m =>
-    `(${esc(m.id)}, ${esc(m.user_id)}, ${esc(m.plan_id)}, ${esc(m.start_date)}, ${esc(m.expiry_date)}, ${esc(m.status)}, ${esc(m.freeze_reason)}, ${esc(m.frozen_at)})`
-  ).join(',\n') + ';\n\n';
-}
+sql += `-- 9. Seed Memberships\nINSERT INTO memberships (id, user_id, plan_id, start_date, expiry_date, status, freeze_reason, frozen_at) VALUES\n`;
+sql += seed.INITIAL_MEMBERSHIPS.map(m =>
+  `(${esc(m.id)}, ${esc(m.user_id)}, ${esc(m.plan_id)}, ${esc(m.start_date)}, ${esc(m.expiry_date)}, ${esc(m.status)}, ${esc(m.freeze_reason)}, ${esc(m.frozen_at)})`
+).join(',\n') + ';\n\n';
 
-if (seed.INITIAL_ATTENDANCE && seed.INITIAL_ATTENDANCE.length > 0) {
-  sql += `-- 10. Seed Attendance\nINSERT INTO attendance (id, user_id, check_in_time, method, status, notes, synced_from_offline) VALUES\n`;
-  sql += seed.INITIAL_ATTENDANCE.map(a =>
-    `(${esc(a.id)}, ${esc(a.user_id)}, ${esc(a.check_in_time)}, ${esc(a.method)}, ${esc(a.status)}, ${esc(a.notes)}, ${esc(a.synced_from_offline)})`
-  ).join(',\n') + ';\n\n';
-}
+sql += `-- 10. Seed Attendance\nINSERT INTO attendance (id, user_id, check_in_time, method, status, notes, synced_from_offline) VALUES\n`;
+sql += seed.INITIAL_ATTENDANCE.map(a =>
+  `(${esc(a.id)}, ${esc(a.user_id)}, ${esc(a.check_in_time)}, ${esc(a.method)}, ${esc(a.status)}, ${esc(a.notes)}, ${esc(a.synced_from_offline)})`
+).join(',\n') + ';\n\n';
 
-if (seed.INITIAL_STREAKS && seed.INITIAL_STREAKS.length > 0) {
-  sql += `-- 11. Seed Streaks\nINSERT INTO streaks (id, user_id, current_streak, highest_streak, last_update, weekly_goal_target, weekly_goal_completed) VALUES\n`;
-  sql += seed.INITIAL_STREAKS.map(s =>
-    `(${esc(s.id)}, ${esc(s.user_id)}, ${s.current_streak}, ${s.highest_streak}, ${esc(s.last_update)}, ${s.weekly_goal_target}, ${s.weekly_goal_completed})`
-  ).join(',\n') + ';\n\n';
-}
+sql += `-- 11. Seed Streaks\nINSERT INTO streaks (id, user_id, current_streak, highest_streak, last_update, weekly_goal_target, weekly_goal_completed) VALUES\n`;
+sql += seed.INITIAL_STREAKS.map(s =>
+  `(${esc(s.id)}, ${esc(s.user_id)}, ${s.current_streak}, ${s.highest_streak}, ${esc(s.last_update)}, ${s.weekly_goal_target}, ${s.weekly_goal_completed})`
+).join(',\n') + ';\n\n';
 
-if (seed.INITIAL_NO_SHOW_CASES && seed.INITIAL_NO_SHOW_CASES.length > 0) {
-  sql += `-- 12. Seed No-Show Cases (Silent Churn)\nINSERT INTO no_show_cases (id, user_id, days_absent, status, resolved_reason, created_at, resolved_at) VALUES\n`;
-  sql += seed.INITIAL_NO_SHOW_CASES.map(n =>
-    `(${esc(n.id)}, ${esc(n.user_id)}, ${n.days_absent}, ${esc(n.status)}, ${esc(n.resolved_reason)}, ${esc(n.created_at)}, ${esc(n.resolved_at)})`
-  ).join(',\n') + ';\n\n';
-}
+sql += `-- 12. Seed No-Show Cases (Silent Churn)\nINSERT INTO no_show_cases (id, user_id, days_absent, status, resolved_reason, created_at, resolved_at) VALUES\n`;
+sql += seed.INITIAL_NO_SHOW_CASES.map(n =>
+  `(${esc(n.id)}, ${esc(n.user_id)}, ${n.days_absent}, ${esc(n.status)}, ${esc(n.resolved_reason)}, ${esc(n.created_at)}, ${esc(n.resolved_at)})`
+).join(',\n') + ';\n\n';
 
-if (seed.INITIAL_FOLLOW_UPS && seed.INITIAL_FOLLOW_UPS.length > 0) {
-  sql += `-- 13. Seed Follow-Ups\nINSERT INTO follow_ups (id, no_show_case_id, outcome, next_action_date, owner_id, notes, created_at) VALUES\n`;
-  sql += seed.INITIAL_FOLLOW_UPS.map(f =>
-    `(${esc(f.id)}, ${esc(f.no_show_case_id)}, ${esc(f.outcome)}, ${esc(f.next_action_date)}, ${esc(f.owner_id)}, ${esc(f.notes)}, ${esc(f.created_at)})`
-  ).join(',\n') + ';\n\n';
-}
+sql += `-- 13. Seed Follow-Ups\nINSERT INTO follow_ups (id, no_show_case_id, outcome, next_action_date, owner_id, notes, created_at) VALUES\n`;
+sql += seed.INITIAL_FOLLOW_UPS.map(f =>
+  `(${esc(f.id)}, ${esc(f.no_show_case_id)}, ${esc(f.outcome)}, ${esc(f.next_action_date)}, ${esc(f.owner_id)}, ${esc(f.notes)}, ${esc(f.created_at)})`
+).join(',\n') + ';\n\n';
 
-if (seed.INITIAL_PAYMENTS && seed.INITIAL_PAYMENTS.length > 0) {
-  sql += `-- 14. Seed Payments\nINSERT INTO payments (id, user_id, amount, status, transaction_id, plan_id, addon_id, created_at, refunded_at, gateway) VALUES\n`;
-  sql += seed.INITIAL_PAYMENTS.map(p =>
-    `(${esc(p.id)}, ${esc(p.user_id)}, ${p.amount}, ${esc(p.status)}, ${esc(p.transaction_id)}, ${esc(p.plan_id)}, ${esc(p.addon_id)}, ${esc(p.created_at)}, ${esc(p.refunded_at)}, ${esc(p.gateway)})`
-  ).join(',\n') + ';\n\n';
-}
+sql += `-- 14. Seed Payments\nINSERT INTO payments (id, user_id, amount, status, transaction_id, plan_id, addon_id, created_at, refunded_at, gateway) VALUES\n`;
+sql += seed.INITIAL_PAYMENTS.map(p =>
+  `(${esc(p.id)}, ${esc(p.user_id)}, ${p.amount}, ${esc(p.status)}, ${esc(p.transaction_id)}, ${esc(p.plan_id)}, ${esc(p.addon_id)}, ${esc(p.created_at)}, ${esc(p.refunded_at)}, ${esc(p.gateway)})`
+).join(',\n') + ';\n\n';
 
-if (seed.INITIAL_ADDON_ORDERS && seed.INITIAL_ADDON_ORDERS.length > 0) {
-  sql += `-- 15. Seed Add-on Orders\nINSERT INTO add_on_orders (id, user_id, addon_id, payment_id, status, trainer_name, purchased_at, expiry_date) VALUES\n`;
-  sql += seed.INITIAL_ADDON_ORDERS.map(o =>
-    `(${esc(o.id)}, ${esc(o.user_id)}, ${esc(o.addon_id)}, ${esc(o.payment_id)}, ${esc(o.status)}, ${esc(o.trainer_name)}, ${esc(o.purchased_at)}, ${esc(o.expiry_date)})`
-  ).join(',\n') + ';\n\n';
-}
+sql += `-- 15. Seed Add-on Orders\nINSERT INTO add_on_orders (id, user_id, addon_id, payment_id, status, trainer_name, purchased_at, expiry_date) VALUES\n`;
+sql += seed.INITIAL_ADDON_ORDERS.map(o =>
+  `(${esc(o.id)}, ${esc(o.user_id)}, ${esc(o.addon_id)}, ${esc(o.payment_id)}, ${esc(o.status)}, ${esc(o.trainer_name)}, ${esc(o.purchased_at)}, ${esc(o.expiry_date)})`
+).join(',\n') + ';\n\n';
 
-if (seed.INITIAL_NOTIFICATIONS && seed.INITIAL_NOTIFICATIONS.length > 0) {
-  sql += `-- 16. Seed Notifications\nINSERT INTO notifications (id, user_id, message, type, read_status, action_url, created_at) VALUES\n`;
-  sql += seed.INITIAL_NOTIFICATIONS.map(n =>
-    `(${esc(n.id)}, ${esc(n.user_id)}, ${esc(n.message)}, ${esc(n.type)}, ${esc(n.read_status)}, ${esc(n.action_url)}, ${esc(n.created_at)})`
-  ).join(',\n') + ';\n\n';
-}
-
-if (seed.INITIAL_AUDIT_LOGS && seed.INITIAL_AUDIT_LOGS.length > 0) {
-  sql += `-- 17. Seed Audit Logs\nINSERT INTO audit_logs (id, actor_id, action, target_user_id, timestamp, reason, details) VALUES\n`;
-  sql += seed.INITIAL_AUDIT_LOGS.map(a =>
-    `(${esc(a.id)}, ${esc(a.actor_id)}, ${esc(a.action)}, ${esc(a.target_user_id)}, ${esc(a.timestamp)}, ${esc(a.reason)}, ${esc(a.details)})`
-  ).join(',\n') + ';\n\n';
-}
+sql += `-- 16. Seed Notifications\nINSERT INTO notifications (id, user_id, message, type, read_status, action_url, created_at) VALUES\n`;
+sql += seed.INITIAL_NOTIFICATIONS.map(n =>
+  `(${esc(n.id)}, ${esc(n.user_id)}, ${esc(n.message)}, ${esc(n.type)}, ${esc(n.read_status)}, ${esc(n.action_url)}, ${esc(n.created_at)})`
+).join(',\n') + ';\n\n';
 
 sql += `-- Done! 34 Users, Plans, Memberships, Attendance, Streaks & Settings ready in Supabase.\n`;
 

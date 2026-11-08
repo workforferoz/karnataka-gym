@@ -59,7 +59,12 @@ export const Header: React.FC<HeaderProps> = ({ onOpenTests }) => {
   };
 
   const keyUsers = [
-    { id: 'user_owner_riyaz', label: 'Riyaz (Owner - 9902667407)', badge: 'Owner' }
+    { id: 'member_rahul_desai', label: 'Rahul Desai (Active Streak)', badge: 'Member' },
+    { id: 'member_priya_patil', label: 'Priya Patil (Expires in 4 Days)', badge: 'Expiring' },
+    { id: 'member_prakash_hubli', label: 'Prakash Hubli (Absent 18 Days)', badge: 'Churn Risk' },
+    { id: 'member_sneha_joshi', label: 'Sneha Joshi (Marketing Opt-out)', badge: 'Opted-Out' },
+    { id: 'user_staff_suresh', label: 'Suresh (Front Desk)', badge: 'Staff' },
+    { id: 'user_owner_manjunath', label: 'Manjunath (Owner - 9902667407)', badge: 'Owner' }
   ];
 
   return (
@@ -239,7 +244,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenTests }) => {
             {showSwitchMenu && (
               <div className="absolute right-0 mt-2 w-72 bg-[#121622] border border-[#232B3E] rounded-xl shadow-2xl p-2.5 z-50">
                 <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-2 py-1 mb-1">
-                  Active Account:
+                  Switch Demo Account:
                 </div>
                 <div className="space-y-1">
                   {keyUsers.map((item) => (
@@ -269,7 +274,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenTests }) => {
                     onClick={() => setShowSwitchMenu(false)}
                     className="text-[11px] text-[#E5A93C] hover:underline flex items-center gap-1"
                   >
-                    Login Portal
+                    All 30 Members / Login
                     <ExternalLink className="w-3 h-3" />
                   </Link>
 

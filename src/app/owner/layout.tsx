@@ -59,11 +59,11 @@ export default function OwnerLayout({ children }: { children: React.ReactNode })
             </Link>
 
             <button
-              onClick={() => login('user_owner_riyaz')}
+              onClick={() => login('user_owner_manjunath')}
               className="w-full bg-[#1A2234] hover:bg-[#232D44] border border-[#2B354C] text-slate-200 font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer"
             >
               <Sparkles className="w-4 h-4 text-[#E5A93C]" />
-              <span>Enter as Riyaz (Gym Owner)</span>
+              <span>Quick Demo: Enter as Manjunath (Owner)</span>
             </button>
 
             <Link

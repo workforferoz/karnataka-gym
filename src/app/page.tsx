@@ -273,9 +273,6 @@ export default function PublicGymWebsite() {
                   <p className="text-xs text-slate-200 leading-relaxed">
                     &ldquo;Karnataka Gym was built to give Hubballi a place of discipline and health. We don&apos;t lock you into predatory subscriptions or push useless supplements. We teach you how to train properly, eat right, and stay consistent.&rdquo;
                   </p>
-                  <p className="text-[11px] font-bold text-[#E5A93C] text-right">
-                    — Riyaz, Gym Owner
-                  </p>
                 </div>
               </div>
             </div>

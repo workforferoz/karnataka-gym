@@ -200,7 +200,7 @@ export default function DailySummaryPage() {
 
           {/* Manager Signature & Footer */}
           <div className="pt-4 border-t border-[#232B3E] flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-2">
-            <span>Verified by: <strong>Riyaz (Gym Owner)</strong></span>
+            <span>Verified by: <strong>Manjunath (Owner / Head Coach)</strong></span>
             <span>Helpline: <strong>9902667407</strong> • Hubballi</span>
           </div>
         </div>
