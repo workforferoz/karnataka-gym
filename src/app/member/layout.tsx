@@ -4,10 +4,10 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useGym } from '@/lib/store';
-import { Lock, UserCheck, ArrowLeft, ShieldCheck, Sparkles } from 'lucide-react';
+import { Lock, UserCheck, ArrowLeft, ShieldCheck } from 'lucide-react';
 
 export default function MemberLayout({ children }: { children: React.ReactNode }) {
-  const { currentUser, isLoggedIn, isHydrated, login } = useGym();
+  const { currentUser, isLoggedIn, isHydrated } = useGym();
 
   if (!isHydrated) {
     return <div className="min-h-screen bg-[#0B0E14]" />;
@@ -47,20 +47,12 @@ export default function MemberLayout({ children }: { children: React.ReactNode }
 
           <div className="pt-2 flex flex-col gap-3">
             <Link
-              href="/login?role=member"
+              href="/login?role=owner"
               className="w-full bg-[#E5A93C] hover:bg-[#F59E0B] text-slate-950 font-black py-3 rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg shadow-[#E5A93C]/20 transition-all"
             >
               <UserCheck className="w-4 h-4 stroke-[2.5]" />
-              <span>Log In via Mobile OTP</span>
+              <span>Log In as Owner (Riyaz)</span>
             </Link>
-
-            <button
-              onClick={() => login('member_rahul_desai')}
-              className="w-full bg-[#1A2234] hover:bg-[#232D44] border border-[#2B354C] text-slate-200 font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer"
-            >
-              <Sparkles className="w-4 h-4 text-[#E5A93C]" />
-              <span>Quick Demo: Enter as Rahul Desai</span>
-            </button>
 
             <Link
               href="/"

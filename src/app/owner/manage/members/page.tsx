@@ -71,7 +71,7 @@ export default function ManageMembersPage() {
       overridePlanId,
       overrideDiet === 'None' ? undefined : overrideDiet,
       overrideTrainer,
-      'Administrative update by Owner Manjunath'
+      'Administrative update by Owner Riyaz'
     );
 
     setStatusMsg(res.message);
@@ -240,6 +240,13 @@ export default function ManageMembersPage() {
                     </tr>
                   );
                 })}
+                {filtered.length === 0 && (
+                  <tr>
+                    <td colSpan={6} className="py-8 text-center text-slate-400">
+                      No members enrolled yet. New members enrolled at reception will appear here.
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>

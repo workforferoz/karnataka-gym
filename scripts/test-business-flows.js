@@ -23,9 +23,7 @@ async function runEndToEndVerification() {
 
     console.log(`[PASS] Users Count: ${users.length}`);
     console.log(`       - Owner: ${owner ? owner.name + ' (' + owner.phone + ')' : 'MISSING'}`);
-    console.log(`       - Staff: ${staff ? staff.name : 'MISSING'}`);
-    console.log(`       - Trainers: ${trainers.length} (${trainers.map(t => t.name).join(', ')})`);
-    console.log(`       - Active Members: ${members.length} Hubballi lifters`);
+    console.log(`       - Active Members in Register: ${members.length} members`);
     passed++;
   } catch (e) {
     console.log('[FAIL] Users check:', e.message);
@@ -44,7 +42,7 @@ async function runEndToEndVerification() {
     failed++;
   }
 
-  // 3. Verify Active Memberships
+  // 3. Verify Memberships
   try {
     const { data: memberships, error } = await supabase.from('memberships').select('*');
     if (error) throw error;
@@ -56,10 +54,10 @@ async function runEndToEndVerification() {
     failed++;
   }
 
-  // 4. Test Check-in Insert & Streak Upsert
+  // 4. Test Check-in Insert & Verification
   try {
     const testCheckinId = `att_test_${Date.now()}`;
-    const targetUser = 'member_rahul_desai';
+    const targetUser = 'user_owner_riyaz';
 
     const { error: attErr } = await supabase.from('attendance').insert({
       id: testCheckinId,
@@ -67,7 +65,7 @@ async function runEndToEndVerification() {
       check_in_time: new Date().toISOString(),
       method: 'qr',
       status: 'valid',
-      notes: 'Automated verification scan'
+      notes: 'Automated owner check-in scan'
     });
     if (attErr) throw attErr;
 
@@ -85,23 +83,33 @@ async function runEndToEndVerification() {
   try {
     const { data: cases, error: cErr } = await supabase.from('no_show_cases').select('*');
     if (cErr) throw cErr;
-    console.log(`[PASS] Silent Churn Detection: ${cases.length} absent lifters flagged (10+ days absent)`);
+    console.log(`[PASS] Silent Churn Detection: ${cases.length} absent lifters flagged`);
 
-    // Test follow-up logging
+    // Test churn case create + follow-up logging + cleanup
+    const testCaseId = `ns_test_${Date.now()}`;
+    const { error: nsErr } = await supabase.from('no_show_cases').insert({
+      id: testCaseId,
+      user_id: 'user_owner_riyaz',
+      days_absent: 11,
+      status: 'open',
+      created_at: new Date().toISOString()
+    });
+    if (nsErr) throw nsErr;
+
     const testFollowUpId = `fu_test_${Date.now()}`;
-    const testCaseId = cases[0].id;
     const { error: fuErr } = await supabase.from('follow_ups').insert({
       id: testFollowUpId,
       no_show_case_id: testCaseId,
       outcome: 'Will return',
       next_action_date: '2026-11-15',
-      owner_id: 'user_owner_manjunath',
-      notes: 'Called member - was travelling to Bengaluru, returning Monday.'
+      owner_id: 'user_owner_riyaz',
+      notes: 'Test follow-up entry.'
     });
     if (fuErr) throw fuErr;
 
-    // Clean up
+    // Clean up follow-up and case
     await supabase.from('follow_ups').delete().eq('id', testFollowUpId);
+    await supabase.from('no_show_cases').delete().eq('id', testCaseId);
     console.log('[PASS] Churn Rescue Follow-up logging verified (write + cleanup passed)');
     passed++;
   } catch (e) {
@@ -156,3 +164,4 @@ async function runEndToEndVerification() {
 }
 
 runEndToEndVerification();
+
