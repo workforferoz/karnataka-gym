@@ -107,12 +107,9 @@ export const PWAInstallBanner: React.FC = () => {
 
         {/* Text */}
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-1.5">
-            <span className="text-xs font-black text-white truncate">Karnataka Gym App</span>
-          </div>
-          <p className="text-[11px] text-slate-300 truncate">
-            {isIOS ? 'Tap Share > "Add to Home Screen"' : 'Install for instant QR check-in'}
-          </p>
+          <span className="text-sm font-black text-white truncate block">
+            Karnataka Gym App
+          </span>
         </div>
 
         {/* Action Button */}

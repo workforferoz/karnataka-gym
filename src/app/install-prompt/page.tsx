@@ -115,7 +115,7 @@ export default function InstallPromptPage() {
         {/* PWA Benefits */}
         <div className="p-5 rounded-2xl bg-[#121622] border border-[#232B3E] space-y-3">
           <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400">
-            Why Karnataka Gym PWA?
+            Why Karnataka Gym App?
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
             <div className="flex items-start gap-2 text-slate-300">
