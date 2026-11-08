@@ -232,19 +232,21 @@ function LoginContent() {
             <span>Trainer</span>
           </button>
 
-          {/* Owner Tab */}
-          <button
-            type="button"
-            onClick={() => setActiveTab('owner')}
-            className={`py-2.5 px-2 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
-              activeTab === 'owner'
-                ? 'bg-red-600 text-white shadow-md'
-                : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            <Lock className="w-4 h-4 stroke-[2.5]" />
-            <span>Owner</span>
-          </button>
+          {/* Owner Tab - Only accessible via direct link (?role=owner) */}
+          {requestedRole === 'owner' && (
+            <button
+              type="button"
+              onClick={() => setActiveTab('owner')}
+              className={`py-2.5 px-2 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
+                activeTab === 'owner'
+                  ? 'bg-red-600 text-white shadow-md'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              <Lock className="w-4 h-4 stroke-[2.5]" />
+              <span>Owner Portal</span>
+            </button>
+          )}
         </div>
 
         {/* TAB 1: MEMBER LOGIN */}

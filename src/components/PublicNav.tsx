@@ -159,24 +159,7 @@ export const PublicNav: React.FC<PublicNavProps> = ({ onOpenTests }) => {
                   </div>
                 </Link>
 
-                {/* 3. Owner Login */}
-                <Link
-                  href="/login?role=owner"
-                  onClick={() => setLoginMenuOpen(false)}
-                  className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-[#181F2F] group transition-colors"
-                >
-                  <div className="w-8 h-8 rounded-lg bg-red-500/15 border border-red-500/30 text-red-400 flex items-center justify-center flex-shrink-0">
-                    <Lock className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <span className="text-xs font-extrabold text-white group-hover:text-red-400 transition-colors block">
-                      Owner Login
-                    </span>
-                    <span className="text-[10px] text-slate-400 block leading-tight">
-                      Cockpit, reports & churn alerts
-                    </span>
-                  </div>
-                </Link>
+
               </div>
             )}
           </div>
@@ -265,18 +248,7 @@ export const PublicNav: React.FC<PublicNavProps> = ({ onOpenTests }) => {
                 <ChevronRight className="w-4 h-4" />
               </Link>
 
-              {/* 3. Owner Login */}
-              <Link
-                href="/login?role=owner"
-                onClick={() => setMobileMenuOpen(false)}
-                className="w-full bg-[#1A2234] border border-red-800 text-red-200 font-bold py-2.5 px-3 rounded-xl text-xs flex items-center justify-between"
-              >
-                <div className="flex items-center gap-2">
-                  <Lock className="w-4 h-4 text-red-400" />
-                  <span>Owner Login</span>
-                </div>
-                <ChevronRight className="w-4 h-4" />
-              </Link>
+
             </div>
 
             {/* Navigation Section Links */}

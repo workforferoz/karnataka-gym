@@ -3,11 +3,18 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import { useGym } from '@/lib/store';
 import { ShieldAlert, ArrowLeft, Lock, UserCheck, Sparkles, ShieldCheck } from 'lucide-react';
 
 export default function OwnerLayout({ children }: { children: React.ReactNode }) {
-  const { currentUser, isLoggedIn, isHydrated, login } = useGym();
+  const pathname = usePathname();
+  const { currentUser, isLoggedIn, isHydrated } = useGym();
+
+  // The login route itself should not be blocked by the layout guard
+  if (pathname === '/owner/login') {
+    return <>{children}</>;
+  }
 
   if (!isHydrated) {
     return <div className="min-h-screen bg-[#0B0E14]" />;
@@ -44,18 +51,18 @@ export default function OwnerLayout({ children }: { children: React.ReactNode })
               {isLoggedIn ? (
                 <>You are currently authenticated as <strong className="text-white">{currentUser.name}</strong> ({currentUser.role}). Management tools, silent churn recovery, and member overrides require owner or staff authorization.</>
               ) : (
-                <>Owner Cockpit requires verified administrator credentials. Please authenticate to view churn analytics, financial summaries, and member management.</>
+                <>Owner Cockpit requires verified administrator credentials. Access is restricted to authorized gym owners via direct private login.</>
               )}
             </p>
           </div>
 
           <div className="pt-2 flex flex-col gap-3">
             <Link
-              href="/login?role=owner"
+              href="/owner/login"
               className="w-full bg-red-600 hover:bg-red-700 text-white font-black py-3 rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg shadow-red-600/25 transition-all"
             >
               <Lock className="w-4 h-4 stroke-[2.5]" />
-              <span>Owner Login (PIN Required)</span>
+              <span>Enter Owner Login</span>
             </Link>
 
             <Link
@@ -68,8 +75,8 @@ export default function OwnerLayout({ children }: { children: React.ReactNode })
           </div>
 
           <div className="pt-3 border-t border-[#1C2333] flex items-center justify-center gap-1.5 text-[10px] text-slate-500">
-            <ShieldCheck className="w-3.5 h-3.5 text-red-400" />
-            <span>Karnataka Gym Hubballi • Strict Role-Based Access Control</span>
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
+            <span>Authorized Administrator Access Only • Hubballi</span>
           </div>
         </div>
       </div>

@@ -24,7 +24,8 @@ import {
   Trash2,
   Globe,
   LogOut,
-  Lock
+  Lock,
+  LogIn
 } from 'lucide-react';
 
 interface HeaderProps {
@@ -34,6 +35,7 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({ onOpenTests }) => {
   const {
     currentUser,
+    isLoggedIn,
     switchUser,
     logout,
     notifications,
@@ -44,7 +46,6 @@ export const Header: React.FC<HeaderProps> = ({ onOpenTests }) => {
     settings
   } = useGym();
 
-  const [showSwitchMenu, setShowSwitchMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [isSyncing, setIsSyncing] = useState(false);
@@ -60,13 +61,6 @@ export const Header: React.FC<HeaderProps> = ({ onOpenTests }) => {
     setIsSyncing(false);
   };
 
-  const keyUsers = [
-    { id: 'member_rahul_desai', label: 'Rahul Desai (Demo - 9743247790)', badge: 'Demo' },
-    { id: 'member_priya_patil', label: 'Priya Patil (Expires in 4 Days)', badge: 'Expiring' },
-    { id: 'member_prakash_hubli', label: 'Prakash Hubli (Absent 18 Days)', badge: 'Churn Risk' },
-    { id: 'member_sneha_joshi', label: 'Sneha Joshi (Marketing Opt-out)', badge: 'Opted-Out' },
-    { id: 'user_staff_suresh', label: 'Suresh (Front Desk)', badge: 'Staff' }
-  ];
 
   return (
     <header className="sticky top-0 z-40 bg-[#0E121B] border-b border-[#232B3E] px-4 py-3">
@@ -224,92 +218,28 @@ export const Header: React.FC<HeaderProps> = ({ onOpenTests }) => {
             )}
           </div>
 
-          {/* User Switcher Pill */}
-          <div className="relative">
+          {/* User Session Action (No demo switcher) */}
+          {isLoggedIn ? (
             <button
-              onClick={() => setShowSwitchMenu(!showSwitchMenu)}
-              className="flex items-center gap-1.5 bg-[#171D2B] hover:bg-[#1E2538] border border-[#2C364C] px-2.5 py-1.5 rounded-lg text-xs font-semibold text-white transition-all cursor-pointer"
+              onClick={() => {
+                logout();
+                window.location.href = '/';
+              }}
+              className="flex items-center gap-1.5 bg-[#171D2B] hover:bg-red-950/40 border border-[#2C364C] hover:border-red-600/50 px-3 py-1.5 rounded-lg text-xs font-bold text-slate-300 hover:text-red-400 transition-all cursor-pointer"
+              title="Log Out"
             >
-              <div className="w-5 h-5 rounded-full bg-[#E5A93C] text-slate-950 font-bold flex items-center justify-center text-[10px]">
-                {currentUser.name.charAt(0)}
-              </div>
-              <span className="max-w-[75px] sm:max-w-[120px] truncate text-left">
-                {currentUser.name.split(' ')[0]}
-              </span>
-              <span className="text-[9px] uppercase px-1.5 py-0.5 rounded bg-[#232B3E] text-[#E5A93C] font-bold">
-                {currentUser.role}
-              </span>
+              <LogOut className="w-3.5 h-3.5 text-red-400" />
+              <span className="hidden sm:inline">Log Out</span>
             </button>
-
-            {/* Quick Switch Menu Dropdown */}
-            {showSwitchMenu && (
-              <div className="absolute right-0 mt-2 w-72 bg-[#121622] border border-[#232B3E] rounded-xl shadow-2xl p-2.5 z-50">
-                <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-2 py-1 mb-1">
-                  Switch Demo Account:
-                </div>
-                <div className="space-y-1">
-                  {keyUsers.map((item) => (
-                    <button
-                      key={item.id}
-                      onClick={() => {
-                        switchUser(item.id);
-                        setShowSwitchMenu(false);
-                      }}
-                      className={`w-full text-left px-2.5 py-2 rounded-lg text-xs flex items-center justify-between transition-colors ${
-                        currentUser.id === item.id
-                          ? 'bg-[#E5A93C]/15 border border-[#E5A93C]/40 text-[#E5A93C] font-semibold'
-                          : 'text-slate-300 hover:bg-[#1A2130]'
-                      }`}
-                    >
-                      <span className="truncate pr-2">{item.label}</span>
-                      <span className="text-[9px] px-1.5 py-0.5 rounded bg-[#1F2739] text-slate-300 font-bold flex-shrink-0">
-                        {item.badge}
-                      </span>
-                    </button>
-                  ))}
-                </div>
-
-                <div className="pt-2 border-t border-[#232B3E] space-y-1.5">
-                  <Link
-                    href="/login?role=owner"
-                    onClick={() => setShowSwitchMenu(false)}
-                    className="w-full text-left px-2.5 py-1.5 rounded-lg text-xs flex items-center justify-between text-red-400 hover:bg-red-950/40 transition-colors"
-                  >
-                    <div className="flex items-center gap-1.5">
-                      <Lock className="w-3.5 h-3.5 text-red-400" />
-                      <span className="font-bold">Owner Cockpit</span>
-                    </div>
-                    <span className="text-[9px] px-1.5 py-0.5 rounded bg-red-950 text-red-300 font-bold border border-red-800">
-                      PIN Required
-                    </span>
-                  </Link>
-
-                  <div className="flex items-center justify-between px-1 pt-1 border-t border-[#1C2333]">
-                    <Link
-                      href="/login"
-                      onClick={() => setShowSwitchMenu(false)}
-                      className="text-[11px] text-[#E5A93C] hover:underline flex items-center gap-1"
-                    >
-                      Login Portals
-                      <ExternalLink className="w-3 h-3" />
-                    </Link>
-
-                    <button
-                      onClick={() => {
-                        logout();
-                        setShowSwitchMenu(false);
-                        window.location.href = '/';
-                      }}
-                      className="text-[11px] text-slate-400 hover:text-red-300 font-bold flex items-center gap-1 cursor-pointer"
-                    >
-                      <LogOut className="w-3 h-3" />
-                      <span>Log Out</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
+          ) : (
+            <Link
+              href="/login"
+              className="flex items-center gap-1.5 bg-[#E5A93C] hover:bg-[#F59E0B] px-3 py-1.5 rounded-lg text-xs font-black text-slate-950 shadow-md transition-all"
+            >
+              <LogIn className="w-3.5 h-3.5 stroke-[2.5]" />
+              <span>Login</span>
+            </Link>
+          )}
 
           {/* Mobile Hamburger Menu Button */}
           <button
@@ -402,19 +332,21 @@ export const Header: React.FC<HeaderProps> = ({ onOpenTests }) => {
                 <span>Profile & Preferences</span>
               </Link>
 
-              <div className="pt-3 border-t border-[#1F2739] mt-3">
-                <span className="text-[10px] uppercase font-bold text-slate-500 tracking-wider px-2 block mb-1">
-                  Management
-                </span>
-                <Link
-                  href="/owner/dashboard"
-                  onClick={() => setShowMobileMenu(false)}
-                  className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-slate-200 hover:bg-[#181F2F]"
-                >
-                  <Shield className="w-4 h-4 text-red-400" />
-                  <span>Owner Cockpit</span>
-                </Link>
-              </div>
+              {currentUser.role === 'owner' && (
+                <div className="pt-3 border-t border-[#1F2739] mt-3">
+                  <span className="text-[10px] uppercase font-bold text-slate-500 tracking-wider px-2 block mb-1">
+                    Management
+                  </span>
+                  <Link
+                    href="/owner/dashboard"
+                    onClick={() => setShowMobileMenu(false)}
+                    className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-slate-200 hover:bg-[#181F2F]"
+                  >
+                    <Shield className="w-4 h-4 text-red-400" />
+                    <span>Owner Cockpit</span>
+                  </Link>
+                </div>
+              )}
 
               <div className="pt-3 border-t border-[#1F2739] mt-3">
                 <span className="text-[10px] uppercase font-bold text-slate-500 tracking-wider px-2 block mb-1">
