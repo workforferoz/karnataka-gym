@@ -109,9 +109,6 @@ export const PWAInstallBanner: React.FC = () => {
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-1.5">
             <span className="text-xs font-black text-white truncate">Karnataka Gym App</span>
-            <span className="text-[9px] font-bold px-1.5 py-0.2 bg-[#E5A93C]/20 text-[#E5A93C] rounded border border-[#E5A93C]/30">
-              PWA
-            </span>
           </div>
           <p className="text-[11px] text-slate-300 truncate">
             {isIOS ? 'Tap Share > "Add to Home Screen"' : 'Install for instant QR check-in'}

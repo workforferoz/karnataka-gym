@@ -5,7 +5,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { PublicNav } from '@/components/PublicNav';
 import { Footer } from '@/components/Footer';
-import { PWAInstallBanner } from '@/components/PWAInstallBanner';
 import { TestChecklistDrawer } from '@/components/TestChecklistDrawer';
 import { InstagramIcon } from '@/components/InstagramIcon';
 import { WhatsAppIcon } from '@/components/WhatsAppIcon';
@@ -255,12 +254,9 @@ export default function PublicGymWebsite() {
       {/* Navigation Bar */}
       <PublicNav onOpenTests={() => setShowTests(true)} />
 
-      {/* PWA Install Banner */}
-      <PWAInstallBanner />
-
       <main className="flex-1 space-y-20 pb-16">
         {/* 1. HERO SECTION */}
-        <section className="relative pt-10 pb-16 px-4 border-b border-[#232B3E] overflow-hidden">
+        <section className="relative pt-10 pb-16 px-4 overflow-hidden">
           {/* Watermark Background Logo with subtle golden aura */}
           <div
             className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden"
