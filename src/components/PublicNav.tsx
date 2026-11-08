@@ -15,7 +15,8 @@ import {
   ShieldCheck,
   Dumbbell,
   User,
-  LogIn
+  LogIn,
+  Camera
 } from 'lucide-react';
 import { InstagramIcon } from '@/components/InstagramIcon';
 
@@ -75,6 +76,10 @@ export const PublicNav: React.FC<PublicNavProps> = ({ onOpenTests }) => {
           </a>
           <a href="#facilities" className="hover:text-[#E5A93C] transition-colors">
             Facilities
+          </a>
+          <a href="#facility-tour" className="hover:text-[#E5A93C] text-[#E5A93C] transition-colors flex items-center gap-1.5">
+            <Camera className="w-3.5 h-3.5" />
+            <span>Facility Tour</span>
           </a>
           <a href="#location" className="hover:text-[#E5A93C] transition-colors">
             Location & Hours
@@ -266,6 +271,14 @@ export const PublicNav: React.FC<PublicNavProps> = ({ onOpenTests }) => {
                 className="block px-3 py-2 rounded-lg text-slate-300 hover:bg-[#181F2F]"
               >
                 Facilities & Equipment
+              </a>
+              <a
+                href="#facility-tour"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block px-3 py-2 rounded-lg text-[#E5A93C] font-bold hover:bg-[#181F2F] flex items-center gap-2"
+              >
+                <Camera className="w-4 h-4 text-[#E5A93C]" />
+                <span>Facility Tour (Real Photos)</span>
               </a>
               <a
                 href="#location"

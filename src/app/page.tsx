@@ -28,11 +28,42 @@ import {
   Check,
   Calendar,
   AlertCircle,
-  ExternalLink
+  ExternalLink,
+  Camera,
+  Maximize2,
+  X
 } from 'lucide-react';
+
+const FACILITY_PHOTOS = [
+  {
+    src: '/facility/gym-floor-wide.webp',
+    title: 'Olympic Free Weights & Training Floor',
+    tag: 'Free Weights & Olympic Benches',
+    desc: 'Spacious training floor with commercial Olympic bench press stations, dumbbell line, shock-absorbing rubber matting, and dual cable towers.',
+  },
+  {
+    src: '/facility/strength-cable-station.webp',
+    title: 'Dual Cable Crossover & Arm Station',
+    tag: 'Multi-Station Cable Towers',
+    desc: 'Heavy-duty cable crossover system with multi-grip chin-up station, preacher curl bench, and anatomical muscle guides.',
+  },
+  {
+    src: '/facility/leg-press-cardio.webp',
+    title: 'Plate-Loaded Leg Press & Cardio Suite',
+    tag: 'Leg Press, Pec Fly & Treadmill',
+    desc: 'Commercial 45° plate-loaded leg press machine, selectorized pec fly station, and digital commercial treadmill for cardio conditioning.',
+  },
+  {
+    src: '/facility/free-weights-mirrors.webp',
+    title: 'Resistance Machine Line & Mirror Wall',
+    tag: 'Resistance Equipment & Mirror Wall',
+    desc: 'Full wall-to-wall mirror setup for posture and technique verification, paired with selectorized resistance machines and heavy-duty benches.',
+  },
+];
 
 export default function PublicGymWebsite() {
   const [showTests, setShowTests] = useState(false);
+  const [selectedPhoto, setSelectedPhoto] = useState<typeof FACILITY_PHOTOS[0] | null>(null);
 
   // Inquiry form states
   const [inquiryName, setInquiryName] = useState('');
@@ -346,6 +377,147 @@ export default function PublicGymWebsite() {
               </p>
             </div>
           </div>
+        </section>
+
+        {/* 4. FACILITY TOUR & REAL GYM PHOTOS */}
+        <section id="facility-tour" className="max-w-6xl mx-auto px-4 scroll-mt-20 space-y-8">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[#232B3E] pb-6">
+            <div className="space-y-2 max-w-2xl">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E5A93C]/10 border border-[#E5A93C]/30 text-[#E5A93C] text-xs font-bold uppercase tracking-wider">
+                <Camera className="w-3.5 h-3.5" />
+                <span>Real Facility Photos • Hubballi</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-black text-white">
+                Inside Karnataka Gym Hubballi
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+                Explore our real training floor at Kalidas Nagar, Hubballi — commercial heavy-duty steel, Olympic free weights, multi-station cable towers, and cardio equipment.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-3 text-xs text-slate-400 flex-shrink-0">
+              <div className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[#121622] border border-[#232B3E]">
+                <MapPin className="w-3.5 h-3.5 text-[#E5A93C]" />
+                <span className="text-slate-200 font-bold">Kalidas Nagar, Hubballi</span>
+              </div>
+            </div>
+          </div>
+
+          {/* 4-Photo Showcase Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {FACILITY_PHOTOS.map((photo, index) => (
+              <div
+                key={photo.src}
+                onClick={() => setSelectedPhoto(photo)}
+                className="group relative bg-[#121622] border-2 border-[#232B3E] hover:border-[#E5A93C] rounded-3xl overflow-hidden shadow-xl transition-all duration-300 cursor-pointer flex flex-col"
+              >
+                {/* Image Container with 16:10 aspect ratio */}
+                <div className="relative aspect-[16/10] w-full overflow-hidden bg-[#0A0D14]">
+                  <Image
+                    src={photo.src}
+                    alt={photo.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                    priority={index === 0}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0B0E14] via-transparent to-black/30 pointer-events-none" />
+
+                  {/* Tag top-left */}
+                  <div className="absolute top-3 left-3">
+                    <span className="px-3 py-1 rounded-full text-[11px] font-extrabold bg-[#0B0E14]/90 text-[#E5A93C] border border-[#E5A93C]/40 backdrop-blur-sm shadow-md">
+                      {photo.tag}
+                    </span>
+                  </div>
+
+                  {/* Expand Icon top-right */}
+                  <div className="absolute top-3 right-3 opacity-90 group-hover:opacity-100 transition-opacity">
+                    <span className="w-8 h-8 rounded-full bg-black/75 border border-white/20 text-white flex items-center justify-center backdrop-blur-sm shadow-md group-hover:border-[#E5A93C] group-hover:text-[#E5A93C] transition-colors">
+                      <Maximize2 className="w-4 h-4" />
+                    </span>
+                  </div>
+                </div>
+
+                {/* Content Details */}
+                <div className="p-5 flex-1 flex flex-col justify-between space-y-2">
+                  <div>
+                    <h3 className="text-base sm:text-lg font-black text-white group-hover:text-[#E5A93C] transition-colors">
+                      {photo.title}
+                    </h3>
+                    <p className="text-xs text-slate-300 mt-1.5 leading-relaxed">
+                      {photo.desc}
+                    </p>
+                  </div>
+                  <div className="pt-3 border-t border-[#1F2637] flex items-center justify-between text-[11px]">
+                    <span className="text-slate-400 font-medium">Karnataka Gym • Ground Floor Facility</span>
+                    <span className="text-[#E5A93C] font-bold group-hover:underline flex items-center gap-1">
+                      <span>Enlarge Photo</span>
+                      <Maximize2 className="w-3 h-3" />
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Lightbox / Full-screen modal when photo is clicked */}
+          {selectedPhoto && (
+            <div
+              className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200"
+              onClick={() => setSelectedPhoto(null)}
+            >
+              <div
+                className="relative max-w-4xl w-full bg-[#121622] border-2 border-[#232B3E] rounded-3xl overflow-hidden shadow-2xl animate-in zoom-in-95 duration-200"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Modal Header */}
+                <div className="flex items-center justify-between p-4 border-b border-[#232B3E] bg-[#0F131D]">
+                  <div className="flex items-center gap-2">
+                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase bg-[#E5A93C]/15 text-[#E5A93C] border border-[#E5A93C]/30">
+                      {selectedPhoto.tag}
+                    </span>
+                    <h4 className="text-sm sm:text-base font-black text-white">
+                      {selectedPhoto.title}
+                    </h4>
+                  </div>
+                  <button
+                    onClick={() => setSelectedPhoto(null)}
+                    className="p-1.5 rounded-xl bg-[#1A2234] hover:bg-[#232E44] text-slate-300 hover:text-white transition-colors cursor-pointer"
+                    aria-label="Close photo preview"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+
+                {/* Modal Image */}
+                <div className="relative aspect-[16/10] sm:aspect-[16/9] w-full bg-black">
+                  <Image
+                    src={selectedPhoto.src}
+                    alt={selectedPhoto.title}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 1000px"
+                    className="object-contain"
+                  />
+                </div>
+
+                {/* Modal Footer */}
+                <div className="p-4 bg-[#0F131D] border-t border-[#232B3E] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+                  <p className="text-slate-300">
+                    {selectedPhoto.desc}
+                  </p>
+                  <a
+                    href="https://maps.app.goo.gl/dXnSdvRU9gwHd7sAA"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-shrink-0 inline-flex items-center gap-1.5 text-[#E5A93C] font-bold hover:underline"
+                  >
+                    <MapPin className="w-3.5 h-3.5" />
+                    <span>Visit in Kalidas Nagar, Hubballi</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          )}
         </section>
 
         {/* 5. LOCATION, TIMINGS & INQUIRY FORM */}
