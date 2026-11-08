@@ -373,10 +373,14 @@ export default function PublicGymWebsite() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {/* Zone 1 */}
             <div className="p-5 rounded-2xl bg-[#121622] border border-[#232B3E] hover:border-[#E5A93C] transition-all space-y-3">
-              <div className="w-10 h-10 rounded-xl bg-[#E5A93C]/10 border border-[#E5A93C]/30 flex items-center justify-center text-[#E5A93C]">
-                <Dumbbell className="w-5 h-5" />
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-[#E5A93C]/10 border border-[#E5A93C]/30 flex items-center justify-center text-[#E5A93C] flex-shrink-0">
+                  <Dumbbell className="w-5 h-5" />
+                </div>
+                <h3 className="text-sm sm:text-base font-extrabold text-white leading-snug">
+                  Free Weights &amp; Power Racks
+                </h3>
               </div>
-              <h3 className="text-base font-extrabold text-white">Free Weights & Power Racks</h3>
               <p className="text-xs text-slate-400 leading-relaxed">
                 Full dumbbell rack from 2.5 kg to 50 kg, Olympic barbells, dedicated deadlift platform, squat cages, and adjustable benches.
               </p>
@@ -384,10 +388,14 @@ export default function PublicGymWebsite() {
 
             {/* Zone 2 */}
             <div className="p-5 rounded-2xl bg-[#121622] border border-[#232B3E] hover:border-[#E5A93C] transition-all space-y-3">
-              <div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400">
-                <Zap className="w-5 h-5" />
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400 flex-shrink-0">
+                  <Zap className="w-5 h-5" />
+                </div>
+                <h3 className="text-sm sm:text-base font-extrabold text-white leading-snug">
+                  Plate &amp; Pin Resistance
+                </h3>
               </div>
-              <h3 className="text-base font-extrabold text-white">Plate & Pin Resistance</h3>
               <p className="text-xs text-slate-400 leading-relaxed">
                 Heavy leg press, hack squat, lat pulldowns, seated cable rows, pec fly, hamstring curls, and dual adjustable cable crossovers.
               </p>
@@ -395,10 +403,14 @@ export default function PublicGymWebsite() {
 
             {/* Zone 3 */}
             <div className="p-5 rounded-2xl bg-[#121622] border border-[#232B3E] hover:border-[#E5A93C] transition-all space-y-3">
-              <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
-                <Flame className="w-5 h-5" />
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 flex-shrink-0">
+                  <Flame className="w-5 h-5" />
+                </div>
+                <h3 className="text-sm sm:text-base font-extrabold text-white leading-snug">
+                  Cardio Conditioning
+                </h3>
               </div>
-              <h3 className="text-base font-extrabold text-white">Cardio Conditioning</h3>
               <p className="text-xs text-slate-400 leading-relaxed">
                 High-grade commercial treadmills with shock absorption, cross-trainers, and spin cycles for cardiovascular endurance and fat loss.
               </p>
@@ -406,10 +418,14 @@ export default function PublicGymWebsite() {
 
             {/* Zone 4 */}
             <div className="p-5 rounded-2xl bg-[#121622] border border-[#232B3E] hover:border-[#E5A93C] transition-all space-y-3">
-              <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400">
-                <ShieldCheck className="w-5 h-5" />
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 flex-shrink-0">
+                  <ShieldCheck className="w-5 h-5" />
+                </div>
+                <h3 className="text-sm sm:text-base font-extrabold text-white leading-snug">
+                  Lockers &amp; Nutrition
+                </h3>
               </div>
-              <h3 className="text-base font-extrabold text-white">Lockers & Nutrition</h3>
               <p className="text-xs text-slate-400 leading-relaxed">
                 Clean member lockers, water dispensers, hygienic washrooms, and verified genuine whey protein and BCAA nutrition counter.
               </p>
