@@ -172,7 +172,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenTests }) => {
             {/* Notifications Dropdown */}
             {showNotifications && (
               <div className="absolute right-0 mt-2 w-80 bg-[#121622] border border-[#232B3E] rounded-xl shadow-2xl p-3 z-50 animate-in fade-in zoom-in-95 duration-150">
-                <div className="flex items-center justify-between border-b border-[#232B3E] pb-2 mb-2">
+                <div className="flex items-center justify-between pb-2 mb-2">
                   <span className="text-xs font-bold text-white flex items-center gap-1.5">
                     <Bell className="w-3.5 h-3.5 text-[#E5A93C]" />
                     Gym Updates & Reminders
@@ -256,7 +256,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenTests }) => {
       {showMobileMenu && (
         <div className="fixed inset-0 z-50 flex items-stretch justify-end bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
           <div className="w-72 bg-[#101420] border-l border-[#232B3E] h-full flex flex-col p-4 shadow-2xl animate-in slide-in-from-right duration-250">
-            <div className="flex items-center justify-between pb-3 border-b border-[#232B3E]">
+            <div className="flex items-center justify-between pb-3">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
                   <Image
@@ -333,7 +333,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenTests }) => {
               </Link>
 
               {currentUser.role === 'owner' && (
-                <div className="pt-3 border-t border-[#1F2739] mt-3">
+                <div className="pt-3 mt-3">
                   <span className="text-[10px] uppercase font-bold text-slate-500 tracking-wider px-2 block mb-1">
                     Management
                   </span>
@@ -348,7 +348,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenTests }) => {
                 </div>
               )}
 
-              <div className="pt-3 border-t border-[#1F2739] mt-3">
+              <div className="pt-3 mt-3">
                 <span className="text-[10px] uppercase font-bold text-slate-500 tracking-wider px-2 block mb-1">
                   Public Website & Logout
                 </span>
@@ -373,7 +373,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenTests }) => {
                 </button>
               </div>
 
-              <div className="pt-3 border-t border-[#1F2739] mt-3">
+              <div className="pt-3 mt-3">
                 <span className="text-[10px] uppercase font-bold text-slate-500 tracking-wider px-2 block mb-1">
                   Legal & Privacy
                 </span>
@@ -405,7 +405,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenTests }) => {
             </div>
 
             {/* Direct Contact Bar */}
-            <div className="pt-3 border-t border-[#232B3E] space-y-2 text-xs">
+            <div className="pt-3 space-y-2 text-xs">
               <a
                 href="tel:9902667407"
                 className="flex items-center gap-2 p-2 rounded-xl bg-[#171D2B] text-slate-200 font-bold"

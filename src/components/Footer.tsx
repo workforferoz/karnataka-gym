@@ -53,7 +53,7 @@ export const Footer: React.FC = () => {
         </div>
 
         {/* Legal & Compliance Links */}
-        <div className="pt-4 border-t border-[#141B28] flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-400">
+        <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-400">
           <div>
             <span>© 2026 {settings.gym_name || 'Karnataka Gym Hubballi'}. All rights reserved.</span>
           </div>

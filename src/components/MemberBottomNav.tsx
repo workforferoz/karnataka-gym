@@ -18,7 +18,7 @@ export const MemberBottomNav: React.FC = () => {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-40 bg-[#0D111A]/95 backdrop-blur-lg border-t border-[#1F2739] px-2 py-1.5 md:hidden shadow-[0_-5px_20px_rgba(0,0,0,0.5)]">
+    <nav className="fixed bottom-0 left-0 right-0 z-40 bg-[#0D111A]/95 backdrop-blur-lg px-2 py-1.5 md:hidden shadow-[0_-5px_20px_rgba(0,0,0,0.5)]">
       <div className="flex items-center justify-around max-w-lg mx-auto">
         {navItems.map((item) => {
           const isActive =

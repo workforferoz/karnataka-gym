@@ -126,7 +126,7 @@ export const PublicNav: React.FC<PublicNavProps> = ({ onOpenTests }) => {
             {/* Dropdown Menu */}
             {loginMenuOpen && (
               <div className="absolute right-0 mt-2 w-64 bg-[#121622] border-2 border-[#232B3E] rounded-2xl shadow-2xl p-2 z-50 animate-in fade-in zoom-in-95 duration-150">
-                <div className="px-3 py-1.5 border-b border-[#232B3E] mb-1">
+                <div className="px-3 py-1.5 mb-1">
                   <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">
                     Select Login Portal
                   </span>
@@ -202,7 +202,7 @@ export const PublicNav: React.FC<PublicNavProps> = ({ onOpenTests }) => {
         <div className="fixed inset-0 z-50 flex justify-end bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
           <div className="w-80 bg-[#0F131D] border-l border-[#232B3E] h-full flex flex-col p-5 shadow-2xl animate-in slide-in-from-right duration-250">
             {/* Header */}
-            <div className="flex items-center justify-between pb-4 border-b border-[#232B3E]">
+            <div className="flex items-center justify-between pb-4">
               <div className="flex items-center gap-2.5">
                 <div className="w-9 h-9 relative rounded-full overflow-hidden flex-shrink-0">
                   <Image
@@ -228,7 +228,7 @@ export const PublicNav: React.FC<PublicNavProps> = ({ onOpenTests }) => {
             </div>
 
             {/* Portal Action Buttons in Mobile Menu: Member, Trainer, Owner */}
-            <div className="py-4 space-y-2 border-b border-[#232B3E]">
+            <div className="py-4 space-y-2">
               <span className="text-[10px] uppercase font-bold text-slate-500 tracking-wider block mb-1">
                 Select Login Portal
               </span>
@@ -337,7 +337,7 @@ export const PublicNav: React.FC<PublicNavProps> = ({ onOpenTests }) => {
             </div>
 
             {/* Direct Contact Bar */}
-            <div className="pt-4 border-t border-[#232B3E] space-y-2 text-xs">
+            <div className="pt-4 space-y-2 text-xs">
               <a
                 href="tel:9902667407"
                 className="flex items-center gap-2 p-2.5 rounded-xl bg-[#171D2B] text-slate-200 font-bold hover:border-[#E5A93C] border border-transparent transition-colors"

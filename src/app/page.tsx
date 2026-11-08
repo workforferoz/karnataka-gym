@@ -518,7 +518,7 @@ export default function PublicGymWebsite() {
                       {photo.desc}
                     </p>
                   </div>
-                  <div className="pt-3 border-t border-[#1F2637] flex items-center justify-between text-[11px]">
+                  <div className="pt-3 flex items-center justify-between text-[11px]">
                     <span className="text-slate-400 font-medium">Karnataka Gym • Ground Floor Facility</span>
                     <span className="text-[#E5A93C] font-bold group-hover:underline flex items-center gap-1">
                       <span>Enlarge Photo</span>
@@ -659,7 +659,7 @@ export default function PublicGymWebsite() {
                   </div>
 
                   {/* Key Takeaways */}
-                  <div className="pt-2.5 border-t border-[#1F2637] space-y-1">
+                  <div className="pt-2.5 space-y-1">
                     {item.achievements.slice(0, 2).map((ach, idx) => (
                       <div key={idx} className="flex items-center gap-1.5 text-[10px] text-slate-300">
                         <CheckCircle className="w-3 h-3 text-emerald-400 flex-shrink-0" />
@@ -668,7 +668,7 @@ export default function PublicGymWebsite() {
                     ))}
                   </div>
 
-                  <div className="pt-2 border-t border-[#1F2637] flex items-center justify-between text-[10px]">
+                  <div className="pt-2 flex items-center justify-between text-[10px]">
                     <span className="text-slate-400 font-medium">Karnataka Gym</span>
                     <span className="text-[#E5A93C] font-bold group-hover:underline flex items-center gap-1">
                       <span>View</span>
@@ -886,7 +886,7 @@ export default function PublicGymWebsite() {
                       {photo.desc}
                     </p>
                   </div>
-                  <div className="pt-2 border-t border-[#1F2637] flex items-center justify-between text-[10px]">
+                  <div className="pt-2 flex items-center justify-between text-[10px]">
                     <span className="text-slate-400 font-medium">Head Coach Riyaz</span>
                     <span className="text-[#E5A93C] font-bold group-hover:underline flex items-center gap-1">
                       <span>Enlarge</span>
