@@ -99,6 +99,15 @@ function LoginContent() {
   // Grouped users
   const trainerUsers = users.filter((u) => u.role === 'trainer');
   const ownerUsers = users.filter((u) => u.role === 'owner' || u.role === 'front_desk');
+  const demoMember = users.find((u) => u.id === 'member_rahul_desai') || users.find((u) => u.role === 'member') || {
+    id: 'member_rahul_desai',
+    name: 'Rahul Desai',
+    phone: '9876543210',
+    role: 'member' as const,
+    marketing_opt_in: true,
+    comm_preference: 'whatsapp' as const,
+    created_at: '2025-01-01'
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-[#0B0E14] text-slate-100">
@@ -273,6 +282,48 @@ function LoginContent() {
                   </button>
                 </form>
               )}
+            </div>
+
+            {/* 1 Demo Member Profile */}
+            <div className="bg-[#121622] border border-[#232B3E] rounded-2xl p-4 shadow-xl space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                  <UserCheck className="w-3.5 h-3.5 text-[#E5A93C]" />
+                  <span>Demo Member Profile:</span>
+                </span>
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                  Active Plan
+                </span>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => handleDirectSelect(demoMember)}
+                className="w-full p-3.5 rounded-xl bg-[#171D2B] border border-[#28354A] hover:border-[#E5A93C] text-left flex items-center justify-between transition-all group cursor-pointer"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-[#1F2739] border border-[#2D3950] text-[#E5A93C] font-black flex items-center justify-center text-sm">
+                    {demoMember.name.charAt(0)}
+                  </div>
+                  <div>
+                    <span className="text-sm font-extrabold text-white block group-hover:text-[#E5A93C] transition-colors">
+                      {demoMember.name}
+                    </span>
+                    <span className="text-xs text-slate-400 font-mono">
+                      +91 {demoMember.phone} • 12-Month Iron Warrior
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-1 text-xs font-bold text-[#E5A93C]">
+                  <span>1-Tap Demo</span>
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </button>
+
+              <p className="text-[11px] text-slate-400 text-center">
+                Click to test QR check-in, workout streak, and renewal features.
+              </p>
             </div>
           </div>
         )}
