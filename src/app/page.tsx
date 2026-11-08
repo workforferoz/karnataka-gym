@@ -326,6 +326,7 @@ export default function PublicGymWebsite() {
                 rel="noopener noreferrer"
                 className="flex items-center gap-1.5 bg-[#121622] border border-[#232B3E] hover:border-emerald-500 px-3 py-1.5 rounded-lg text-emerald-400 font-bold transition-colors"
               >
+                <WhatsAppIcon className="w-3.5 h-3.5 text-emerald-400" />
                 <span>WhatsApp Chat</span>
               </a>
 
