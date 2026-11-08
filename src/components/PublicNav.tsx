@@ -16,7 +16,8 @@ import {
   Dumbbell,
   User,
   LogIn,
-  Camera
+  Camera,
+  Sparkles
 } from 'lucide-react';
 import { InstagramIcon } from '@/components/InstagramIcon';
 
@@ -77,9 +78,13 @@ export const PublicNav: React.FC<PublicNavProps> = ({ onOpenTests }) => {
           <a href="#facilities" className="hover:text-[#E5A93C] transition-colors">
             Facilities
           </a>
-          <a href="#facility-tour" className="hover:text-[#E5A93C] text-[#E5A93C] transition-colors flex items-center gap-1.5">
-            <Camera className="w-3.5 h-3.5" />
+          <a href="#facility-tour" className="hover:text-[#E5A93C] text-slate-300 transition-colors flex items-center gap-1.5">
+            <Camera className="w-3.5 h-3.5 text-[#E5A93C]" />
             <span>Facility Tour</span>
+          </a>
+          <a href="#transformations" className="hover:text-[#E5A93C] text-[#E5A93C] transition-colors flex items-center gap-1.5 font-extrabold">
+            <Sparkles className="w-3.5 h-3.5 text-[#E5A93C]" />
+            <span>Transformations</span>
           </a>
           <a href="#location" className="hover:text-[#E5A93C] transition-colors">
             Location & Hours
@@ -275,10 +280,18 @@ export const PublicNav: React.FC<PublicNavProps> = ({ onOpenTests }) => {
               <a
                 href="#facility-tour"
                 onClick={() => setMobileMenuOpen(false)}
-                className="block px-3 py-2 rounded-lg text-[#E5A93C] font-bold hover:bg-[#181F2F] flex items-center gap-2"
+                className="block px-3 py-2 rounded-lg text-slate-300 hover:text-[#E5A93C] hover:bg-[#181F2F] flex items-center gap-2"
               >
                 <Camera className="w-4 h-4 text-[#E5A93C]" />
                 <span>Facility Tour (Real Photos)</span>
+              </a>
+              <a
+                href="#transformations"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block px-3 py-2 rounded-lg text-[#E5A93C] font-bold hover:bg-[#181F2F] flex items-center gap-2"
+              >
+                <Sparkles className="w-4 h-4 text-[#E5A93C]" />
+                <span>Real Member Transformations</span>
               </a>
               <a
                 href="#location"

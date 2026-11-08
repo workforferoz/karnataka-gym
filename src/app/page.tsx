@@ -31,7 +31,9 @@ import {
   ExternalLink,
   Camera,
   Maximize2,
-  X
+  X,
+  Sparkles,
+  TrendingUp
 } from 'lucide-react';
 
 const FACILITY_PHOTOS = [
@@ -61,9 +63,61 @@ const FACILITY_PHOTOS = [
   },
 ];
 
+const TRANSFORMATIONS = [
+  {
+    id: 'transformation-1',
+    src: '/transformations/transformation-1-male-fatloss.webp',
+    title: 'Fat Loss & Stamina Rebuild',
+    badge: 'Weight Loss & Endurance',
+    story: 'Shifted from long hours of sedentary routine to disciplined daily resistance workouts and a calorie-managed diet.',
+    achievements: [
+      'Substantial reduction in visceral fat',
+      'Daily cardiovascular stamina improved',
+      'Consistent strength training 5 days a week'
+    ],
+  },
+  {
+    id: 'transformation-2',
+    src: '/transformations/transformation-2-female-toning.webp',
+    title: 'Body Recomposition & Core Toning',
+    badge: 'Fat Loss & Lean Muscle',
+    story: 'Dedicated strength training focusing on core stability, compound lifts, and balanced nutrition without extreme starvation diets.',
+    achievements: [
+      'Inches lost across waist and hips',
+      'Enhanced functional core strength',
+      'Structured home-diet meal balance'
+    ],
+  },
+  {
+    id: 'transformation-3',
+    src: '/transformations/transformation-3-lifestyle-fitness.webp',
+    title: 'Lifestyle Fitness & Fat Loss',
+    badge: 'Sustainable Weight Loss',
+    story: 'Replaced fad diets with structured push-pull-legs training splits and regular cardio conditioning at Karnataka Gym.',
+    achievements: [
+      'Consistent fat loss over months',
+      'Noticeable postural correction',
+      'Increased energy throughout the day'
+    ],
+  },
+  {
+    id: 'transformation-4',
+    src: '/transformations/transformation-4-core-conditioning.webp',
+    title: 'Middle-Age Strength & Waistline Trim',
+    badge: 'Trained Inside Karnataka Gym',
+    story: 'Trained directly on the Karnataka Gym floor with barbell complexes, plate resistance, and coach-guided nutrition protocols.',
+    achievements: [
+      'Visible abdominal fat loss & tone',
+      'Joint mobility & heavy compound strength',
+      'Proven proof of work right in Hubballi'
+    ],
+  },
+];
+
 export default function PublicGymWebsite() {
   const [showTests, setShowTests] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState<typeof FACILITY_PHOTOS[0] | null>(null);
+  const [selectedTransformation, setSelectedTransformation] = useState<typeof TRANSFORMATIONS[0] | null>(null);
 
   // Inquiry form states
   const [inquiryName, setInquiryName] = useState('');
@@ -514,6 +568,220 @@ export default function PublicGymWebsite() {
                     <MapPin className="w-3.5 h-3.5" />
                     <span>Visit in Kalidas Nagar, Hubballi</span>
                   </a>
+                </div>
+              </div>
+            </div>
+          )}
+        </section>
+
+        {/* 4B. REAL MEMBER TRANSFORMATIONS */}
+        <section id="transformations" className="max-w-6xl mx-auto px-4 scroll-mt-20 space-y-8">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[#232B3E] pb-6">
+            <div className="space-y-2 max-w-2xl">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E5A93C]/10 border border-[#E5A93C]/30 text-[#E5A93C] text-xs font-bold uppercase tracking-wider">
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>Real Results • Hubballi Proof of Work</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-black text-white">
+                Real Member Transformations
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+                No extreme starvation. No synthetic shortcuts. Just honest coaching, progressive overload, and disciplined consistency at Karnataka Gym Hubballi.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-3 text-xs text-slate-400 flex-shrink-0">
+              <div className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[#121622] border border-[#232B3E]">
+                <Award className="w-3.5 h-3.5 text-[#E5A93C]" />
+                <span className="text-slate-200 font-bold">100% Genuine Member Photos</span>
+              </div>
+            </div>
+          </div>
+
+          {/* 4 Transformations Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {TRANSFORMATIONS.map((item) => (
+              <div
+                key={item.id}
+                onClick={() => setSelectedTransformation(item)}
+                className="group relative bg-[#121622] border-2 border-[#232B3E] hover:border-[#E5A93C] rounded-3xl overflow-hidden shadow-xl transition-all duration-300 cursor-pointer flex flex-col"
+              >
+                {/* Image Container with 1:1 Aspect Ratio */}
+                <div className="relative aspect-square w-full overflow-hidden bg-[#0A0D14]">
+                  <Image
+                    src={item.src}
+                    alt={item.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0B0E14] via-transparent to-black/25 pointer-events-none" />
+
+                  {/* Top Badge */}
+                  <div className="absolute top-3 left-3">
+                    <span className="px-3 py-1 rounded-full text-[11px] font-extrabold bg-[#0B0E14]/90 text-[#E5A93C] border border-[#E5A93C]/40 backdrop-blur-sm shadow-md">
+                      {item.badge}
+                    </span>
+                  </div>
+
+                  {/* Before / After Floating Badges at Bottom */}
+                  <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between pointer-events-none">
+                    <span className="px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider bg-black/85 text-rose-300 border border-rose-500/30 backdrop-blur-sm">
+                      Before
+                    </span>
+                    <span className="px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider bg-[#E5A93C] text-slate-950 font-black shadow-md">
+                      After • Transformed
+                    </span>
+                  </div>
+
+                  {/* Expand icon top-right */}
+                  <div className="absolute top-3 right-3 opacity-90 group-hover:opacity-100 transition-opacity">
+                    <span className="w-8 h-8 rounded-full bg-black/75 border border-white/20 text-white flex items-center justify-center backdrop-blur-sm shadow-md group-hover:border-[#E5A93C] group-hover:text-[#E5A93C] transition-colors">
+                      <Maximize2 className="w-4 h-4" />
+                    </span>
+                  </div>
+                </div>
+
+                {/* Content Details */}
+                <div className="p-5 flex-1 flex flex-col justify-between space-y-3">
+                  <div className="space-y-2">
+                    <h3 className="text-base sm:text-lg font-black text-white group-hover:text-[#E5A93C] transition-colors">
+                      {item.title}
+                    </h3>
+                    <p className="text-xs text-slate-300 leading-relaxed">
+                      {item.story}
+                    </p>
+                  </div>
+
+                  {/* Key Takeaways */}
+                  <div className="pt-3 border-t border-[#1F2637] space-y-1.5">
+                    {item.achievements.map((ach, idx) => (
+                      <div key={idx} className="flex items-center gap-2 text-[11px] text-slate-300">
+                        <CheckCircle className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
+                        <span>{ach}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="pt-3 border-t border-[#1F2637] flex items-center justify-between text-[11px]">
+                    <span className="text-slate-400 font-medium">Karnataka Gym Hubballi</span>
+                    <span className="text-[#E5A93C] font-bold group-hover:underline flex items-center gap-1">
+                      <span>View Details</span>
+                      <Maximize2 className="w-3 h-3" />
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Bottom Motivation Banner */}
+          <div className="rounded-2xl bg-gradient-to-r from-[#171D2B] via-[#121622] to-[#171D2B] border border-[#2D3950] p-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+            <div className="space-y-1">
+              <h4 className="text-base font-black text-white flex items-center justify-center sm:justify-start gap-2">
+                <Flame className="w-4 h-4 text-[#E5A93C]" />
+                <span>Ready to Write Your Own Transformation Story?</span>
+              </h4>
+              <p className="text-xs text-slate-300 max-w-xl">
+                Get individualized strength training guidance and sensible nutrition coaching. Visit Karnataka Gym in Kalidas Nagar, Hubballi today.
+              </p>
+            </div>
+            <div className="flex items-center gap-2.5 flex-shrink-0">
+              <a
+                href="#location"
+                className="bg-[#E5A93C] hover:bg-[#F59E0B] text-slate-950 font-black px-4 py-2.5 rounded-xl text-xs transition-colors cursor-pointer"
+              >
+                Book Gym Walkthrough
+              </a>
+              <a
+                href="https://wa.me/919902667407?text=Hi%20Karnataka%20Gym%2C%20I%20saw%20your%20member%20transformations%20and%20want%20to%20know%20more."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-[#1A2234] hover:bg-[#232E44] border border-emerald-600/40 text-emerald-400 font-bold px-4 py-2.5 rounded-xl text-xs transition-colors inline-flex items-center gap-1.5"
+              >
+                <WhatsAppIcon className="w-3.5 h-3.5" />
+                <span>WhatsApp Us</span>
+              </a>
+            </div>
+          </div>
+
+          {/* Transformation Modal Lightbox */}
+          {selectedTransformation && (
+            <div
+              className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200"
+              onClick={() => setSelectedTransformation(null)}
+            >
+              <div
+                className="relative max-w-2xl w-full bg-[#121622] border-2 border-[#232B3E] rounded-3xl overflow-hidden shadow-2xl animate-in zoom-in-95 duration-200 max-h-[92vh] flex flex-col"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Header */}
+                <div className="flex items-center justify-between p-4 border-b border-[#232B3E] bg-[#0F131D]">
+                  <div className="flex items-center gap-2">
+                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase bg-[#E5A93C]/15 text-[#E5A93C] border border-[#E5A93C]/30">
+                      {selectedTransformation.badge}
+                    </span>
+                    <h4 className="text-sm sm:text-base font-black text-white">
+                      {selectedTransformation.title}
+                    </h4>
+                  </div>
+                  <button
+                    onClick={() => setSelectedTransformation(null)}
+                    className="p-1.5 rounded-xl bg-[#1A2234] hover:bg-[#232E44] text-slate-300 hover:text-white transition-colors cursor-pointer"
+                    aria-label="Close transformation preview"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+
+                {/* Modal Image */}
+                <div className="relative aspect-square w-full bg-black max-h-[55vh]">
+                  <Image
+                    src={selectedTransformation.src}
+                    alt={selectedTransformation.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 700px"
+                    className="object-contain"
+                  />
+                  <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between pointer-events-none">
+                    <span className="px-2.5 py-1 rounded-lg text-xs font-black uppercase bg-black/85 text-rose-300 border border-rose-500/40">
+                      Before
+                    </span>
+                    <span className="px-2.5 py-1 rounded-lg text-xs font-black uppercase bg-[#E5A93C] text-slate-950 font-black shadow-lg">
+                      After • Transformed
+                    </span>
+                  </div>
+                </div>
+
+                {/* Modal Body */}
+                <div className="p-5 bg-[#0F131D] border-t border-[#232B3E] space-y-3 overflow-y-auto">
+                  <p className="text-xs text-slate-200 leading-relaxed">
+                    {selectedTransformation.story}
+                  </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+                    {selectedTransformation.achievements.map((ach, idx) => (
+                      <div key={idx} className="flex items-center gap-2 text-xs text-slate-300">
+                        <CheckCircle className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
+                        <span>{ach}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Actions */}
+                  <div className="pt-3 border-t border-[#232B3E] flex items-center justify-between gap-3">
+                    <span className="text-[11px] text-slate-400">
+                      Kalidas Nagar, Hubballi
+                    </span>
+                    <a
+                      href="https://wa.me/919902667407?text=Hi%20Karnataka%20Gym%2C%20I%20want%20to%20start%20my%20fitness%20transformation."
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3 py-1.5 rounded-xl text-xs transition-colors inline-flex items-center gap-1.5"
+                    >
+                      <WhatsAppIcon className="w-3.5 h-3.5" />
+                      <span>Inquire on WhatsApp</span>
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
