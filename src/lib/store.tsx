@@ -34,6 +34,7 @@ import {
   INITIAL_SETTINGS
 } from './data-seed';
 import { playSuccessChime, playErrorBeep, triggerConfetti } from './sound';
+import { sanitizePhone } from './security';
 import {
   isSupabaseConfigured,
   fetchGymDataFromSupabase,
@@ -111,6 +112,17 @@ interface GymContextType {
   updateAddon: (addonId: string, updates: Partial<AddOn>) => Promise<{ success: boolean; message: string }>;
   createAddon: (newAddon: Omit<AddOn, 'id'> & { id?: string }) => Promise<{ success: boolean; message: string; addon: AddOn }>;
   deleteAddon: (addonId: string) => Promise<{ success: boolean; message: string }>;
+  createMember: (data: {
+    name: string;
+    phone: string;
+    planId: string;
+    durationMonths?: number;
+    assignedTrainer?: string;
+    dietPlan?: string;
+    emergencyContact?: string;
+    commPreference?: 'whatsapp' | 'sms' | 'call';
+  }) => Promise<{ success: boolean; message: string; user?: User }>;
+  deleteMember: (userId: string) => Promise<{ success: boolean; message: string }>;
 
   // Test Runner
   runAutomatedTest: (testId: number) => Promise<TestResult>;
@@ -154,9 +166,29 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
         const parsed = JSON.parse(stored);
-        if (parsed.users) setUsers(parsed.users);
+        if (parsed.users) {
+          if (parsed.users.length >= 10) {
+            setUsers(parsed.users);
+          } else {
+            const merged = [...INITIAL_USERS];
+            parsed.users.forEach((u: User) => {
+              if (!merged.some((m) => m.id === u.id)) merged.push(u);
+            });
+            setUsers(merged);
+          }
+        }
         if (parsed.plans) setPlans(parsed.plans);
-        if (parsed.memberships) setMemberships(parsed.memberships);
+        if (parsed.memberships) {
+          if (parsed.memberships.length >= 10) {
+            setMemberships(parsed.memberships);
+          } else {
+            const mergedMems = [...INITIAL_MEMBERSHIPS];
+            parsed.memberships.forEach((m: Membership) => {
+              if (!mergedMems.some((x) => x.id === m.id)) mergedMems.push(m);
+            });
+            setMemberships(mergedMems);
+          }
+        }
         if (parsed.attendance) setAttendance(parsed.attendance);
         if (parsed.streaks) setStreaks(parsed.streaks);
         if (parsed.noShowCases) setNoShowCases(parsed.noShowCases);
@@ -1075,6 +1107,133 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return { success: true, message: `Add-on deleted successfully.` };
   };
 
+  // 7g. Owner Enroll / Create New Member
+  const createMember = async (data: {
+    name: string;
+    phone: string;
+    planId: string;
+    durationMonths?: number;
+    assignedTrainer?: string;
+    dietPlan?: string;
+    emergencyContact?: string;
+    commPreference?: 'whatsapp' | 'sms' | 'call';
+  }): Promise<{ success: boolean; message: string; user?: User }> => {
+    const { sanitized: cleanPhone } = sanitizePhone(data.phone);
+    const cleanName = data.name.trim();
+
+    if (!cleanName) return { success: false, message: 'Please provide a member name.' };
+    if (!cleanPhone || cleanPhone.length < 10) {
+      return { success: false, message: 'Please provide a valid 10-digit mobile number.' };
+    }
+
+    const existingUser = users.find((u) => u.phone === cleanPhone);
+    if (existingUser) {
+      return {
+        success: false,
+        message: `A member with phone +91 ${cleanPhone} already exists (${existingUser.name}).`
+      };
+    }
+
+    const userId = `member_${cleanName.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${Date.now().toString().slice(-4)}`;
+
+    const newUser: User = {
+      id: userId,
+      role: 'member',
+      phone: cleanPhone,
+      name: cleanName,
+      profile_image: '',
+      marketing_opt_in: true,
+      emergency_contact: data.emergencyContact || '9902667407',
+      comm_preference: data.commPreference || 'whatsapp',
+      assigned_trainer: data.assignedTrainer || 'Vikram',
+      active_diet_plan: data.dietPlan || undefined,
+      created_at: new Date().toISOString().split('T')[0]
+    };
+
+    const selectedPlan = plans.find((p) => p.id === data.planId) || plans[0];
+    const duration = data.durationMonths || selectedPlan?.duration_months || 3;
+    const startDate = new Date();
+    const expiryDate = new Date();
+    expiryDate.setMonth(expiryDate.getMonth() + duration);
+
+    const newMembership: Membership = {
+      id: `mem_${userId}_${Date.now().toString().slice(-4)}`,
+      user_id: userId,
+      plan_id: selectedPlan.id,
+      start_date: startDate.toISOString().split('T')[0],
+      expiry_date: expiryDate.toISOString().split('T')[0],
+      status: 'active'
+    };
+
+    const newStreak: Streak = {
+      id: `streak_${userId}`,
+      user_id: userId,
+      current_streak: 0,
+      highest_streak: 0,
+      last_update: new Date().toISOString(),
+      weekly_goal_target: 5,
+      weekly_goal_completed: 0
+    };
+
+    setUsers((prev) => [...prev, newUser]);
+    setMemberships((prev) => [...prev, newMembership]);
+    setStreaks((prev) => [...prev, newStreak]);
+
+    syncSupabaseInsert('users', newUser);
+    syncSupabaseInsert('memberships', newMembership);
+    syncSupabaseInsert('streaks', newStreak);
+
+    const auditEntry: AuditLog = {
+      id: `audit_add_member_${Date.now()}`,
+      actor_id: currentUserId,
+      action: 'profile_override',
+      target_user_id: userId,
+      timestamp: new Date().toISOString(),
+      reason: `Owner enrolled new member "${cleanName}" (+91 ${cleanPhone})`,
+      details: (newUser as unknown) as Record<string, unknown>
+    };
+    setAuditLogs((prev) => [auditEntry, ...prev]);
+    syncSupabaseInsert('audit_logs', auditEntry);
+
+    playSuccessChime();
+    return { success: true, message: `Member "${cleanName}" enrolled successfully!`, user: newUser };
+  };
+
+  // 7h. Owner Delete Member
+  const deleteMember = async (
+    userId: string
+  ): Promise<{ success: boolean; message: string }> => {
+    const userToDelete = users.find((u) => u.id === userId);
+    if (!userToDelete) return { success: false, message: 'Member not found' };
+
+    setUsers((prev) => prev.filter((u) => u.id !== userId));
+    setMemberships((prev) => prev.filter((m) => m.user_id !== userId));
+    setStreaks((prev) => prev.filter((s) => s.user_id !== userId));
+    setAttendance((prev) => prev.filter((a) => a.user_id !== userId));
+    setNoShowCases((prev) => prev.filter((c) => c.user_id !== userId));
+
+    syncSupabaseDelete('no_show_cases', 'user_id', userId);
+    syncSupabaseDelete('attendance', 'user_id', userId);
+    syncSupabaseDelete('streaks', 'user_id', userId);
+    syncSupabaseDelete('memberships', 'user_id', userId);
+    syncSupabaseDelete('users', 'id', userId);
+
+    const auditEntry: AuditLog = {
+      id: `audit_del_member_${Date.now()}`,
+      actor_id: currentUserId,
+      action: 'profile_override',
+      target_user_id: userId,
+      timestamp: new Date().toISOString(),
+      reason: `Owner deleted member "${userToDelete.name}" (${userId})`,
+      details: { userId, name: userToDelete.name, phone: userToDelete.phone }
+    };
+    setAuditLogs((prev) => [auditEntry, ...prev]);
+    syncSupabaseInsert('audit_logs', auditEntry);
+
+    playSuccessChime();
+    return { success: true, message: `Member "${userToDelete.name}" deleted from register.` };
+  };
+
   // 8. Refund Payment & Revert Membership
   const processPaymentRefund = async (
     paymentId: string,
@@ -1536,6 +1695,8 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         updateAddon,
         createAddon,
         deleteAddon,
+        createMember,
+        deleteMember,
         runAutomatedTest,
         testResults
       }}

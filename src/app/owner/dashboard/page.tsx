@@ -23,7 +23,8 @@ import {
   CheckCircle,
   Clock,
   ScanLine,
-  Palette
+  Palette,
+  ChevronRight
 } from 'lucide-react';
 
 export default function OwnerDashboardPage() {
@@ -175,103 +176,183 @@ export default function OwnerDashboardPage() {
           </div>
         )}
 
-        {/* Metric Cards Grid (All 7 required indicators) */}
+        {/* Metric Cards Grid - Every section can be opened to detailed operational views */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3.5">
           {/* 1. Active Members */}
-          <div className="p-4 rounded-2xl bg-[#121622] border border-[#232B3E] space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="text-[10px] font-bold uppercase text-slate-400">Total Members</span>
-              <div className="p-1.5 rounded-lg bg-blue-500/15 text-blue-400">
-                <Users className="w-4 h-4" />
+          <Link
+            href="/owner/manage/members"
+            className="p-4 rounded-2xl bg-[#121622] border border-[#232B3E] hover:border-[#E5A93C] hover:bg-[#151B29] transition-all duration-200 cursor-pointer space-y-2 group shadow-sm hover:shadow-lg hover:shadow-[#E5A93C]/5 flex flex-col justify-between"
+          >
+            <div>
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-[10px] font-bold uppercase text-slate-400 group-hover:text-slate-200 transition-colors">
+                  Total Members
+                </span>
+                <div className="p-1.5 rounded-lg bg-blue-500/15 text-blue-400 group-hover:bg-blue-500/25 transition-colors">
+                  <Users className="w-4 h-4" />
+                </div>
               </div>
+              <div className="text-2xl font-black text-white group-hover:text-[#E5A93C] transition-colors">{totalMembers}</div>
             </div>
-            <div className="text-2xl font-black text-white">{totalMembers}</div>
-            <span className="text-[10px] text-slate-400 block">30 Seeded Indian Profiles</span>
-          </div>
+            <div className="flex items-center justify-between pt-1 border-t border-[#1C2333]">
+              <span className="text-[10px] text-slate-400">{totalMembers} Registered Profiles</span>
+              <ChevronRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-[#E5A93C] group-hover:translate-x-0.5 transition-all" />
+            </div>
+          </Link>
 
           {/* 2. Today's Check-ins */}
-          <div className="p-4 rounded-2xl bg-[#121622] border border-[#232B3E] space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="text-[10px] font-bold uppercase text-slate-400">Today Check-ins</span>
-              <div className="p-1.5 rounded-lg bg-emerald-500/15 text-emerald-400">
-                <ScanLine className="w-4 h-4" />
+          <Link
+            href="/owner/assisted-checkin"
+            className="p-4 rounded-2xl bg-[#121622] border border-[#232B3E] hover:border-emerald-500 hover:bg-[#151B29] transition-all duration-200 cursor-pointer space-y-2 group shadow-sm hover:shadow-lg hover:shadow-emerald-500/5 flex flex-col justify-between"
+          >
+            <div>
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-[10px] font-bold uppercase text-slate-400 group-hover:text-slate-200 transition-colors">
+                  Today Check-ins
+                </span>
+                <div className="p-1.5 rounded-lg bg-emerald-500/15 text-emerald-400 group-hover:bg-emerald-500/25 transition-colors">
+                  <ScanLine className="w-4 h-4" />
+                </div>
               </div>
+              <div className="text-2xl font-black text-emerald-400">{todayCheckinsCount}</div>
             </div>
-            <div className="text-2xl font-black text-emerald-400">{todayCheckinsCount}</div>
-            <span className="text-[10px] text-slate-400 block">Real-time attendance</span>
-          </div>
+            <div className="flex items-center justify-between pt-1 border-t border-[#1C2333]">
+              <span className="text-[10px] text-slate-400">Real-time attendance</span>
+              <ChevronRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-emerald-400 group-hover:translate-x-0.5 transition-all" />
+            </div>
+          </Link>
 
           {/* 3. 7-Day Active */}
-          <div className="p-4 rounded-2xl bg-[#121622] border border-[#232B3E] space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="text-[10px] font-bold uppercase text-slate-400">7-Day Active</span>
-              <div className="p-1.5 rounded-lg bg-[#E5A93C]/15 text-[#E5A93C]">
-                <TrendingUp className="w-4 h-4" />
+          <Link
+            href="/owner/manage/members?filter=active"
+            className="p-4 rounded-2xl bg-[#121622] border border-[#232B3E] hover:border-[#E5A93C] hover:bg-[#151B29] transition-all duration-200 cursor-pointer space-y-2 group shadow-sm hover:shadow-lg hover:shadow-[#E5A93C]/5 flex flex-col justify-between"
+          >
+            <div>
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-[10px] font-bold uppercase text-slate-400 group-hover:text-slate-200 transition-colors">
+                  7-Day Active
+                </span>
+                <div className="p-1.5 rounded-lg bg-[#E5A93C]/15 text-[#E5A93C] group-hover:bg-[#E5A93C]/25 transition-colors">
+                  <TrendingUp className="w-4 h-4" />
+                </div>
               </div>
+              <div className="text-2xl font-black text-white group-hover:text-[#E5A93C] transition-colors">{count7DayActive}</div>
             </div>
-            <div className="text-2xl font-black text-white">{count7DayActive}</div>
-            <span className="text-[10px] text-slate-400 block">Consistent gym lifters</span>
-          </div>
+            <div className="flex items-center justify-between pt-1 border-t border-[#1C2333]">
+              <span className="text-[10px] text-slate-400">Consistent gym lifters</span>
+              <ChevronRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-[#E5A93C] group-hover:translate-x-0.5 transition-all" />
+            </div>
+          </Link>
 
           {/* 4. Open No-Show Cases */}
-          <div className="p-4 rounded-2xl bg-[#121622] border border-[#232B3E] space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="text-[10px] font-bold uppercase text-slate-400">No-Show Cases</span>
-              <div className="p-1.5 rounded-lg bg-red-500/15 text-red-400">
-                <AlertCircle className="w-4 h-4" />
+          <Link
+            href="/owner/churn-risk"
+            className="p-4 rounded-2xl bg-[#121622] border border-[#232B3E] hover:border-red-500 hover:bg-[#151B29] transition-all duration-200 cursor-pointer space-y-2 group shadow-sm hover:shadow-lg hover:shadow-red-500/5 flex flex-col justify-between"
+          >
+            <div>
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-[10px] font-bold uppercase text-slate-400 group-hover:text-slate-200 transition-colors">
+                  No-Show Cases
+                </span>
+                <div className="p-1.5 rounded-lg bg-red-500/15 text-red-400 group-hover:bg-red-500/25 transition-colors">
+                  <AlertCircle className="w-4 h-4" />
+                </div>
               </div>
+              <div className="text-2xl font-black text-red-400">{openNoShows.length}</div>
             </div>
-            <div className="text-2xl font-black text-red-400">{openNoShows.length}</div>
-            <span className="text-[10px] text-slate-400 block">10+ Days Absent</span>
-          </div>
+            <div className="flex items-center justify-between pt-1 border-t border-[#1C2333]">
+              <span className="text-[10px] text-slate-400">10+ Days Absent</span>
+              <ChevronRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-red-400 group-hover:translate-x-0.5 transition-all" />
+            </div>
+          </Link>
 
           {/* 5. Returned Members */}
-          <div className="p-4 rounded-2xl bg-[#121622] border border-[#232B3E] space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="text-[10px] font-bold uppercase text-slate-400">Returned Members</span>
-              <div className="p-1.5 rounded-lg bg-teal-500/15 text-teal-400">
-                <CheckCircle className="w-4 h-4" />
+          <Link
+            href="/owner/churn-risk?tab=resolved"
+            className="p-4 rounded-2xl bg-[#121622] border border-[#232B3E] hover:border-teal-500 hover:bg-[#151B29] transition-all duration-200 cursor-pointer space-y-2 group shadow-sm hover:shadow-lg hover:shadow-teal-500/5 flex flex-col justify-between"
+          >
+            <div>
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-[10px] font-bold uppercase text-slate-400 group-hover:text-slate-200 transition-colors">
+                  Returned Members
+                </span>
+                <div className="p-1.5 rounded-lg bg-teal-500/15 text-teal-400 group-hover:bg-teal-500/25 transition-colors">
+                  <CheckCircle className="w-4 h-4" />
+                </div>
               </div>
+              <div className="text-2xl font-black text-teal-400">{resolvedNoShowsCount}</div>
             </div>
-            <div className="text-2xl font-black text-teal-400">{resolvedNoShowsCount}</div>
-            <span className="text-[10px] text-slate-400 block">Saved from churning</span>
-          </div>
+            <div className="flex items-center justify-between pt-1 border-t border-[#1C2333]">
+              <span className="text-[10px] text-slate-400">Saved from churning</span>
+              <ChevronRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-teal-400 group-hover:translate-x-0.5 transition-all" />
+            </div>
+          </Link>
 
           {/* 6. Renewals Due (<7 Days) */}
-          <div className="p-4 rounded-2xl bg-[#121622] border border-[#232B3E] space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="text-[10px] font-bold uppercase text-slate-400">Renewals Due</span>
-              <div className="p-1.5 rounded-lg bg-amber-500/15 text-amber-400">
-                <Calendar className="w-4 h-4" />
+          <Link
+            href="/owner/manage/members?filter=expiring"
+            className="p-4 rounded-2xl bg-[#121622] border border-[#232B3E] hover:border-amber-500 hover:bg-[#151B29] transition-all duration-200 cursor-pointer space-y-2 group shadow-sm hover:shadow-lg hover:shadow-amber-500/5 flex flex-col justify-between"
+          >
+            <div>
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-[10px] font-bold uppercase text-slate-400 group-hover:text-slate-200 transition-colors">
+                  Renewals Due
+                </span>
+                <div className="p-1.5 rounded-lg bg-amber-500/15 text-amber-400 group-hover:bg-amber-500/25 transition-colors">
+                  <Calendar className="w-4 h-4" />
+                </div>
               </div>
+              <div className="text-2xl font-black text-amber-400">{renewalsDueCount}</div>
             </div>
-            <div className="text-2xl font-black text-amber-400">{renewalsDueCount}</div>
-            <span className="text-[10px] text-slate-400 block">Expiring in 4-7 days</span>
-          </div>
+            <div className="flex items-center justify-between pt-1 border-t border-[#1C2333]">
+              <span className="text-[10px] text-slate-400">Expiring in 4-7 days</span>
+              <ChevronRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-amber-400 group-hover:translate-x-0.5 transition-all" />
+            </div>
+          </Link>
 
           {/* 7. Add-On Revenue */}
-          <div className="p-4 rounded-2xl bg-[#121622] border border-[#232B3E] space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="text-[10px] font-bold uppercase text-slate-400">Add-on Revenue</span>
-              <div className="p-1.5 rounded-lg bg-purple-500/15 text-purple-400">
-                <DollarSign className="w-4 h-4" />
+          <Link
+            href="/owner/manage/addons"
+            className="p-4 rounded-2xl bg-[#121622] border border-[#232B3E] hover:border-purple-500 hover:bg-[#151B29] transition-all duration-200 cursor-pointer space-y-2 group shadow-sm hover:shadow-lg hover:shadow-purple-500/5 flex flex-col justify-between"
+          >
+            <div>
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-[10px] font-bold uppercase text-slate-400 group-hover:text-slate-200 transition-colors">
+                  Add-on Revenue
+                </span>
+                <div className="p-1.5 rounded-lg bg-purple-500/15 text-purple-400 group-hover:bg-purple-500/25 transition-colors">
+                  <DollarSign className="w-4 h-4" />
+                </div>
               </div>
+              <div className="text-2xl font-black text-purple-300 font-mono">₹{addonRevenue}</div>
             </div>
-            <div className="text-2xl font-black text-purple-300 font-mono">₹{addonRevenue}</div>
-            <span className="text-[10px] text-slate-400 block">PT, Diet, Supplements</span>
-          </div>
+            <div className="flex items-center justify-between pt-1 border-t border-[#1C2333]">
+              <span className="text-[10px] text-slate-400">PT, Diet, Supplements</span>
+              <ChevronRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-purple-400 group-hover:translate-x-0.5 transition-all" />
+            </div>
+          </Link>
 
           {/* 8. Total Membership Revenue */}
-          <div className="p-4 rounded-2xl bg-[#121622] border border-[#232B3E] space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="text-[10px] font-bold uppercase text-slate-400">Total Cashflow</span>
-              <div className="p-1.5 rounded-lg bg-[#E5A93C]/15 text-[#E5A93C]">
-                <Flame className="w-4 h-4" />
+          <Link
+            href="/owner/summary"
+            className="p-4 rounded-2xl bg-[#121622] border border-[#232B3E] hover:border-[#E5A93C] hover:bg-[#151B29] transition-all duration-200 cursor-pointer space-y-2 group shadow-sm hover:shadow-lg hover:shadow-[#E5A93C]/5 flex flex-col justify-between"
+          >
+            <div>
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-[10px] font-bold uppercase text-slate-400 group-hover:text-slate-200 transition-colors">
+                  Total Cashflow
+                </span>
+                <div className="p-1.5 rounded-lg bg-[#E5A93C]/15 text-[#E5A93C] group-hover:bg-[#E5A93C]/25 transition-colors">
+                  <Flame className="w-4 h-4" />
+                </div>
               </div>
+              <div className="text-2xl font-black text-[#E5A93C] font-mono">₹{totalPaidRevenue}</div>
             </div>
-            <div className="text-2xl font-black text-[#E5A93C] font-mono">₹{totalPaidRevenue}</div>
-            <span className="text-[10px] text-slate-400 block">All Collections</span>
-          </div>
+            <div className="flex items-center justify-between pt-1 border-t border-[#1C2333]">
+              <span className="text-[10px] text-slate-400">All Collections</span>
+              <ChevronRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-[#E5A93C] group-hover:translate-x-0.5 transition-all" />
+            </div>
+          </Link>
         </div>
 
         {/* Action Gateway Row */}
