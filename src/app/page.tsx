@@ -268,7 +268,7 @@ export default function PublicGymWebsite() {
                 </p>
                 <div className="p-4 rounded-2xl bg-[#171D2B] border border-[#263147] space-y-2">
                   <span className="text-xs font-extrabold text-[#E5A93C] uppercase tracking-wider block">
-                    A Message From Manjunath (Owner)
+                    A Message From The Owner
                   </span>
                   <p className="text-xs text-slate-200 leading-relaxed">
                     &ldquo;Karnataka Gym was built to give Hubballi a place of discipline and health. We don&apos;t lock you into predatory subscriptions or push useless supplements. We teach you how to train properly, eat right, and stay consistent.&rdquo;
