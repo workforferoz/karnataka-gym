@@ -622,13 +622,6 @@ export default function PublicGymWebsite() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0B0E14] via-transparent to-black/25 pointer-events-none" />
 
-                  {/* Top Badge */}
-                  <div className="absolute top-2.5 left-2.5">
-                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-[#0B0E14]/90 text-[#E5A93C] border border-[#E5A93C]/40 backdrop-blur-sm shadow-md">
-                      {item.badge}
-                    </span>
-                  </div>
-
                   {/* Before / After Floating Badges at Bottom */}
                   <div className="absolute bottom-2.5 left-2.5 right-2.5 flex items-center justify-between pointer-events-none">
                     <span className="px-2 py-0.5 rounded-md text-[9px] font-black uppercase tracking-wider bg-black/85 text-rose-300 border border-rose-500/30 backdrop-blur-sm">
@@ -636,13 +629,6 @@ export default function PublicGymWebsite() {
                     </span>
                     <span className="px-2 py-0.5 rounded-md text-[9px] font-black uppercase tracking-wider bg-[#E5A93C] text-slate-950 font-black shadow-md">
                       After • Fit
-                    </span>
-                  </div>
-
-                  {/* Expand icon top-right */}
-                  <div className="absolute top-2.5 right-2.5 opacity-90 group-hover:opacity-100 transition-opacity">
-                    <span className="w-7 h-7 rounded-full bg-black/75 border border-white/20 text-white flex items-center justify-center backdrop-blur-sm shadow-md group-hover:border-[#E5A93C] group-hover:text-[#E5A93C] transition-colors">
-                      <Maximize2 className="w-3.5 h-3.5" />
                     </span>
                   </div>
                 </div>
@@ -666,14 +652,6 @@ export default function PublicGymWebsite() {
                         <span className="truncate">{ach}</span>
                       </div>
                     ))}
-                  </div>
-
-                  <div className="pt-2 flex items-center justify-between text-[10px]">
-                    <span className="text-slate-400 font-medium">Karnataka Gym</span>
-                    <span className="text-[#E5A93C] font-bold group-hover:underline flex items-center gap-1">
-                      <span>View</span>
-                      <Maximize2 className="w-2.5 h-2.5" />
-                    </span>
                   </div>
                 </div>
               </div>
