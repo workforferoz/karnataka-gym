@@ -7,6 +7,7 @@ import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { MemberBottomNav } from '@/components/MemberBottomNav';
 import { checkRateLimit } from '@/lib/security';
+import { UpiPaymentModal } from '@/components/UpiPaymentModal';
 import {
   RefreshCcw,
   CheckCircle,
@@ -244,79 +245,23 @@ export default function MemberRenewPage() {
           <span>Pay ₹{totalWithTax} & Renew Instant</span>
         </button>
 
-        {/* Simulated Payment Gateway Modal */}
-        {paymentModalOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-150">
-            <div className="bg-[#121622] border-2 border-[#E5A93C] rounded-3xl p-6 max-w-sm w-full space-y-4 shadow-2xl relative">
-              <div className="flex items-center justify-between border-b border-[#232B3E] pb-3">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 drop-shadow-sm">
-                    <img src="/karnataka-gym-badge.png" alt="KG" className="w-full h-full object-contain rounded-full" />
-                  </div>
-                  <div>
-                    <h3 className="text-xs font-black text-white">Razorpay / UPI Gateway</h3>
-                    <span className="text-[10px] text-slate-400">Karnataka Gym Hubballi</span>
-                  </div>
-                </div>
-                <span className="text-xs font-mono font-bold text-[#E5A93C]">₹{totalWithTax}</span>
-              </div>
-
-              {/* Status Message */}
-              {paymentResult && (
-                <div
-                  className={`p-3 rounded-xl border text-xs font-medium ${
-                    paymentResult.success
-                      ? 'bg-emerald-950/60 border-emerald-600 text-emerald-200'
-                      : 'bg-red-950/60 border-red-600 text-red-200'
-                  }`}
-                >
-                  {paymentResult.message}
-                </div>
-              )}
-
-              <div className="space-y-2 text-xs">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">
-                  Select Simulation Mode (Test Gateway):
-                </span>
-
-                <button
-                  onClick={() => handleExecutePayment('paid')}
-                  disabled={isProcessing}
-                  className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold py-2.5 rounded-xl flex items-center justify-center gap-2 transition-colors cursor-pointer"
-                >
-                  <CheckCircle className="w-4 h-4" />
-                  <span>Simulate Payment SUCCESS (Auto Extend)</span>
-                </button>
-
-                <button
-                  onClick={() => handleExecutePayment('failed')}
-                  disabled={isProcessing}
-                  className="w-full bg-red-600 hover:bg-red-500 text-white font-extrabold py-2.5 rounded-xl flex items-center justify-center gap-2 transition-colors cursor-pointer"
-                >
-                  <XCircle className="w-4 h-4" />
-                  <span>Simulate Payment FAILURE (Verify Guard)</span>
-                </button>
-
-                <button
-                  onClick={() => handleExecutePayment('pending')}
-                  disabled={isProcessing}
-                  className="w-full bg-[#1F2739] hover:bg-[#28324A] text-slate-300 font-bold py-2.5 rounded-xl flex items-center justify-center gap-2 transition-colors cursor-pointer"
-                >
-                  <Info className="w-4 h-4 text-amber-400" />
-                  <span>Simulate Payment PENDING</span>
-                </button>
-              </div>
-
-              <button
-                onClick={() => setPaymentModalOpen(false)}
-                disabled={isProcessing}
-                className="w-full py-2 text-xs text-slate-400 hover:text-white"
-              >
-                Cancel & Close
-              </button>
-            </div>
-          </div>
-        )}
+        {/* Official UPI Payment Gateway Modal */}
+        <UpiPaymentModal
+          isOpen={paymentModalOpen}
+          onClose={() => setPaymentModalOpen(false)}
+          title={`Renewal: ${selectedPlan.name}`}
+          amount={totalWithTax}
+          itemDescription={`Karnataka Gym ${selectedPlan.name} Membership Renewal`}
+          onPaymentSuccess={async (details) => {
+            const res = await renewMembership(
+              currentUser.id,
+              selectedPlanId,
+              'paid',
+              details.transactionId
+            );
+            setPaymentResult(res);
+          }}
+        />
       </main>
 
       <Footer />

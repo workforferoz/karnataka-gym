@@ -94,8 +94,8 @@ interface GymContextType {
 
   // Actions
   recordCheckin: (userId: string, method?: 'qr' | 'assisted', assistedReason?: string) => Promise<CheckinResult>;
-  renewMembership: (userId: string, planId: string, simulateState?: 'paid' | 'failed' | 'pending') => Promise<{ success: boolean; message: string; payment?: Payment }>;
-  purchaseAddOn: (userId: string, addonId: string, trainerOverride?: string) => Promise<{ success: boolean; message: string }>;
+  renewMembership: (userId: string, planId: string, simulateState?: 'paid' | 'failed' | 'pending', customTxnId?: string) => Promise<{ success: boolean; message: string; payment?: Payment }>;
+  purchaseAddOn: (userId: string, addonId: string, trainerOverride?: string, customTxnId?: string) => Promise<{ success: boolean; message: string; payment?: Payment }>;
   markFollowUpOutcome: (caseId: string, outcome: FollowUpOutcome, nextDate?: string, notes?: string) => Promise<{ success: boolean; message: string }>;
   freezeMembership: (userId: string, reason: string) => Promise<{ success: boolean; message: string }>;
   unfreezeMembership: (userId: string) => Promise<{ success: boolean; message: string }>;
@@ -344,7 +344,7 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return found || users[0] || INITIAL_USERS[0];
   }, [users, currentUserId]);
 
-  const login = (userId: string) => {
+  const login = (userId: string, method: string = 'credentials') => {
     setCurrentUserId(userId);
     setIsLoggedIn(true);
     try {
@@ -352,6 +352,29 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       localStorage.setItem('karnataka_gym_current_user_id', userId);
     } catch (e) {
       console.warn('Error saving login state:', e);
+    }
+
+    // Save login event directly to Supabase audit_logs
+    const userObj = users.find((u) => u.id === userId);
+    if (userObj) {
+      const loginLog: AuditLog = {
+        id: `audit_login_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+        actor_id: userId,
+        action: 'profile_override',
+        target_user_id: userId,
+        timestamp: new Date().toISOString(),
+        reason: `Member login verified: ${userObj.name} (+91 ${userObj.phone}) via ${method}`,
+        details: {
+          userId,
+          name: userObj.name,
+          phone: userObj.phone,
+          email: userObj.email,
+          auth_provider: userObj.auth_provider || method,
+          login_time: new Date().toISOString()
+        }
+      };
+      setAuditLogs((prev) => [loginLog, ...prev]);
+      syncSupabaseInsert('audit_logs', loginLog);
     }
   };
 
@@ -621,16 +644,17 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return synced;
   };
 
-  // 2. Renewal & Payment Gateway Simulation (With Idempotency & Failed/Pending Checks)
+  // 2. Renewal & Payment Gateway (Official UPI: feroznadaf13008@ybl)
   const renewMembership = async (
     userId: string,
     planId: string,
-    simulateState: 'paid' | 'failed' | 'pending' = 'paid'
+    simulateState: 'paid' | 'failed' | 'pending' = 'paid',
+    customTxnId?: string
   ): Promise<{ success: boolean; message: string; payment?: Payment }> => {
     const plan = plans.find((p) => p.id === planId);
     if (!plan) return { success: false, message: 'Plan invalid ya nahi mila.' };
 
-    const txnId = `TXN_KG_${Date.now()}_${Math.random().toString(36).substring(2, 7).toUpperCase()}`;
+    const txnId = customTxnId || `TXN_KG_${Date.now()}_${Math.random().toString(36).substring(2, 7).toUpperCase()}`;
     const payableAmount = plan.base_price - plan.discount_amount;
 
     const paymentRecord: Payment = {
@@ -641,7 +665,7 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       transaction_id: txnId,
       plan_id: planId,
       created_at: new Date().toISOString(),
-      gateway: 'razorpay_upi'
+      gateway: 'upi_feroznadaf'
     };
 
     setPayments((prev) => [paymentRecord, ...prev]);
@@ -742,12 +766,13 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return { success: true, message: 'First time processing webhook.' };
   };
 
-  // 3. Purchase Add-ons (PT Trainer conflict + Supplement stock check)
+  // 3. Purchase Add-ons (Official UPI: feroznadaf13008@ybl)
   const purchaseAddOn = async (
     userId: string,
     addonId: string,
-    trainerOverride?: string
-  ): Promise<{ success: boolean; message: string }> => {
+    trainerOverride?: string,
+    customTxnId?: string
+  ): Promise<{ success: boolean; message: string; payment?: Payment }> => {
     const addon = addOns.find((a) => a.id === addonId);
     if (!addon) return { success: false, message: 'Add-on nahi mila.' };
 
@@ -775,7 +800,7 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
 
     // Create payment
-    const txnId = `TXN_ADDON_${Date.now()}`;
+    const txnId = customTxnId || `TXN_ADDON_UPI_${Date.now()}`;
     const paymentRecord: Payment = {
       id: `pay_addon_${Date.now()}`,
       user_id: userId,
@@ -783,7 +808,8 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       status: 'paid',
       transaction_id: txnId,
       addon_id: addon.id,
-      created_at: new Date().toISOString()
+      created_at: new Date().toISOString(),
+      gateway: 'upi_feroznadaf'
     };
     setPayments((prev) => [paymentRecord, ...prev]);
     syncSupabaseInsert('payments', paymentRecord);
@@ -826,7 +852,8 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     return {
       success: true,
-      message: `Purchase successful! "${addon.name}" active ho gaya hai.`
+      message: `Purchase successful! "${addon.name}" active ho gaya hai.`,
+      payment: paymentRecord
     };
   };
 

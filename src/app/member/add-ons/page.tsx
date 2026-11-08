@@ -6,6 +6,7 @@ import { useGym } from '@/lib/store';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { MemberBottomNav } from '@/components/MemberBottomNav';
+import { UpiPaymentModal } from '@/components/UpiPaymentModal';
 import {
   ShoppingBag,
   Dumbbell,
@@ -29,6 +30,7 @@ export default function MemberAddOnsPage() {
   const [selectedAddon, setSelectedAddon] = useState<typeof addOns[0] | null>(null);
   const [selectedTrainerOverride, setSelectedTrainerOverride] = useState<string>('');
   const [isBuying, setIsBuying] = useState(false);
+  const [upiModalOpen, setUpiModalOpen] = useState(false);
   const [purchaseResult, setPurchaseResult] = useState<{
     success: boolean;
     message: string;
@@ -47,23 +49,40 @@ export default function MemberAddOnsPage() {
     setPurchaseResult(null);
   };
 
-  const handleConfirmPurchase = async () => {
+  const handleProceedToUpi = () => {
+    if (!selectedAddon) return;
+    if (selectedAddon.type === 'supplement' && selectedAddon.stock <= 0) {
+      setPurchaseResult({
+        success: false,
+        message: `Stock Unavailable! "${selectedAddon.name}" is out of stock.`
+      });
+      return;
+    }
+    if (selectedAddon.type === 'pt' && selectedTrainerOverride === 'Rakesh') {
+      setPurchaseResult({
+        success: false,
+        message: `Booking Conflict! Coach Rakesh is currently fully booked. Please select Vikram or Pooja.`
+      });
+      return;
+    }
+    setUpiModalOpen(true);
+  };
+
+  const handleUpiSuccess = async (details: { transactionId: string }) => {
     if (!selectedAddon) return;
     setIsBuying(true);
-    setPurchaseResult(null);
-
     try {
       const res = await purchaseAddOn(
         currentUser.id,
         selectedAddon.id,
-        selectedAddon.type === 'pt' ? selectedTrainerOverride : undefined
+        selectedAddon.type === 'pt' ? selectedTrainerOverride : undefined,
+        details.transactionId
       );
       setPurchaseResult(res);
-      if (res.success) {
-        setTimeout(() => {
-          setSelectedAddon(null);
-        }, 1800);
-      }
+      setUpiModalOpen(false);
+      setTimeout(() => {
+        setSelectedAddon(null);
+      }, 1500);
     } finally {
       setIsBuying(false);
     }
@@ -336,15 +355,27 @@ export default function MemberAddOnsPage() {
                   Cancel
                 </button>
                 <button
-                  onClick={handleConfirmPurchase}
+                  onClick={handleProceedToUpi}
                   disabled={isBuying}
                   className="flex-1 py-2.5 rounded-xl bg-[#E5A93C] hover:bg-[#F59E0B] text-slate-950 font-black text-xs shadow-lg shadow-[#E5A93C]/20 active:scale-95 transition-all"
                 >
-                  {isBuying ? 'Processing...' : `Pay ₹${selectedAddon.price}`}
+                  <span>Pay ₹{selectedAddon.price} via UPI QR</span>
                 </button>
               </div>
             </div>
           </div>
+        )}
+
+        {/* UPI Payment Modal */}
+        {selectedAddon && (
+          <UpiPaymentModal
+            isOpen={upiModalOpen}
+            onClose={() => setUpiModalOpen(false)}
+            title={selectedAddon.name}
+            amount={selectedAddon.price}
+            itemDescription={`Karnataka Gym ${selectedAddon.category_label}`}
+            onPaymentSuccess={handleUpiSuccess}
+          />
         )}
       </main>
 

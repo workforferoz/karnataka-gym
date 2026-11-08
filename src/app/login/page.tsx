@@ -7,6 +7,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useGym } from '@/lib/store';
 import { Footer } from '@/components/Footer';
 import { sanitizePhone, checkRateLimit } from '@/lib/security';
+import { UpiPaymentModal } from '@/components/UpiPaymentModal';
 import {
   Phone,
   ArrowRight,
@@ -90,6 +91,15 @@ function LoginContent() {
   const [showRegPassword, setShowRegPassword] = useState(false);
   const [regError, setRegError] = useState('');
   const [regSuccess, setRegSuccess] = useState('');
+  const [showRegUpiModal, setShowRegUpiModal] = useState(false);
+
+  const selectedRegPlan = plans.find((p) => p.id === regPlanId) || plans[0];
+  const regPayableAmount =
+    regPlanId === 'trial_7days'
+      ? 0
+      : selectedRegPlan
+      ? selectedRegPlan.base_price - (selectedRegPlan.discount_amount || 0)
+      : 0;
 
   // Google OAuth Modal
   const [showGoogleModal, setShowGoogleModal] = useState(false);
@@ -192,6 +202,56 @@ function LoginContent() {
       }
 
       setRegSuccess(res.message);
+      setTimeout(() => {
+        router.push('/member/home');
+      }, 1000);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleOpenRegUpi = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setRegError('');
+    if (!regName.trim() || regName.trim().length < 2) {
+      setRegError('Please enter your full name.');
+      return;
+    }
+    if (regPhone.replace(/\D/g, '').length < 10) {
+      setRegError('Please enter a valid 10-digit mobile number.');
+      return;
+    }
+    if (regPassword.length < 4) {
+      setRegError('Password must be at least 4 characters long.');
+      return;
+    }
+    if (regPassword !== regConfirmPassword) {
+      setRegError('Passwords do not match. Please re-type your password.');
+      return;
+    }
+    setShowRegUpiModal(true);
+  };
+
+  const handleRegUpiSuccess = async (details: { transactionId: string }) => {
+    setShowRegUpiModal(false);
+    setIsSubmitting(true);
+    try {
+      const res = await registerMemberAccount({
+        name: regName,
+        phone: regPhone,
+        email: regEmail || undefined,
+        password: regPassword,
+        planId: regPlanId,
+        fitnessGoal: regGoal,
+        authProvider: 'password'
+      });
+
+      if (!res.success) {
+        setRegError(res.message);
+        return;
+      }
+
+      setRegSuccess(`Payment verified! ${res.message}`);
       setTimeout(() => {
         router.push('/member/home');
       }, 1000);
@@ -708,14 +768,37 @@ function LoginContent() {
                     </div>
                   )}
 
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full bg-blue-600 hover:bg-blue-500 text-white font-extrabold py-3 rounded-xl text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-blue-600/30 transition-all cursor-pointer disabled:opacity-50"
-                  >
-                    <UserPlus className="w-4 h-4" />
-                    <span>{isSubmitting ? 'Creating Profile...' : 'Complete Account Setup & Enter Gym'}</span>
-                  </button>
+                  {regPayableAmount > 0 ? (
+                    <div className="space-y-2 pt-1">
+                      <button
+                        type="button"
+                        onClick={handleOpenRegUpi}
+                        disabled={isSubmitting}
+                        className="w-full bg-gradient-to-r from-[#E5A93C] to-[#F59E0B] hover:from-[#d89e34] hover:to-[#e08f06] text-slate-950 font-black py-3 rounded-xl text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-[#E5A93C]/20 transition-all cursor-pointer disabled:opacity-50"
+                      >
+                        <Sparkles className="w-4 h-4 stroke-[2.5]" />
+                        <span>Pay ₹{regPayableAmount} via UPI QR (Instant Pass)</span>
+                      </button>
+
+                      <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="w-full bg-[#181F2F] hover:bg-[#20293D] text-slate-300 font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 border border-[#2D3850] transition-all cursor-pointer disabled:opacity-50"
+                      >
+                        <UserPlus className="w-3.5 h-3.5" />
+                        <span>Register Now (Pay Cash at Reception)</span>
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="w-full bg-blue-600 hover:bg-blue-500 text-white font-extrabold py-3 rounded-xl text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-blue-600/30 transition-all cursor-pointer disabled:opacity-50"
+                    >
+                      <UserPlus className="w-4 h-4" />
+                      <span>{isSubmitting ? 'Creating Profile...' : 'Activate 7-Day Free Trial Pass'}</span>
+                    </button>
+                  )}
                 </form>
 
                 <div className="text-center pt-1">
@@ -729,6 +812,16 @@ function LoginContent() {
                 </div>
               </div>
             )}
+
+            {/* Registration UPI QR Payment Modal */}
+            <UpiPaymentModal
+              isOpen={showRegUpiModal}
+              onClose={() => setShowRegUpiModal(false)}
+              title={`Membership: ${selectedRegPlan?.name || 'Initial Plan'}`}
+              amount={regPayableAmount}
+              itemDescription={`Karnataka Gym ${selectedRegPlan?.name || ''} New Membership`}
+              onPaymentSuccess={handleRegUpiSuccess}
+            />
 
             {/* Quick 1-Tap Demo Card */}
             <div className="bg-[#121622] border border-[#232B3E] rounded-2xl p-4 shadow-xl space-y-3">
