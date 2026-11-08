@@ -211,7 +211,7 @@ export default function ManageAddOnsPage() {
             }`}
           >
             <Dumbbell className="w-3.5 h-3.5" />
-            <span>Personal Training</span>
+            <span>PT Packages</span>
             <span className="text-[10px] px-1.5 rounded-full bg-slate-950/20 font-mono">
               {addOns.filter((a) => a.type === 'pt').length}
             </span>
@@ -226,7 +226,7 @@ export default function ManageAddOnsPage() {
             }`}
           >
             <Salad className="w-3.5 h-3.5" />
-            <span>Nutrition & Diet</span>
+            <span>Diet Plans</span>
             <span className="text-[10px] px-1.5 rounded-full bg-slate-950/20 font-mono">
               {addOns.filter((a) => a.type === 'diet').length}
             </span>
@@ -377,12 +377,13 @@ export default function ManageAddOnsPage() {
                     {/* Description */}
                     <div>
                       <label className="block text-[10px] font-bold text-slate-300 uppercase tracking-wider mb-1">
-                        Service Description
+                        Service Description (Visible on Member Store)
                       </label>
                       <textarea
                         value={editDescription}
                         onChange={(e) => setEditDescription(e.target.value)}
-                        rows={2}
+                        rows={3}
+                        placeholder="Detailed description of training protocol, diet chart, or supplement specs..."
                         className="w-full bg-[#182133] border border-[#2D3C57] focus:border-[#E5A93C] rounded-xl p-2.5 text-xs text-white focus:outline-none leading-relaxed"
                       />
                     </div>
