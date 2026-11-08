@@ -38,9 +38,13 @@ export default function PublicGymWebsite() {
   const [inquiryName, setInquiryName] = useState('');
   const [inquiryPhone, setInquiryPhone] = useState('');
   const [inquiryGoal, setInquiryGoal] = useState('general_fitness');
+  const [inquiryDate, setInquiryDate] = useState('');
+  const [inquiryTime, setInquiryTime] = useState('06:30 PM - 08:00 PM');
   const [inquiryConsent, setInquiryConsent] = useState(false);
   const [inquiryStatus, setInquiryStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [inquiryMessage, setInquiryMessage] = useState('');
+
+  const todayDateStr = new Date().toISOString().split('T')[0];
 
   const handleInquirySubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -67,10 +71,17 @@ export default function PublicGymWebsite() {
       return;
     }
 
+    if (!inquiryDate) {
+      setInquiryStatus('error');
+      setInquiryMessage('Please select your preferred visit date.');
+      return;
+    }
+
     setInquiryStatus('success');
-    setInquiryMessage(`Dhanyavad ${cleanName}! Your inquiry has been registered. Coach Vikram / front desk will call you at +91 ${cleanPhone}.`);
+    setInquiryMessage(`Dhanyavad ${cleanName}! Your gym walkthrough has been confirmed for ${inquiryDate} (${inquiryTime}). Coach Vikram / front desk will contact you at +91 ${cleanPhone}.`);
     setInquiryName('');
     setInquiryPhone('');
+    setInquiryDate('');
     setInquiryConsent(false);
   };
 
@@ -685,6 +696,44 @@ export default function PublicGymWebsite() {
                     <option value="bodybuilding_prep">Competitive Bodybuilding</option>
                     <option value="pt_guidance">1-on-1 Personal Training</option>
                   </select>
+                </div>
+
+                {/* Visit Date & Time */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-bold text-slate-300 mb-1 uppercase tracking-wider flex items-center gap-1.5">
+                      <Calendar className="w-3.5 h-3.5 text-[#E5A93C]" />
+                      <span>Preferred Visit Date</span>
+                    </label>
+                    <input
+                      type="date"
+                      value={inquiryDate}
+                      onChange={(e) => setInquiryDate(e.target.value)}
+                      min={todayDateStr}
+                      className="w-full bg-[#171D2B] border border-[#263147] focus:border-[#E5A93C] rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-slate-300 mb-1 uppercase tracking-wider flex items-center gap-1.5">
+                      <Clock className="w-3.5 h-3.5 text-[#E5A93C]" />
+                      <span>Preferred Visit Time</span>
+                    </label>
+                    <select
+                      value={inquiryTime}
+                      onChange={(e) => setInquiryTime(e.target.value)}
+                      className="w-full bg-[#171D2B] border border-[#263147] focus:border-[#E5A93C] rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none"
+                      required
+                    >
+                      <option value="06:00 AM - 07:30 AM">Morning: 6:00 AM - 7:30 AM</option>
+                      <option value="07:30 AM - 09:00 AM">Morning: 7:30 AM - 9:00 AM</option>
+                      <option value="09:00 AM - 10:30 AM">Late Morning: 9:00 AM - 10:30 AM</option>
+                      <option value="05:00 PM - 06:30 PM">Evening: 5:00 PM - 6:30 PM</option>
+                      <option value="06:30 PM - 08:00 PM">Evening: 6:30 PM - 8:00 PM</option>
+                      <option value="08:00 PM - 09:30 PM">Night: 8:00 PM - 9:30 PM</option>
+                    </select>
+                  </div>
                 </div>
 
                 {/* Consent Checkbox */}
