@@ -35,11 +35,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark h-full antialiased bg-[#0B0E14] text-slate-100">
+    <html lang="en" className="dark h-full antialiased bg-[#0B0E14] text-slate-100" suppressHydrationWarning>
       <head>
         <link rel="apple-touch-icon" href="/karnataka-gym-logo.png" />
       </head>
-      <body className="min-h-full flex flex-col bg-[#0B0E14] text-slate-100 select-none">
+      <body className="min-h-full flex flex-col bg-[#0B0E14] text-slate-100 select-none" suppressHydrationWarning>
         <GymProvider>
           {children}
           <CookieConsent />
