@@ -262,28 +262,6 @@ export default function PublicGymWebsite() {
         {/* 1. HERO SECTION */}
         <section className="relative pt-10 pb-16 px-4 border-b border-[#232B3E] overflow-hidden">
           <div className="max-w-4xl mx-auto text-center space-y-6">
-            {/* Brand Logo & Location Flag */}
-            <div className="flex items-center justify-center gap-3">
-              <div className="relative w-14 h-14 rounded-full overflow-hidden flex-shrink-0 drop-shadow-[0_4px_16px_rgba(229,169,60,0.4)]">
-                <Image
-                  src="/karnataka-gym-badge.png"
-                  alt="Karnataka Gym Hubballi Badge"
-                  width={56}
-                  height={56}
-                  className="object-contain w-full h-full rounded-full"
-                  priority
-                />
-              </div>
-              <div className="text-left">
-                <span className="text-xs font-black tracking-widest text-[#E5A93C] uppercase block">
-                  Hubballi, Karnataka
-                </span>
-                <span className="text-[11px] text-slate-400 font-medium">
-                  Kalidas Nagar • Established Strength Center
-                </span>
-              </div>
-            </div>
-
             {/* Primary Hero Headline (High contrast, solid white and warm gold, NO gradient text, NO emojis) */}
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight">
               BUILD RAW STRENGTH AT <span className="text-[#E5A93C]">KARNATAKA GYM</span>
