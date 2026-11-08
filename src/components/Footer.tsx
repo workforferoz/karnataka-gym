@@ -51,17 +51,8 @@ export const Footer: React.FC = () => {
 
         {/* Legal & Compliance Links */}
         <div className="pt-4 border-t border-[#141B28] flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-400">
-          <div className="flex flex-wrap items-center gap-1.5">
+          <div>
             <span>© 2026 Karnataka Gym Hubballi. All rights reserved.</span>
-            <span className="text-slate-600 hidden sm:inline">•</span>
-            <span>
-              Crafted by{' '}
-              <strong className="text-slate-300 font-bold">Ayesha Tech Studio</strong> (
-              <a href="tel:9663396058" className="text-[#E5A93C] hover:underline font-bold">
-                9663396058
-              </a>
-              )
-            </span>
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-4">
