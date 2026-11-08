@@ -61,7 +61,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenTests }) => {
   };
 
   const keyUsers = [
-    { id: 'member_rahul_desai', label: 'Rahul Desai (Active Streak)', badge: 'Member' },
+    { id: 'member_rahul_desai', label: 'Rahul Desai (Demo - 9743247790)', badge: 'Demo' },
     { id: 'member_priya_patil', label: 'Priya Patil (Expires in 4 Days)', badge: 'Expiring' },
     { id: 'member_prakash_hubli', label: 'Prakash Hubli (Absent 18 Days)', badge: 'Churn Risk' },
     { id: 'member_sneha_joshi', label: 'Sneha Joshi (Marketing Opt-out)', badge: 'Opted-Out' },

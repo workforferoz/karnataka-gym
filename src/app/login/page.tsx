@@ -73,19 +73,25 @@ function LoginContent() {
       return;
     }
 
-    const found = users.find((u) => u.phone === sanitized || u.phone.includes(sanitized));
+    const found =
+      users.find((u) => u.phone === sanitized || u.phone.includes(sanitized)) ||
+      (sanitized === '9743247790' ? demoMember : null);
 
     if (found) {
       setMatchedUser(found);
       setOtpStep(true);
-      setOtpCode('1234'); // auto-fill demo OTP
+      setOtpCode('1234'); // auto-fill demo password / OTP
     } else {
-      setErrorMsg('Mobile number not found in Karnataka Gym register. Please check the number or contact front desk (9902667407).');
+      setErrorMsg('Mobile number not found in Karnataka Gym register. Please check the number or use Demo Account: 9743247790.');
     }
   };
 
   const handleOtpVerify = (e: React.FormEvent) => {
     e.preventDefault();
+    if (otpCode.trim() !== '1234') {
+      setErrorMsg('Invalid password/OTP. Please enter demo password: 1234');
+      return;
+    }
     if (matchedUser) {
       login(matchedUser.id);
       if (matchedUser.role === 'owner' || matchedUser.role === 'front_desk' || matchedUser.role === 'trainer') {
@@ -142,15 +148,18 @@ function LoginContent() {
   // Grouped users
   const trainerUsers = users.filter((u) => u.role === 'trainer');
   const ownerUsers = users.filter((u) => u.role === 'owner' || u.role === 'front_desk');
-  const demoMember = users.find((u) => u.id === 'member_rahul_desai') || users.find((u) => u.role === 'member') || {
-    id: 'member_rahul_desai',
-    name: 'Rahul Desai',
-    phone: '9876543210',
-    role: 'member' as const,
-    marketing_opt_in: true,
-    comm_preference: 'whatsapp' as const,
-    created_at: '2025-01-01'
-  };
+  const demoMember =
+    users.find((u) => u.phone === '9743247790') ||
+    users.find((u) => u.id === 'member_rahul_desai') ||
+    users.find((u) => u.role === 'member') || {
+      id: 'member_rahul_desai',
+      name: 'Rahul Desai',
+      phone: '9743247790',
+      role: 'member' as const,
+      marketing_opt_in: true,
+      comm_preference: 'whatsapp' as const,
+      created_at: '2025-01-01'
+    };
 
   return (
     <div className="min-h-screen flex flex-col bg-[#0B0E14] text-slate-100">
@@ -251,16 +260,28 @@ function LoginContent() {
               {!otpStep ? (
                 <form onSubmit={handlePhoneSubmit} className="space-y-4">
                   <div>
-                    <label className="block text-xs font-bold text-slate-300 mb-1.5 uppercase tracking-wider">
-                      Mobile Number
-                    </label>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider">
+                        Mobile Number
+                      </label>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setPhoneInput('9743247790');
+                          setErrorMsg('');
+                        }}
+                        className="text-[11px] text-[#E5A93C] hover:underline font-bold cursor-pointer"
+                      >
+                        Demo: 9743247790
+                      </button>
+                    </div>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 font-bold text-xs">
                         +91
                       </div>
                       <input
                         type="tel"
-                        placeholder="Enter 10-digit mobile number"
+                        placeholder="e.g. 9743247790"
                         value={phoneInput}
                         onChange={(e) => setPhoneInput(e.target.value)}
                         className="w-full bg-[#181F2F] border border-[#2C3852] focus:border-[#E5A93C] rounded-xl py-2.5 pl-12 pr-4 text-sm font-semibold text-white placeholder-slate-500 focus:outline-none"
@@ -277,7 +298,7 @@ function LoginContent() {
                     type="submit"
                     className="w-full bg-[#E5A93C] hover:bg-[#F59E0B] text-slate-950 font-extrabold py-2.5 rounded-xl text-sm flex items-center justify-center gap-2 shadow-lg shadow-[#E5A93C]/20 transition-all cursor-pointer"
                   >
-                    <span>Get OTP / Continue</span>
+                    <span>Continue to Password / OTP</span>
                     <ArrowRight className="w-4 h-4" />
                   </button>
                 </form>
@@ -300,8 +321,8 @@ function LoginContent() {
 
                   <div>
                     <label className="block text-xs font-bold text-slate-300 mb-1.5 uppercase tracking-wider flex items-center justify-between">
-                      <span>Enter 4-Digit OTP</span>
-                      <span className="text-[#E5A93C] text-[10px] font-normal">Demo OTP: 1234</span>
+                      <span>Enter 4-Digit Password / OTP</span>
+                      <span className="text-[#E5A93C] text-[10px] font-bold">Demo Password: 1234</span>
                     </label>
                     <div className="relative">
                       <KeyRound className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
@@ -309,6 +330,7 @@ function LoginContent() {
                         type="text"
                         value={otpCode}
                         onChange={(e) => setOtpCode(e.target.value)}
+                        placeholder="1234"
                         className="w-full bg-[#181F2F] border border-[#2C3852] focus:border-[#E5A93C] rounded-xl py-2.5 pl-10 pr-4 text-sm font-mono tracking-widest text-white placeholder-slate-500 focus:outline-none text-center"
                         maxLength={4}
                         required
@@ -321,7 +343,7 @@ function LoginContent() {
                     className="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-extrabold py-2.5 rounded-xl text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 transition-all cursor-pointer"
                   >
                     <CheckCircle className="w-4 h-4 stroke-[2.5]" />
-                    <span>Verify OTP & Enter Member Portal</span>
+                    <span>Verify & Enter Member Portal</span>
                   </button>
                 </form>
               )}
@@ -332,10 +354,10 @@ function LoginContent() {
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
                   <UserCheck className="w-3.5 h-3.5 text-[#E5A93C]" />
-                  <span>Demo Member Profile:</span>
+                  <span>Demo Member Account:</span>
                 </span>
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
-                  Active Plan
+                  Password: 1234
                 </span>
               </div>
 
@@ -353,7 +375,7 @@ function LoginContent() {
                       {demoMember.name}
                     </span>
                     <span className="text-xs text-slate-400 font-mono">
-                      +91 {demoMember.phone} • 12-Month Iron Warrior
+                      +91 {demoMember.phone} • Password: 1234 • Active Plan
                     </span>
                   </div>
                 </div>

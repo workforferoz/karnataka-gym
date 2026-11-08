@@ -253,7 +253,7 @@ export const INITIAL_USERS: User[] = [
   {
     id: 'member_rahul_desai',
     role: 'member',
-    phone: '9876543210',
+    phone: '9743247790',
     name: 'Rahul Desai',
     profile_image: '',
     marketing_opt_in: true,
