@@ -112,6 +112,54 @@ const TRANSFORMATIONS = [
       'Proven proof of work right in Hubballi'
     ],
   },
+  {
+    id: 'transformation-5',
+    src: '/transformations/transformation-5-active-fitness.webp',
+    title: 'Active Lifestyle & Core Slimming',
+    badge: 'Weight Loss & Active Life',
+    story: 'Shifted from long hours of sedentary desk work to consistent daily workouts, burning stubborn body fat while boosting cardiovascular fitness.',
+    achievements: [
+      'Visible waist & midsection trimming',
+      'Consistent daily morning workout habit',
+      'Enhanced endurance and daily energy'
+    ],
+  },
+  {
+    id: 'transformation-6',
+    src: '/transformations/transformation-6-lifestyle-toning.webp',
+    title: 'Postural Alignment & Waistline Tone',
+    badge: 'Fat Loss & Posture',
+    story: 'Replaced extreme food restriction with strength-based resistance training and structured, nutrient-dense home-cooked meals.',
+    achievements: [
+      'Inches reduced from waist and hips',
+      'Improved shoulder and spinal posture',
+      'Sustainable eating without starving'
+    ],
+  },
+  {
+    id: 'transformation-7',
+    src: '/transformations/transformation-7-athletic-conditioning.webp',
+    title: 'Athletic Conditioning & Leaning Out',
+    badge: 'Athletic Recomposition',
+    story: 'Committed to full-body resistance splits and HIIT cardio, transforming overall stamina and dropping body fat percentage steadily.',
+    achievements: [
+      'Full-body lean muscle toning',
+      'Athletic agility and high energy levels',
+      'Consistent 4-day gym training schedule'
+    ],
+  },
+  {
+    id: 'transformation-8',
+    src: '/transformations/transformation-8-strength-recomposition.webp',
+    title: 'Body Recomposition & Confidence',
+    badge: 'Toning & Confidence',
+    story: 'Combined progressive weight resistance with balanced daily protein intake, creating a fit, toned silhouette with renewed self-confidence.',
+    achievements: [
+      'Noticeable total body inch loss',
+      'Increased upper and lower body strength',
+      'Long-term sustainable lifestyle habits'
+    ],
+  },
 ];
 
 export default function PublicGymWebsite() {
@@ -598,8 +646,8 @@ export default function PublicGymWebsite() {
             </div>
           </div>
 
-          {/* 4 Transformations Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* 8 Transformations Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {TRANSFORMATIONS.map((item) => (
               <div
                 key={item.id}
@@ -612,62 +660,62 @@ export default function PublicGymWebsite() {
                     src={item.src}
                     alt={item.title}
                     fill
-                    sizes="(max-width: 768px) 100vw, 50vw"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                     className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0B0E14] via-transparent to-black/25 pointer-events-none" />
 
                   {/* Top Badge */}
-                  <div className="absolute top-3 left-3">
-                    <span className="px-3 py-1 rounded-full text-[11px] font-extrabold bg-[#0B0E14]/90 text-[#E5A93C] border border-[#E5A93C]/40 backdrop-blur-sm shadow-md">
+                  <div className="absolute top-2.5 left-2.5">
+                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-[#0B0E14]/90 text-[#E5A93C] border border-[#E5A93C]/40 backdrop-blur-sm shadow-md">
                       {item.badge}
                     </span>
                   </div>
 
                   {/* Before / After Floating Badges at Bottom */}
-                  <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between pointer-events-none">
-                    <span className="px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider bg-black/85 text-rose-300 border border-rose-500/30 backdrop-blur-sm">
+                  <div className="absolute bottom-2.5 left-2.5 right-2.5 flex items-center justify-between pointer-events-none">
+                    <span className="px-2 py-0.5 rounded-md text-[9px] font-black uppercase tracking-wider bg-black/85 text-rose-300 border border-rose-500/30 backdrop-blur-sm">
                       Before
                     </span>
-                    <span className="px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider bg-[#E5A93C] text-slate-950 font-black shadow-md">
-                      After • Transformed
+                    <span className="px-2 py-0.5 rounded-md text-[9px] font-black uppercase tracking-wider bg-[#E5A93C] text-slate-950 font-black shadow-md">
+                      After • Fit
                     </span>
                   </div>
 
                   {/* Expand icon top-right */}
-                  <div className="absolute top-3 right-3 opacity-90 group-hover:opacity-100 transition-opacity">
-                    <span className="w-8 h-8 rounded-full bg-black/75 border border-white/20 text-white flex items-center justify-center backdrop-blur-sm shadow-md group-hover:border-[#E5A93C] group-hover:text-[#E5A93C] transition-colors">
-                      <Maximize2 className="w-4 h-4" />
+                  <div className="absolute top-2.5 right-2.5 opacity-90 group-hover:opacity-100 transition-opacity">
+                    <span className="w-7 h-7 rounded-full bg-black/75 border border-white/20 text-white flex items-center justify-center backdrop-blur-sm shadow-md group-hover:border-[#E5A93C] group-hover:text-[#E5A93C] transition-colors">
+                      <Maximize2 className="w-3.5 h-3.5" />
                     </span>
                   </div>
                 </div>
 
                 {/* Content Details */}
-                <div className="p-5 flex-1 flex flex-col justify-between space-y-3">
-                  <div className="space-y-2">
-                    <h3 className="text-base sm:text-lg font-black text-white group-hover:text-[#E5A93C] transition-colors">
+                <div className="p-4 flex-1 flex flex-col justify-between space-y-2.5">
+                  <div className="space-y-1.5">
+                    <h3 className="text-sm font-black text-white group-hover:text-[#E5A93C] transition-colors leading-snug">
                       {item.title}
                     </h3>
-                    <p className="text-xs text-slate-300 leading-relaxed">
+                    <p className="text-[11px] text-slate-300 line-clamp-3 leading-relaxed">
                       {item.story}
                     </p>
                   </div>
 
                   {/* Key Takeaways */}
-                  <div className="pt-3 border-t border-[#1F2637] space-y-1.5">
-                    {item.achievements.map((ach, idx) => (
-                      <div key={idx} className="flex items-center gap-2 text-[11px] text-slate-300">
-                        <CheckCircle className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
-                        <span>{ach}</span>
+                  <div className="pt-2.5 border-t border-[#1F2637] space-y-1">
+                    {item.achievements.slice(0, 2).map((ach, idx) => (
+                      <div key={idx} className="flex items-center gap-1.5 text-[10px] text-slate-300">
+                        <CheckCircle className="w-3 h-3 text-emerald-400 flex-shrink-0" />
+                        <span className="truncate">{ach}</span>
                       </div>
                     ))}
                   </div>
 
-                  <div className="pt-3 border-t border-[#1F2637] flex items-center justify-between text-[11px]">
-                    <span className="text-slate-400 font-medium">Karnataka Gym Hubballi</span>
+                  <div className="pt-2 border-t border-[#1F2637] flex items-center justify-between text-[10px]">
+                    <span className="text-slate-400 font-medium">Karnataka Gym</span>
                     <span className="text-[#E5A93C] font-bold group-hover:underline flex items-center gap-1">
-                      <span>View Details</span>
-                      <Maximize2 className="w-3 h-3" />
+                      <span>View</span>
+                      <Maximize2 className="w-2.5 h-2.5" />
                     </span>
                   </div>
                 </div>
