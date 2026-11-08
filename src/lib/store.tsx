@@ -16,7 +16,8 @@ import {
   Notification,
   Settings,
   AuditLog,
-  FollowUpOutcome
+  FollowUpOutcome,
+  NoShowStatus
 } from '../types/database';
 import {
   INITIAL_USERS,
@@ -33,6 +34,14 @@ import {
   INITIAL_SETTINGS
 } from './data-seed';
 import { playSuccessChime, playErrorBeep, triggerConfetti } from './sound';
+import {
+  isSupabaseConfigured,
+  fetchGymDataFromSupabase,
+  syncSupabaseInsert,
+  syncSupabaseUpsert,
+  syncSupabaseUpdate,
+  syncSupabaseDelete
+} from './supabase';
 
 interface OfflineCheckinQueueItem {
   id: string;
@@ -186,6 +195,38 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   }, []);
 
+  // 1b. Load remote data from Supabase if configured and available
+  useEffect(() => {
+    let isCancelled = false;
+    async function loadFromSupabase() {
+      if (!isSupabaseConfigured) return;
+      try {
+        const remoteData = await fetchGymDataFromSupabase();
+        if (isCancelled || !remoteData) return;
+        if (remoteData.users && remoteData.users.length > 0) setUsers(remoteData.users);
+        if (remoteData.plans && remoteData.plans.length > 0) setPlans(remoteData.plans);
+        if (remoteData.memberships && remoteData.memberships.length > 0) setMemberships(remoteData.memberships);
+        if (remoteData.attendance && remoteData.attendance.length > 0) setAttendance(remoteData.attendance);
+        if (remoteData.streaks && remoteData.streaks.length > 0) setStreaks(remoteData.streaks);
+        if (remoteData.noShowCases && remoteData.noShowCases.length > 0) setNoShowCases(remoteData.noShowCases);
+        if (remoteData.followUps && remoteData.followUps.length > 0) setFollowUps(remoteData.followUps);
+        if (remoteData.payments && remoteData.payments.length > 0) setPayments(remoteData.payments);
+        if (remoteData.renewalOrders && remoteData.renewalOrders.length > 0) setRenewalOrders(remoteData.renewalOrders);
+        if (remoteData.addOns && remoteData.addOns.length > 0) setAddOns(remoteData.addOns);
+        if (remoteData.addOnOrders && remoteData.addOnOrders.length > 0) setAddOnOrders(remoteData.addOnOrders);
+        if (remoteData.notifications && remoteData.notifications.length > 0) setNotifications(remoteData.notifications);
+        if (remoteData.settings) setSettings(remoteData.settings);
+        if (remoteData.auditLogs && remoteData.auditLogs.length > 0) setAuditLogs(remoteData.auditLogs);
+      } catch (err) {
+        console.warn('Failed to load initial Supabase data:', err);
+      }
+    }
+    loadFromSupabase();
+    return () => {
+      isCancelled = true;
+    };
+  }, []);
+
   // 2. Persist state changes to LocalStorage (only after initial load has finished)
   const persistState = useCallback(() => {
     if (!isLoadedRef.current) return;
@@ -310,6 +351,7 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       details
     };
     setAuditLogs((prev) => [log, ...prev]);
+    syncSupabaseInsert('audit_logs', log);
     return log;
   };
 
@@ -405,6 +447,7 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           notes: 'Attempted within 5 min duplicate window'
         };
         setAttendance((prev) => [dupRecord, ...prev]);
+        syncSupabaseInsert('attendance', dupRecord);
 
         const minutesLeft = Math.ceil((latestTime + 5 * 60 * 1000 - Date.now()) / (60 * 1000));
         return {
@@ -426,6 +469,7 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
 
     setAttendance((prev) => [newAttendance, ...prev]);
+    syncSupabaseInsert('attendance', newAttendance);
 
     // If assisted check-in, write mandatory audit log
     if (method === 'assisted') {
@@ -439,12 +483,14 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setNoShowCases((prev) =>
       prev.map((c) => {
         if (c.user_id === userId && c.status === 'open') {
-          return {
+          const resolvedObj: NoShowCase = {
             ...c,
             status: 'resolved',
             resolved_reason: `Returned via ${method.toUpperCase()} Check-in`,
             resolved_at: new Date().toISOString()
           };
+          syncSupabaseUpdate('no_show_cases', resolvedObj, 'id', c.id);
+          return resolvedObj;
         }
         return c;
       })
@@ -469,6 +515,7 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         weekly_goal_completed: completedGoal
       };
       updatedStreak = newStreakObj;
+      syncSupabaseUpsert('streaks', newStreakObj);
 
       const filtered = prev.filter((s) => s.user_id !== userId);
       return [newStreakObj, ...filtered];
@@ -503,6 +550,7 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         notes: 'Synced from mobile offline queue'
       };
       setAttendance((prev) => [record, ...prev]);
+      syncSupabaseInsert('attendance', record);
       synced++;
     }
     setOfflineQueue([]);
@@ -533,6 +581,7 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
 
     setPayments((prev) => [paymentRecord, ...prev]);
+    syncSupabaseInsert('payments', paymentRecord);
 
     if (simulateState === 'failed') {
       playErrorBeep();
@@ -566,13 +615,15 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const newExpiryStr = newExpiry.toISOString().split('T')[0];
 
     if (existingMem) {
+      const updatedMem: Membership = { ...existingMem, expiry_date: newExpiryStr, status: 'active', plan_id: planId };
       setMemberships((prev) =>
         prev.map((m) =>
           m.id === existingMem.id
-            ? { ...m, expiry_date: newExpiryStr, status: 'active', plan_id: planId }
+            ? updatedMem
             : m
         )
       );
+      syncSupabaseUpdate('memberships', updatedMem, 'id', existingMem.id);
     } else {
       const newMem: Membership = {
         id: `mem_${Date.now()}`,
@@ -583,6 +634,7 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         status: 'active'
       };
       setMemberships((prev) => [...prev, newMem]);
+      syncSupabaseInsert('memberships', newMem);
     }
 
     // Create Renewal Order
@@ -595,6 +647,7 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       created_at: new Date().toISOString()
     };
     setRenewalOrders((prev) => [renewalOrder, ...prev]);
+    syncSupabaseInsert('renewal_orders', renewalOrder);
 
     playSuccessChime();
     triggerConfetti();
@@ -669,12 +722,15 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       created_at: new Date().toISOString()
     };
     setPayments((prev) => [paymentRecord, ...prev]);
+    syncSupabaseInsert('payments', paymentRecord);
 
     // Decrement stock if supplement
     if (addon.type === 'supplement') {
+      const updatedStock = Math.max(0, addon.stock - 1);
       setAddOns((prev) =>
-        prev.map((a) => (a.id === addonId ? { ...a, stock: Math.max(0, a.stock - 1) } : a))
+        prev.map((a) => (a.id === addonId ? { ...a, stock: updatedStock } : a))
       );
+      syncSupabaseUpdate('add_ons', { stock: updatedStock }, 'id', addonId);
     }
 
     // Create AddOnOrder
@@ -691,12 +747,14 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       expiry_date: expDate.toISOString().split('T')[0]
     };
     setAddOnOrders((prev) => [newOrder, ...prev]);
+    syncSupabaseInsert('add_on_orders', newOrder);
 
     // Update user active diet / trainer if applicable
     if (addon.type === 'diet') {
       setUsers((prev) =>
         prev.map((u) => (u.id === userId ? { ...u, active_diet_plan: addon.name } : u))
       );
+      syncSupabaseUpdate('users', { active_diet_plan: addon.name }, 'id', userId);
     }
 
     playSuccessChime();
@@ -728,21 +786,26 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       created_at: new Date().toISOString()
     };
     setFollowUps((prev) => [newFollowUp, ...prev]);
+    syncSupabaseInsert('follow_ups', newFollowUp);
 
     // Update case status
     const isResolved = outcome === 'Will return' || outcome === 'Timing issue' || outcome === 'Cancelled';
+    const caseUpdates = {
+      status: (isResolved ? 'resolved' : 'open') as NoShowStatus,
+      resolved_reason: `Follow-up outcome: ${outcome}${notes ? ` - ${notes}` : ''}`,
+      resolved_at: isResolved ? new Date().toISOString() : undefined
+    };
     setNoShowCases((prev) =>
       prev.map((c) =>
         c.id === caseId
           ? {
               ...c,
-              status: isResolved ? 'resolved' : 'open',
-              resolved_reason: `Follow-up outcome: ${outcome}${notes ? ` - ${notes}` : ''}`,
-              resolved_at: isResolved ? new Date().toISOString() : undefined
+              ...caseUpdates
             }
           : c
       )
     );
+    syncSupabaseUpdate('no_show_cases', caseUpdates, 'id', caseId);
 
     logAudit(currentUser.id, 'profile_override', caseRecord.user_id, `Owner logged follow-up outcome: ${outcome}`, {
       outcome,
@@ -764,18 +827,22 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const mem = memberships.find((m) => m.user_id === userId);
     if (!mem) return { success: false, message: 'Membership not found' };
 
+    const freezeUpdates = {
+      status: 'frozen' as const,
+      freeze_reason: reason,
+      frozen_at: new Date().toISOString()
+    };
     setMemberships((prev) =>
       prev.map((m) =>
         m.id === mem.id
           ? {
               ...m,
-              status: 'frozen',
-              freeze_reason: reason,
-              frozen_at: new Date().toISOString()
+              ...freezeUpdates
             }
           : m
       )
     );
+    syncSupabaseUpdate('memberships', freezeUpdates, 'id', mem.id);
 
     logAudit(currentUser.id, 'membership_freeze', userId, `Membership paused/frozen: ${reason}`, {
       freeze_reason: reason
@@ -791,9 +858,11 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const mem = memberships.find((m) => m.user_id === userId);
     if (!mem) return { success: false, message: 'Membership not found' };
 
+    const unfreezeUpdates = { status: 'active' as const, freeze_reason: null, frozen_at: null };
     setMemberships((prev) =>
-      prev.map((m) => (m.id === mem.id ? { ...m, status: 'active', freeze_reason: undefined } : m))
+      prev.map((m) => (m.id === mem.id ? { ...m, status: 'active', freeze_reason: undefined, frozen_at: undefined } : m))
     );
+    syncSupabaseUpdate('memberships', unfreezeUpdates, 'id', mem.id);
 
     logAudit(currentUser.id, 'membership_unfreeze', userId, 'Membership reactivated / unfrozen');
 
@@ -806,6 +875,7 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     updates: Partial<User>
   ): Promise<{ success: boolean; message: string }> => {
     setUsers((prev) => prev.map((u) => (u.id === userId ? { ...u, ...updates } : u)));
+    syncSupabaseUpdate('users', updates, 'id', userId);
     return { success: true, message: 'Profile updated successfully!' };
   };
 
@@ -817,6 +887,10 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     trainer?: string,
     reason: string = 'Owner administrative override'
   ): Promise<{ success: boolean; message: string }> => {
+    const userUpdates: Partial<User> = {};
+    if (trainer !== undefined) userUpdates.assigned_trainer = trainer;
+    if (dietPlan !== undefined) userUpdates.active_diet_plan = dietPlan;
+
     setUsers((prev) =>
       prev.map((u) => {
         if (u.id === targetUserId) {
@@ -829,11 +903,15 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         return u;
       })
     );
+    if (Object.keys(userUpdates).length > 0) {
+      syncSupabaseUpdate('users', userUpdates, 'id', targetUserId);
+    }
 
     if (newPlanId) {
       setMemberships((prev) =>
         prev.map((m) => (m.user_id === targetUserId ? { ...m, plan_id: newPlanId } : m))
       );
+      syncSupabaseUpdate('memberships', { plan_id: newPlanId }, 'user_id', targetUserId);
     }
 
     logAudit(currentUser.id, 'profile_override', targetUserId, reason, {
@@ -853,26 +931,28 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const pay = payments.find((p) => p.id === paymentId);
     if (!pay) return { success: false, message: 'Payment record not found' };
 
+    const refundUpdates = { status: 'refunded' as const, refunded_at: new Date().toISOString() };
     setPayments((prev) =>
       prev.map((p) =>
-        p.id === paymentId ? { ...p, status: 'refunded', refunded_at: new Date().toISOString() } : p
+        p.id === paymentId ? { ...p, ...refundUpdates } : p
       )
     );
+    syncSupabaseUpdate('payments', refundUpdates, 'id', paymentId);
 
     // Adjust membership if it was a plan renewal
     if (pay.plan_id) {
       const plan = plans.find((p) => p.id === pay.plan_id);
       if (plan) {
-        setMemberships((prev) =>
-          prev.map((m) => {
-            if (m.user_id === pay.user_id) {
-              const currentExp = new Date(m.expiry_date);
-              currentExp.setMonth(currentExp.getMonth() - plan.duration_months);
-              return { ...m, expiry_date: currentExp.toISOString().split('T')[0] };
-            }
-            return m;
-          })
-        );
+        const targetMem = memberships.find((m) => m.user_id === pay.user_id);
+        if (targetMem) {
+          const currentExp = new Date(targetMem.expiry_date);
+          currentExp.setMonth(currentExp.getMonth() - plan.duration_months);
+          const newExpStr = currentExp.toISOString().split('T')[0];
+          setMemberships((prev) =>
+            prev.map((m) => (m.id === targetMem.id ? { ...m, expiry_date: newExpStr } : m))
+          );
+          syncSupabaseUpdate('memberships', { expiry_date: newExpStr }, 'id', targetMem.id);
+        }
       }
     }
 
@@ -928,6 +1008,7 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             created_at: new Date().toISOString()
           };
           setNoShowCases((prev) => [newCase, ...prev]);
+          syncSupabaseInsert('no_show_cases', newCase);
           createdCount++;
           details.push(`${member.name} (${daysAbsent} days absent)`);
         }
@@ -959,11 +1040,13 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       created_at: new Date().toISOString()
     };
     setNotifications((prev) => [notif, ...prev]);
+    syncSupabaseInsert('notifications', notif);
     return true;
   };
 
   const dismissNotification = (id: string) => {
     setNotifications((prev) => prev.filter((n) => n.id !== id));
+    syncSupabaseDelete('notifications', id, 'id');
   };
 
   // -------------------------------------------------------------
