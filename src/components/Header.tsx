@@ -86,7 +86,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenTests }) => {
               KARNATAKA <span className="text-[#E5A93C]">GYM</span>
             </span>
             <span className="text-[10px] text-slate-400 font-medium tracking-wider uppercase mt-0.5">
-              Hubballi • Retention PWA
+              Hubballi • Est. 2011
             </span>
           </div>
         </Link>

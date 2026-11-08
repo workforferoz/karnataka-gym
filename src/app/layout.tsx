@@ -5,10 +5,10 @@ import { CookieConsent } from "@/components/CookieConsent";
 
 export const metadata: Metadata = {
   title: {
-    default: "Karnataka Gym | Retention & Attendance PWA - Hubballi",
+    default: "Karnataka Gym | Hubballi",
     template: "%s | Karnataka Gym Hubballi",
   },
-  description: "Official gym attendance, retention cockpit, instant QR check-in & membership renewals for Karnataka Gym Hubballi. Contact: 9902667407",
+  description: "Official gym attendance, member portal, instant QR check-in & membership renewals for Karnataka Gym Hubballi. Contact: 9902667407",
   manifest: "/manifest.json",
   icons: {
     icon: "/karnataka-gym-logo.png",

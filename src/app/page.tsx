@@ -233,7 +233,7 @@ export default function PublicGymWebsite() {
                         QR
                       </div>
                       <div>
-                        <span className="font-bold text-white block">Digital Retention PWA</span>
+                        <span className="font-bold text-white block">Digital Member App</span>
                         <span className="text-slate-400 text-[11px]">Contactless QR check-in & daily streak tracking</span>
                       </div>
                     </div>
