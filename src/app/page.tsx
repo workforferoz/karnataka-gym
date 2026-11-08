@@ -437,10 +437,6 @@ export default function PublicGymWebsite() {
         <section id="facility-tour" className="max-w-6xl mx-auto px-4 scroll-mt-20 space-y-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[#232B3E] pb-6">
             <div className="space-y-2 max-w-2xl">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E5A93C]/10 border border-[#E5A93C]/30 text-[#E5A93C] text-xs font-bold uppercase tracking-wider">
-                <Camera className="w-3.5 h-3.5" />
-                <span>Real Facility Photos • Hubballi</span>
-              </div>
               <h2 className="text-2xl sm:text-3xl font-black text-white">
                 Inside Karnataka Gym Hubballi
               </h2>
@@ -578,10 +574,6 @@ export default function PublicGymWebsite() {
         <section id="transformations" className="max-w-6xl mx-auto px-4 scroll-mt-20 space-y-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[#232B3E] pb-6">
             <div className="space-y-2 max-w-2xl">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E5A93C]/10 border border-[#E5A93C]/30 text-[#E5A93C] text-xs font-bold uppercase tracking-wider">
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>Real Results • Hubballi Proof of Work</span>
-              </div>
               <h2 className="text-2xl sm:text-3xl font-black text-white">
                 Real Member Transformations
               </h2>
@@ -792,10 +784,6 @@ export default function PublicGymWebsite() {
         <section id="trainer" className="max-w-6xl mx-auto px-4 scroll-mt-20 space-y-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[#232B3E] pb-6">
             <div className="space-y-2 max-w-2xl">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E5A93C]/10 border border-[#E5A93C]/30 text-[#E5A93C] text-xs font-bold uppercase tracking-wider">
-                <Dumbbell className="w-3.5 h-3.5" />
-                <span>Head Coach &amp; Founder • Hubballi</span>
-              </div>
               <h2 className="text-2xl sm:text-3xl font-black text-white">
                 Lead By Example: Meet Head Coach Riyaz
               </h2>

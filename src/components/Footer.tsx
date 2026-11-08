@@ -66,14 +66,6 @@ export const Footer: React.FC = () => {
             <Link href="/terms" className="hover:text-white transition-colors">
               Terms of Service
             </Link>
-            <span className="text-slate-600">•</span>
-            <Link href="/data-deletion" className="hover:text-red-400 transition-colors">
-              Data Deletion Request
-            </Link>
-            <span className="text-slate-600">•</span>
-            <Link href="/install-prompt" className="hover:text-[#E5A93C] transition-colors">
-              Install PWA
-            </Link>
           </div>
         </div>
       </div>
