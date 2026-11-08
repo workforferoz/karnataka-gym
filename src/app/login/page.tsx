@@ -135,10 +135,10 @@ function LoginContent() {
     }
 
     const ownerUser = users.find((u) => u.role === 'owner') || users.find((u) => u.phone === '9902667407') || {
-      id: 'user_owner_manjunath',
+      id: 'user_owner_riyaz',
       role: 'owner' as const,
       phone: '9902667407',
-      name: 'Gym Owner'
+      name: 'Riyaz (Gym Owner)'
     };
 
     login(ownerUser.id);

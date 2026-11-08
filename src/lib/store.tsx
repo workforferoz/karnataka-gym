@@ -178,8 +178,8 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             const rahul = INITIAL_USERS.find((u) => u.id === 'member_rahul_desai');
             if (rahul) cleanedUsers.push(rahul);
           }
-          if (!cleanedUsers.some((u) => u.id === 'user_owner_manjunath')) {
-            const owner = INITIAL_USERS.find((u) => u.id === 'user_owner_manjunath');
+          if (!cleanedUsers.some((u) => u.id === 'user_owner_riyaz')) {
+            const owner = INITIAL_USERS.find((u) => u.id === 'user_owner_riyaz');
             if (owner) cleanedUsers.unshift(owner);
           }
           setUsers(cleanedUsers);
@@ -1630,7 +1630,7 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           undefined,
           'Veg High-Protein Nutrition Guide',
           'Vikram',
-          'Upgraded nutrition protocol by Owner Manjunath'
+          'Upgraded nutrition protocol by Owner Riyaz'
         );
         const updatedUser = users.find((u) => u.id === 'member_priya_patil');
         const auditEntry = auditLogs.find(

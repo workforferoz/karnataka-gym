@@ -196,7 +196,7 @@ function ManageMembersContent() {
       overridePlanId,
       overrideDiet === 'None' ? undefined : overrideDiet,
       overrideTrainer,
-      'Administrative update by Owner Manjunath'
+      'Administrative update by Owner Riyaz'
     );
 
     setStatusMsg(res.message);

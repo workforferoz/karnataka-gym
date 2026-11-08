@@ -56,10 +56,10 @@ export default function OwnerLoginPage() {
     const ownerUser =
       users.find((u) => u.role === 'owner') ||
       users.find((u) => u.phone === '9902667407') || {
-        id: 'user_owner_manjunath',
+        id: 'user_owner_riyaz',
         role: 'owner' as const,
         phone: '9902667407',
-        name: 'Manjunath (Gym Owner)'
+        name: 'Riyaz (Gym Owner)'
       };
 
     login(ownerUser.id);
@@ -99,7 +99,7 @@ export default function OwnerLoginPage() {
           <div>
             <h1 className="text-xl md:text-2xl font-black text-white">Owner Cockpit Login</h1>
             <p className="text-xs text-slate-400 mt-1">
-              Direct private gateway for Gym Owner Manjunath • Hubballi
+              Direct private gateway for Gym Owner Riyaz • Hubballi
             </p>
           </div>
         </div>
@@ -194,3 +194,4 @@ export default function OwnerLoginPage() {
     </div>
   );
 }
+

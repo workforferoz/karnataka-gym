@@ -49,7 +49,7 @@ async function runCheck() {
     const testId = `test_ping_${Date.now()}`;
     const insertRes = await client.from('notifications').insert({
       id: testId,
-      user_id: 'user_owner_manjunath',
+      user_id: 'user_owner_riyaz',
       message: 'System Ping Test',
       type: 'general',
       read_status: false

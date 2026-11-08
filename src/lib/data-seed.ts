@@ -196,10 +196,10 @@ const getRelativeDateTime = (offsetDays: number, hour: number = 7, min: number =
 export const INITIAL_USERS: User[] = [
   // 1 Owner
   {
-    id: 'user_owner_manjunath',
+    id: 'user_owner_riyaz',
     role: 'owner',
     phone: '9902667407',
-    name: 'Manjunath (Gym Owner)',
+    name: 'Riyaz (Gym Owner)',
     marketing_opt_in: true,
     emergency_contact: '9902667407',
     comm_preference: 'whatsapp',
@@ -334,7 +334,7 @@ export const INITIAL_NOTIFICATIONS: Notification[] = [
 export const INITIAL_AUDIT_LOGS: AuditLog[] = [
   {
     id: 'audit_init_1',
-    actor_id: 'user_owner_manjunath',
+    actor_id: 'user_owner_riyaz',
     action: 'assisted_checkin',
     target_user_id: 'member_rahul_desai',
     timestamp: getRelativeDateTime(-3, 18, 15),

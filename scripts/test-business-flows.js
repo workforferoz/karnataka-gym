@@ -95,7 +95,7 @@ async function runEndToEndVerification() {
       no_show_case_id: testCaseId,
       outcome: 'Will return',
       next_action_date: '2026-11-15',
-      owner_id: 'user_owner_manjunath',
+      owner_id: 'user_owner_riyaz',
       notes: 'Called member - was travelling to Bengaluru, returning Monday.'
     });
     if (fuErr) throw fuErr;
