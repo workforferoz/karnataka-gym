@@ -54,17 +54,9 @@ export default function OwnerLayout({ children }: { children: React.ReactNode })
               href="/login?role=owner"
               className="w-full bg-red-600 hover:bg-red-700 text-white font-black py-3 rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg shadow-red-600/25 transition-all"
             >
-              <UserCheck className="w-4 h-4 stroke-[2.5]" />
-              <span>Owner Login Screen</span>
+              <Lock className="w-4 h-4 stroke-[2.5]" />
+              <span>Owner Login (PIN Required)</span>
             </Link>
-
-            <button
-              onClick={() => login('user_owner_manjunath')}
-              className="w-full bg-[#1A2234] hover:bg-[#232D44] border border-[#2B354C] text-slate-200 font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer"
-            >
-              <Sparkles className="w-4 h-4 text-[#E5A93C]" />
-              <span>Quick Demo: Enter as Manjunath (Owner)</span>
-            </button>
 
             <Link
               href="/"

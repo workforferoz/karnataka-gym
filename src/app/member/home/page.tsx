@@ -26,7 +26,7 @@ import {
 } from 'lucide-react';
 
 export default function MemberHomePage() {
-  const { currentUser, memberships, plans, streaks, attendance } = useGym();
+  const { currentUser, memberships, plans, streaks, attendance, settings } = useGym();
   const [showTests, setShowTests] = useState(false);
 
   const membership = memberships.find((m) => m.user_id === currentUser.id);
@@ -65,6 +65,25 @@ export default function MemberHomePage() {
       <Header onOpenTests={() => setShowTests(true)} />
 
       <main className="flex-1 max-w-lg w-full mx-auto px-4 py-5 space-y-5">
+        {/* Owner Broadcast / Announcement Banner */}
+        {settings.announcement_banner_active && settings.announcement_banner_text && (
+          <div className="bg-gradient-to-r from-amber-950/70 via-[#182030] to-amber-950/70 border-2 border-[#E5A93C] rounded-2xl p-4 shadow-xl flex items-center justify-between gap-3 animate-in fade-in">
+            <div className="flex items-center gap-3">
+              <div className="p-2.5 rounded-xl bg-[#E5A93C]/20 text-[#E5A93C] border border-[#E5A93C]/40 flex-shrink-0">
+                <Sparkles className="w-5 h-5" />
+              </div>
+              <div>
+                <span className="text-[10px] font-black text-[#E5A93C] uppercase tracking-wider block">
+                  {settings.announcement_banner_tag || 'ANNOUNCEMENT'}
+                </span>
+                <span className="text-xs text-white font-bold leading-snug block">
+                  {settings.announcement_banner_text}
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Urgent Renewal Reminder Banner (If <= 7 days) */}
         {isExpiringSoon && (
           <div className="bg-gradient-to-r from-amber-950/80 via-red-950/70 to-amber-950/80 border-2 border-amber-500/80 rounded-2xl p-4 shadow-xl flex items-center justify-between gap-3 animate-pulse-subtle">
@@ -131,7 +150,7 @@ export default function MemberHomePage() {
             </div>
             <div>
               <span className="text-[11px] font-bold text-[#E5A93C] uppercase tracking-wider block">
-                Mera Gym Dashboard
+                {settings.member_welcome_subtitle || 'Mera Gym Dashboard'}
               </span>
               <h1 className="text-xl font-extrabold text-white">
                 Namaste, {currentUser.name.split(' ')[0]}
@@ -340,8 +359,10 @@ export default function MemberHomePage() {
             <Sparkles className="w-5 h-5" />
           </div>
           <div>
-            <strong className="text-white block font-bold">Karnataka Gym Hubballi Motivation:</strong>
-            &quot;Consistency beats intensity. Kal fir milenge gym floor par!&quot;
+            <strong className="text-white block font-bold">
+              {settings.gym_name || 'Karnataka Gym Hubballi'} Motivation:
+            </strong>
+            &quot;{settings.member_motivational_quote || 'Consistency beats intensity. Kal fir milenge gym floor par!'}&quot;
           </div>
         </div>
       </main>

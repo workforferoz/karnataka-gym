@@ -18,11 +18,18 @@ export const INITIAL_SETTINGS: Settings = {
   no_show_threshold_days: 10,
   renewal_reminder_days: 7,
   duplicate_window_minutes: 5,
-  gym_name: 'Karnataka Gym',
+  gym_name: 'Karnataka Gym Hubballi',
   gym_phone: '9902667407',
+  gym_email: 'karnatakagymhubli@gmail.com',
+  gym_tagline: 'Iron Warrior Fitness Hub',
   gym_instagram: '@riyaz_gokul',
   gym_location: 'Kalidas Nagar, Hubballi, Karnataka 580031',
-  gym_maps_url: 'https://maps.app.goo.gl/dXnSdvRU9gwHd7sAA'
+  gym_maps_url: 'https://maps.app.goo.gl/dXnSdvRU9gwHd7sAA',
+  member_welcome_subtitle: 'Mera Gym Dashboard',
+  member_motivational_quote: 'Consistency beats intensity. Kal fir milenge gym floor par!',
+  announcement_banner_active: true,
+  announcement_banner_text: 'Special Morning Batch from 5:30 AM now open! Limited slots available.',
+  announcement_banner_tag: 'ANNOUNCEMENT'
 };
 
 export const INITIAL_PLANS: Plan[] = [

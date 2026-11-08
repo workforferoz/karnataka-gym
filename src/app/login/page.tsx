@@ -19,7 +19,10 @@ import {
   LayoutDashboard,
   Dumbbell,
   Award,
-  LogIn
+  LogIn,
+  Eye,
+  EyeOff,
+  ShieldAlert
 } from 'lucide-react';
 
 function LoginContent() {
@@ -35,6 +38,12 @@ function LoginContent() {
   const [otpCode, setOtpCode] = useState('');
   const [matchedUser, setMatchedUser] = useState<typeof users[0] | null>(null);
   const [errorMsg, setErrorMsg] = useState('');
+
+  // Owner authentication credentials
+  const [ownerPhone, setOwnerPhone] = useState('9902667407');
+  const [ownerPin, setOwnerPin] = useState('');
+  const [showPin, setShowPin] = useState(false);
+  const [ownerError, setOwnerError] = useState('');
 
   // Sync tab with URL parameter
   useEffect(() => {
@@ -94,6 +103,40 @@ function LoginContent() {
     } else {
       router.push('/member/home');
     }
+  };
+
+  const handleOwnerLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    setOwnerError('');
+
+    // Rate limiting check
+    const rateCheck = checkRateLimit('login_owner_pin', 5, 60000);
+    if (!rateCheck.allowed) {
+      setOwnerError(`Too many login attempts. Please wait ${rateCheck.retryAfterSeconds} seconds before trying again.`);
+      return;
+    }
+
+    const { sanitized } = sanitizePhone(ownerPhone);
+    const cleanPin = ownerPin.trim();
+
+    // Verify phone is owner phone 9902667407 and PIN is 9902
+    const isOwnerPhone = sanitized === '9902667407' || sanitized.endsWith('9902667407');
+    const isOwnerPin = cleanPin === '9902';
+
+    if (!isOwnerPhone || !isOwnerPin) {
+      setOwnerError('Access Denied: Invalid Owner credentials. Only Karnataka Gym authorized owner with verified PIN can access the cockpit.');
+      return;
+    }
+
+    const ownerUser = users.find((u) => u.role === 'owner') || users.find((u) => u.phone === '9902667407') || {
+      id: 'user_owner_manjunath',
+      role: 'owner' as const,
+      phone: '9902667407',
+      name: 'Gym Owner'
+    };
+
+    login(ownerUser.id);
+    router.push('/owner/dashboard');
   };
 
   // Grouped users
@@ -385,57 +428,99 @@ function LoginContent() {
           </div>
         )}
 
-        {/* TAB 3: OWNER & STAFF LOGIN */}
+        {/* TAB 3: OWNER SECURE CREDENTIAL LOGIN */}
         {activeTab === 'owner' && (
           <div className="max-w-md mx-auto space-y-6">
-            <div className="bg-[#121622] border-2 border-red-900/60 rounded-2xl p-6 shadow-xl space-y-5">
+            <div className="bg-[#121622] border-2 border-red-800/80 rounded-2xl p-6 shadow-xl space-y-5">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 rounded-xl bg-red-600/15 border border-red-600/30 text-red-500 flex items-center justify-center">
-                  <LayoutDashboard className="w-6 h-6" />
+                  <Lock className="w-6 h-6 stroke-[2.5]" />
                 </div>
                 <div>
-                  <h2 className="text-base font-extrabold text-white">Owner & Staff Cockpit</h2>
-                  <p className="text-xs text-slate-400">Restricted administrative access for Karnataka Gym Hubballi</p>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-[10px] font-black uppercase tracking-wider text-red-400 bg-red-950/80 border border-red-700/60 px-2 py-0.5 rounded-full">
+                      Owner Only • Protected
+                    </span>
+                  </div>
+                  <h2 className="text-base font-extrabold text-white mt-1">Owner Cockpit Authentication</h2>
+                  <p className="text-xs text-slate-400">Strict credential verification for Karnataka Gym Hubballi</p>
                 </div>
               </div>
 
-              <div className="space-y-3 pt-2">
-                <span className="text-xs font-bold text-slate-300 block uppercase tracking-wider">
-                  Select Staff / Owner Account:
-                </span>
-
-                {ownerUsers.map((staffUser) => (
-                  <button
-                    key={staffUser.id}
-                    onClick={() => handleDirectSelect(staffUser)}
-                    className="w-full p-4 rounded-xl bg-[#171D2B] border border-[#28354A] hover:border-red-500 text-left flex items-center justify-between transition-all group cursor-pointer"
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-red-950/60 border border-red-800 text-red-300 font-black flex items-center justify-center text-sm">
-                        {staffUser.name.charAt(0)}
-                      </div>
-                      <div>
-                        <span className="text-sm font-extrabold text-white block group-hover:text-red-400 transition-colors">
-                          {staffUser.name}
-                        </span>
-                        <span className="text-xs text-slate-400 font-mono">
-                          +91 {staffUser.phone} • {staffUser.role === 'owner' ? 'Gym Owner' : 'Front Desk Officer'}
-                        </span>
-                      </div>
+              <form onSubmit={handleOwnerLogin} className="space-y-4 pt-1">
+                {/* Owner Phone Input */}
+                <div>
+                  <label className="block text-xs font-bold text-slate-300 mb-1.5 uppercase tracking-wider">
+                    Owner Registered Mobile
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 font-bold text-xs">
+                      +91
                     </div>
+                    <input
+                      type="tel"
+                      value={ownerPhone}
+                      onChange={(e) => setOwnerPhone(e.target.value)}
+                      placeholder="9902667407"
+                      className="w-full bg-[#181F2F] border border-[#2C3852] focus:border-red-500 rounded-xl py-2.5 pl-12 pr-4 text-sm font-semibold text-white placeholder-slate-500 focus:outline-none"
+                      maxLength={10}
+                      required
+                    />
+                  </div>
+                </div>
 
-                    <div className="flex items-center gap-1 text-xs font-bold text-red-400">
-                      <span>Enter Cockpit</span>
-                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                    </div>
-                  </button>
-                ))}
-              </div>
+                {/* Owner Secret PIN Input */}
+                <div>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider">
+                      Owner Secret PIN
+                    </label>
+                    <span className="text-[11px] text-[#E5A93C] font-semibold">
+                      PIN: 9902
+                    </span>
+                  </div>
+                  <div className="relative">
+                    <KeyRound className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
+                    <input
+                      type={showPin ? 'text' : 'password'}
+                      value={ownerPin}
+                      onChange={(e) => setOwnerPin(e.target.value)}
+                      placeholder="Enter 4-Digit Owner PIN"
+                      className="w-full bg-[#181F2F] border border-[#2C3852] focus:border-red-500 rounded-xl py-2.5 pl-10 pr-10 text-sm font-mono tracking-widest text-white placeholder-slate-500 focus:outline-none"
+                      maxLength={6}
+                      required
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPin(!showPin)}
+                      className="absolute right-3 top-3 text-slate-400 hover:text-white cursor-pointer"
+                      title={showPin ? 'Hide PIN' : 'Show PIN'}
+                    >
+                      {showPin ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
+                </div>
 
-              <div className="p-3 rounded-xl bg-red-950/30 border border-red-900/50 text-[11px] text-red-300 flex items-start gap-2">
-                <Lock className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
+                {ownerError && (
+                  <div className="p-3 rounded-xl bg-red-950/70 border border-red-800 text-red-200 text-xs flex items-start gap-2">
+                    <ShieldAlert className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
+                    <span>{ownerError}</span>
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  className="w-full bg-red-600 hover:bg-red-700 text-white font-extrabold py-3 rounded-xl text-sm flex items-center justify-center gap-2 shadow-lg shadow-red-600/30 transition-all cursor-pointer"
+                >
+                  <Lock className="w-4 h-4 stroke-[2.5]" />
+                  <span>Verify Credentials & Enter Cockpit</span>
+                </button>
+              </form>
+
+              <div className="p-3 rounded-xl bg-[#171D2B] border border-[#232B3E] text-[11px] text-slate-400 flex items-start gap-2">
+                <ShieldCheck className="w-4 h-4 text-[#E5A93C] flex-shrink-0 mt-0.5" />
                 <span>
-                  Admin features include: 10-day silent churn recovery list, WhatsApp deep links, manual assisted check-in, and audit logging.
+                  Only the verified owner can configure Member App appearance, announcement banners, churn recovery, and membership plans.
                 </span>
               </div>
             </div>

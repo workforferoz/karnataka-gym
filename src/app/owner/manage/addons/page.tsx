@@ -9,15 +9,15 @@ import { OwnerBottomNav } from '@/components/OwnerBottomNav';
 import { ArrowLeft, Package, Dumbbell, Salad, Plus, Minus, CheckCircle, Edit, Save } from 'lucide-react';
 
 export default function ManageAddOnsPage() {
-  const { addOns } = useGym();
-  const [items, setItems] = useState(addOns);
+  const { addOns, updateAddon } = useGym();
   const [statusMsg, setStatusMsg] = useState<string | null>(null);
 
-  const updateStock = (id: string, delta: number) => {
-    setItems((prev) =>
-      prev.map((a) => (a.id === id ? { ...a, stock: Math.max(0, a.stock + delta) } : a))
-    );
-    setStatusMsg('Stock count updated!');
+  const updateStock = async (id: string, delta: number) => {
+    const item = addOns.find((a) => a.id === id);
+    if (!item) return;
+    const newStock = Math.max(0, item.stock + delta);
+    await updateAddon(id, { stock: newStock });
+    setStatusMsg(`Stock for "${item.name}" updated to ${newStock}!`);
     setTimeout(() => setStatusMsg(null), 2500);
   };
 
@@ -53,7 +53,7 @@ export default function ManageAddOnsPage() {
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {items.map((item) => {
+          {addOns.map((item) => {
             const isSupp = item.type === 'supplement';
             const isPT = item.type === 'pt';
 

@@ -23,7 +23,8 @@ import {
   Mail,
   Trash2,
   Globe,
-  LogOut
+  LogOut,
+  Lock
 } from 'lucide-react';
 
 interface HeaderProps {
@@ -39,7 +40,8 @@ export const Header: React.FC<HeaderProps> = ({ onOpenTests }) => {
     dismissNotification,
     isOnline,
     offlineQueueCount,
-    syncOfflineQueue
+    syncOfflineQueue,
+    settings
   } = useGym();
 
   const [showSwitchMenu, setShowSwitchMenu] = useState(false);
@@ -63,8 +65,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenTests }) => {
     { id: 'member_priya_patil', label: 'Priya Patil (Expires in 4 Days)', badge: 'Expiring' },
     { id: 'member_prakash_hubli', label: 'Prakash Hubli (Absent 18 Days)', badge: 'Churn Risk' },
     { id: 'member_sneha_joshi', label: 'Sneha Joshi (Marketing Opt-out)', badge: 'Opted-Out' },
-    { id: 'user_staff_suresh', label: 'Suresh (Front Desk)', badge: 'Staff' },
-    { id: 'user_owner_manjunath', label: 'Manjunath (Owner - 9902667407)', badge: 'Owner' }
+    { id: 'user_staff_suresh', label: 'Suresh (Front Desk)', badge: 'Staff' }
   ];
 
   return (
@@ -119,17 +120,17 @@ export const Header: React.FC<HeaderProps> = ({ onOpenTests }) => {
 
           {/* Clickable Phone Quick Call */}
           <a
-            href="tel:9902667407"
+            href={`tel:${settings.gym_phone || '9902667407'}`}
             className="hidden md:flex items-center gap-1.5 bg-[#171D2B] border border-[#232B3E] hover:border-[#E5A93C] text-xs font-semibold px-2.5 py-1.5 rounded-lg text-slate-300 transition-colors"
             title="Call Karnataka Gym Helpline"
           >
             <Phone className="w-3.5 h-3.5 text-[#E5A93C]" />
-            <span>9902667407</span>
+            <span>{settings.gym_phone || '9902667407'}</span>
           </a>
 
           {/* Clickable Email */}
           <a
-            href="mailto:karnatakagymhubli@gmail.com"
+            href={`mailto:${settings.gym_email || 'karnatakagymhubli@gmail.com'}`}
             className="hidden lg:flex items-center gap-1.5 bg-[#171D2B] border border-[#232B3E] hover:border-[#E5A93C] text-xs font-semibold px-2.5 py-1.5 rounded-lg text-slate-300 transition-colors"
             title="Email Karnataka Gym"
           >
@@ -268,27 +269,43 @@ export const Header: React.FC<HeaderProps> = ({ onOpenTests }) => {
                   ))}
                 </div>
 
-                <div className="mt-2 pt-2 border-t border-[#232B3E] flex items-center justify-between px-1">
+                <div className="pt-2 border-t border-[#232B3E] space-y-1.5">
                   <Link
-                    href="/login"
+                    href="/login?role=owner"
                     onClick={() => setShowSwitchMenu(false)}
-                    className="text-[11px] text-[#E5A93C] hover:underline flex items-center gap-1"
+                    className="w-full text-left px-2.5 py-1.5 rounded-lg text-xs flex items-center justify-between text-red-400 hover:bg-red-950/40 transition-colors"
                   >
-                    All 30 Members / Login
-                    <ExternalLink className="w-3 h-3" />
+                    <div className="flex items-center gap-1.5">
+                      <Lock className="w-3.5 h-3.5 text-red-400" />
+                      <span className="font-bold">Owner Cockpit</span>
+                    </div>
+                    <span className="text-[9px] px-1.5 py-0.5 rounded bg-red-950 text-red-300 font-bold border border-red-800">
+                      PIN Required
+                    </span>
                   </Link>
 
-                  <button
-                    onClick={() => {
-                      logout();
-                      setShowSwitchMenu(false);
-                      window.location.href = '/';
-                    }}
-                    className="text-[11px] text-red-400 hover:text-red-300 font-bold flex items-center gap-1 cursor-pointer"
-                  >
-                    <LogOut className="w-3 h-3" />
-                    <span>Log Out</span>
-                  </button>
+                  <div className="flex items-center justify-between px-1 pt-1 border-t border-[#1C2333]">
+                    <Link
+                      href="/login"
+                      onClick={() => setShowSwitchMenu(false)}
+                      className="text-[11px] text-[#E5A93C] hover:underline flex items-center gap-1"
+                    >
+                      Login Portals
+                      <ExternalLink className="w-3 h-3" />
+                    </Link>
+
+                    <button
+                      onClick={() => {
+                        logout();
+                        setShowSwitchMenu(false);
+                        window.location.href = '/';
+                      }}
+                      className="text-[11px] text-slate-400 hover:text-red-300 font-bold flex items-center gap-1 cursor-pointer"
+                    >
+                      <LogOut className="w-3 h-3" />
+                      <span>Log Out</span>
+                    </button>
+                  </div>
                 </div>
               </div>
             )}

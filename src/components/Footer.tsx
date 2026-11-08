@@ -3,8 +3,11 @@
 import React from 'react';
 import Link from 'next/link';
 import { MapPin, Clock, Code } from 'lucide-react';
+import { useGym } from '@/lib/store';
 
 export const Footer: React.FC = () => {
+  const { settings } = useGym();
+
   return (
     <footer className="bg-[#080B10] border-t border-[#1C2333] pt-8 pb-24 md:pb-10 px-4 text-slate-400 text-xs">
       <div className="max-w-6xl mx-auto space-y-6">
@@ -15,13 +18,13 @@ export const Footer: React.FC = () => {
             <div>
               <span className="text-slate-200 font-bold block">Facility Address</span>
               <a
-                href="https://maps.app.goo.gl/dXnSdvRU9gwHd7sAA"
+                href={settings.gym_maps_url || 'https://maps.app.goo.gl/dXnSdvRU9gwHd7sAA'}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-[#E5A93C] transition-colors"
                 title="View on Google Maps"
               >
-                Kalidas Nagar, Hubballi, Karnataka 580031 ↗
+                {settings.gym_location || 'Kalidas Nagar, Hubballi, Karnataka 580031'} ↗
               </a>
             </div>
           </div>
@@ -52,7 +55,7 @@ export const Footer: React.FC = () => {
         {/* Legal & Compliance Links */}
         <div className="pt-4 border-t border-[#141B28] flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-400">
           <div>
-            <span>© 2026 Karnataka Gym Hubballi. All rights reserved.</span>
+            <span>© 2026 {settings.gym_name || 'Karnataka Gym Hubballi'}. All rights reserved.</span>
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-4">

@@ -106,6 +106,9 @@ interface GymContextType {
   dismissNotification: (id: string) => void;
   resetAllDataToSeed: () => void;
   syncOfflineQueue: () => Promise<number>;
+  updateGymSettings: (updates: Partial<Settings>) => Promise<{ success: boolean; message: string }>;
+  updatePlan: (planId: string, updates: Partial<Plan>) => Promise<{ success: boolean; message: string }>;
+  updateAddon: (addonId: string, updates: Partial<AddOn>) => Promise<{ success: boolean; message: string }>;
 
   // Test Runner
   runAutomatedTest: (testId: number) => Promise<TestResult>;
@@ -923,6 +926,99 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return { success: true, message: 'Member settings modified and recorded in Audit Log.' };
   };
 
+  // 7b. Owner Update Member App Look & Gym Settings
+  const updateGymSettings = async (
+    updates: Partial<Settings>
+  ): Promise<{ success: boolean; message: string }> => {
+    setSettings((prev) => {
+      const nextSettings = { ...prev, ...updates };
+
+      // Sync Supabase columns that exist in the DB schema
+      const dbPayload: Partial<Settings> = {};
+      if (updates.gym_name !== undefined) dbPayload.gym_name = updates.gym_name;
+      if (updates.gym_phone !== undefined) dbPayload.gym_phone = updates.gym_phone;
+      if (updates.gym_instagram !== undefined) dbPayload.gym_instagram = updates.gym_instagram;
+      if (updates.gym_location !== undefined) dbPayload.gym_location = updates.gym_location;
+      if (updates.gym_maps_url !== undefined) dbPayload.gym_maps_url = updates.gym_maps_url;
+      if (updates.no_show_threshold_days !== undefined) dbPayload.no_show_threshold_days = updates.no_show_threshold_days;
+      if (updates.renewal_reminder_days !== undefined) dbPayload.renewal_reminder_days = updates.renewal_reminder_days;
+      if (updates.duplicate_window_minutes !== undefined) dbPayload.duplicate_window_minutes = updates.duplicate_window_minutes;
+
+      if (Object.keys(dbPayload).length > 0) {
+        syncSupabaseUpdate('settings', dbPayload, 'id', 'gym_default');
+      }
+
+      return nextSettings;
+    });
+
+    const auditEntry: AuditLog = {
+      id: `audit_settings_${Date.now()}`,
+      actor_id: currentUserId,
+      action: 'profile_override',
+      target_user_id: 'gym_default',
+      timestamp: new Date().toISOString(),
+      reason: 'Owner updated Member App look and settings',
+      details: updates as Record<string, unknown>
+    };
+    setAuditLogs((prev) => [auditEntry, ...prev]);
+    syncSupabaseInsert('audit_logs', auditEntry);
+
+    playSuccessChime();
+    return { success: true, message: 'Member App look and settings updated successfully!' };
+  };
+
+  // 7c. Owner Update Membership Plan Details
+  const updatePlan = async (
+    planId: string,
+    updates: Partial<Plan>
+  ): Promise<{ success: boolean; message: string }> => {
+    setPlans((prev) =>
+      prev.map((p) => (p.id === planId ? { ...p, ...updates } : p))
+    );
+    syncSupabaseUpdate('plans', updates, 'id', planId);
+
+    const auditEntry: AuditLog = {
+      id: `audit_plan_${Date.now()}`,
+      actor_id: currentUserId,
+      action: 'profile_override',
+      target_user_id: planId,
+      timestamp: new Date().toISOString(),
+      reason: `Owner updated plan ${planId}`,
+      details: updates as Record<string, unknown>
+    };
+    setAuditLogs((prev) => [auditEntry, ...prev]);
+    syncSupabaseInsert('audit_logs', auditEntry);
+
+    playSuccessChime();
+    return { success: true, message: 'Plan updated successfully in Member App!' };
+  };
+
+  // 7d. Owner Update Add-on / Inventory Details
+  const updateAddon = async (
+    addonId: string,
+    updates: Partial<AddOn>
+  ): Promise<{ success: boolean; message: string }> => {
+    setAddOns((prev) =>
+      prev.map((a) => (a.id === addonId ? { ...a, ...updates } : a))
+    );
+    syncSupabaseUpdate('add_ons', updates, 'id', addonId);
+
+    const auditEntry: AuditLog = {
+      id: `audit_addon_${Date.now()}`,
+      actor_id: currentUserId,
+      action: 'addon_override',
+      target_user_id: addonId,
+      timestamp: new Date().toISOString(),
+      reason: `Owner updated add-on ${addonId}`,
+      details: updates as Record<string, unknown>
+    };
+    setAuditLogs((prev) => [auditEntry, ...prev]);
+    syncSupabaseInsert('audit_logs', auditEntry);
+
+    playSuccessChime();
+    return { success: true, message: 'Add-on updated successfully in Member App store!' };
+  };
+
   // 8. Refund Payment & Revert Membership
   const processPaymentRefund = async (
     paymentId: string,
@@ -1379,6 +1475,9 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         dismissNotification,
         resetAllDataToSeed,
         syncOfflineQueue,
+        updateGymSettings,
+        updatePlan,
+        updateAddon,
         runAutomatedTest,
         testResults
       }}

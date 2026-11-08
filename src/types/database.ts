@@ -176,6 +176,13 @@ export interface Settings {
   gym_instagram: string;
   gym_location: string;
   gym_maps_url?: string;
+  gym_email?: string;
+  gym_tagline?: string;
+  member_welcome_subtitle?: string;
+  member_motivational_quote?: string;
+  announcement_banner_active?: boolean;
+  announcement_banner_text?: string;
+  announcement_banner_tag?: string;
 }
 
 export interface AuditLog {

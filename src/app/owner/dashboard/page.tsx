@@ -22,7 +22,8 @@ import {
   Flame,
   CheckCircle,
   Clock,
-  ScanLine
+  ScanLine,
+  Palette
 } from 'lucide-react';
 
 export default function OwnerDashboardPage() {
@@ -109,7 +110,15 @@ export default function OwnerDashboardPage() {
             </h1>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
+            <Link
+              href="/owner/manage/app-look"
+              className="bg-[#171D2B] hover:bg-[#1E2538] border border-[#2B354C] hover:border-[#E5A93C] text-xs font-bold text-[#E5A93C] px-3 py-2 rounded-xl flex items-center gap-1.5 transition-colors cursor-pointer"
+            >
+              <Palette className="w-3.5 h-3.5 text-[#E5A93C]" />
+              <span>Member App Look</span>
+            </Link>
+
             <button
               onClick={handleRunScan}
               className="bg-[#171D2B] hover:bg-[#1E2538] border border-[#2B354C] hover:border-[#E5A93C] text-xs font-bold text-slate-200 px-3 py-2 rounded-xl flex items-center gap-1.5 transition-colors cursor-pointer"
@@ -266,7 +275,27 @@ export default function OwnerDashboardPage() {
         </div>
 
         {/* Action Gateway Row */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+          <Link
+            href="/owner/manage/app-look"
+            className="p-4 rounded-2xl bg-[#121622] hover:bg-[#161C2C] border border-[#232B3E] hover:border-[#E5A93C] transition-colors flex items-center justify-between group"
+          >
+            <div>
+              <div className="flex items-center gap-1.5">
+                <span className="text-xs font-black text-white group-hover:text-[#E5A93C] transition-colors block">
+                  Member App Look
+                </span>
+                <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-[#E5A93C]/15 text-[#E5A93C] border border-[#E5A93C]/30">
+                  LIVE
+                </span>
+              </div>
+              <span className="text-[11px] text-slate-400">
+                Announcements, motivation quote & branding
+              </span>
+            </div>
+            <ArrowRight className="w-4 h-4 text-slate-500 group-hover:translate-x-1 group-hover:text-[#E5A93C] transition-all" />
+          </Link>
+
           <Link
             href="/owner/churn-risk"
             className="p-4 rounded-2xl bg-[#121622] hover:bg-[#161C2C] border border-[#232B3E] hover:border-red-500 transition-colors flex items-center justify-between group"

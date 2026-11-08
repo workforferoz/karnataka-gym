@@ -9,8 +9,7 @@ import { OwnerBottomNav } from '@/components/OwnerBottomNav';
 import { ArrowLeft, Check, Edit, Save, Plus, ShieldCheck, Sparkles } from 'lucide-react';
 
 export default function ManagePlansPage() {
-  const { plans } = useGym();
-  const [plansList, setPlansList] = useState(plans);
+  const { plans, updatePlan } = useGym();
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editPrice, setEditPrice] = useState<number>(0);
   const [editDiscount, setEditDiscount] = useState<number>(0);
@@ -22,14 +21,10 @@ export default function ManagePlansPage() {
     setEditDiscount(plan.discount_amount);
   };
 
-  const handleSave = (id: string) => {
-    setPlansList((prev) =>
-      prev.map((p) =>
-        p.id === id ? { ...p, base_price: editPrice, discount_amount: editDiscount } : p
-      )
-    );
+  const handleSave = async (id: string) => {
+    await updatePlan(id, { base_price: editPrice, discount_amount: editDiscount });
     setEditingId(null);
-    setStatusMsg('Plan pricing updated successfully!');
+    setStatusMsg('Plan pricing updated successfully in Member App & Database!');
     setTimeout(() => setStatusMsg(null), 3000);
   };
 
@@ -65,7 +60,7 @@ export default function ManagePlansPage() {
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {plansList.map((plan) => {
+          {plans.map((plan) => {
             const isEditing = editingId === plan.id;
             const effective = isEditing ? editPrice - editDiscount : plan.base_price - plan.discount_amount;
 
