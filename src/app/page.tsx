@@ -454,7 +454,7 @@ export default function PublicGymWebsite() {
 
         {/* 4. FACILITY TOUR & REAL GYM PHOTOS */}
         <section id="facility-tour" className="max-w-6xl mx-auto px-4 scroll-mt-20 space-y-8">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[#232B3E] pb-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-2">
             <div className="space-y-2 max-w-2xl">
               <h2 className="text-2xl sm:text-3xl font-black text-white">
                 Inside Karnataka Gym Hubballi
@@ -591,7 +591,7 @@ export default function PublicGymWebsite() {
 
         {/* 4B. REAL MEMBER TRANSFORMATIONS */}
         <section id="transformations" className="max-w-6xl mx-auto px-4 scroll-mt-20 space-y-8">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[#232B3E] pb-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-2">
             <div className="space-y-2 max-w-2xl">
               <h2 className="text-2xl sm:text-3xl font-black text-white">
                 Real Member Transformations
@@ -801,7 +801,7 @@ export default function PublicGymWebsite() {
 
         {/* 4C. HEAD COACH & TRAINERS */}
         <section id="trainer" className="max-w-6xl mx-auto px-4 scroll-mt-20 space-y-8">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[#232B3E] pb-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-2">
             <div className="space-y-2 max-w-2xl">
               <h2 className="text-2xl sm:text-3xl font-black text-white">
                 Lead By Example: Meet Head Coach Riyaz

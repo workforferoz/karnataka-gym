@@ -63,7 +63,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenTests }) => {
 
 
   return (
-    <header className="sticky top-0 z-40 bg-[#0E121B] border-b border-[#232B3E] px-4 py-3">
+    <header className="sticky top-0 z-40 bg-[#0E121B] px-4 py-3">
       <div className="max-w-6xl mx-auto flex items-center justify-between gap-2">
         {/* Logo and Gym Name */}
         <Link

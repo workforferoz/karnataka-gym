@@ -9,7 +9,7 @@ export const Footer: React.FC = () => {
   const { settings } = useGym();
 
   return (
-    <footer className="bg-[#080B10] border-t border-[#1C2333] pt-8 pb-24 md:pb-10 px-4 text-slate-400 text-xs">
+    <footer className="bg-[#080B10] pt-8 pb-24 md:pb-10 px-4 text-slate-400 text-xs">
       <div className="max-w-6xl mx-auto space-y-6">
         {/* Business Details & Studio Credit Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-slate-400">

@@ -42,7 +42,7 @@ export const PublicNav: React.FC<PublicNavProps> = ({ onOpenTests }) => {
   }, []);
 
   return (
-    <nav className="sticky top-0 z-40 bg-[#0B0E14]/95 border-b border-[#232B3E] backdrop-blur-md px-4 py-3">
+    <nav className="sticky top-0 z-40 bg-[#0B0E14]/95 backdrop-blur-md px-4 py-3">
       <div className="max-w-6xl mx-auto flex items-center justify-between gap-4">
         {/* Brand Logo & Name */}
         <Link
