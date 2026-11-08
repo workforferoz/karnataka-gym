@@ -260,161 +260,87 @@ export default function PublicGymWebsite() {
 
       <main className="flex-1 space-y-20 pb-16">
         {/* 1. HERO SECTION */}
-        <section className="relative pt-8 pb-14 px-4 border-b border-[#232B3E] overflow-hidden">
-          <div className="max-w-6xl mx-auto">
-            <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-14">
-              {/* Left Column: Heading & Information */}
-              <div className="flex-1 space-y-6 text-center lg:text-left">
-                {/* Brand Logo & Location Flag */}
-                <div className="flex items-center justify-center lg:justify-start gap-3">
-                  <div className="relative w-14 h-14 rounded-full overflow-hidden flex-shrink-0 drop-shadow-[0_4px_16px_rgba(229,169,60,0.4)]">
-                    <Image
-                      src="/karnataka-gym-badge.png"
-                      alt="Karnataka Gym Hubballi Badge"
-                      width={56}
-                      height={56}
-                      className="object-contain w-full h-full rounded-full"
-                      priority
-                    />
-                  </div>
-                  <div className="text-left">
-                    <span className="text-xs font-black tracking-widest text-[#E5A93C] uppercase block">
-                      Hubballi, Karnataka
-                    </span>
-                    <span className="text-[11px] text-slate-400 font-medium">
-                      Kalidas Nagar • Established Strength Center
-                    </span>
-                  </div>
-                </div>
-
-                {/* Primary Hero Headline (High contrast, solid white and warm gold, NO gradient text, NO emojis) */}
-                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight tracking-tight">
-                  BUILD RAW STRENGTH AT <span className="text-[#E5A93C]">KARNATAKA GYM</span>
-                </h1>
-
-                {/* Subtitle */}
-                <p className="text-sm sm:text-base text-slate-300 max-w-xl mx-auto lg:mx-0 leading-relaxed font-normal">
-                  Hubballi&apos;s home for serious lifters, functional athletes, and beginner fitness journeys. Heavy Olympic free weights, pin-loaded resistance machines, certified coaching, and transparent fees in Indian Rupees.
-                </p>
-
-                {/* Direct Action Gateways for Website Visitors */}
-                <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 pt-2">
-                  <a
-                    href="#location"
-                    className="w-full sm:w-auto bg-[#E5A93C] hover:bg-[#F59E0B] text-slate-950 font-black px-6 py-3.5 rounded-xl text-sm flex items-center justify-center gap-2 shadow-lg shadow-[#E5A93C]/20 transition-all cursor-pointer"
-                  >
-                    <Calendar className="w-4 h-4 stroke-[2.5]" />
-                    <span>Schedule Gym Walkthrough</span>
-                  </a>
-
-                  <a
-                    href="#facilities"
-                    className="w-full sm:w-auto bg-[#161D2C] hover:bg-[#1E273A] border border-[#2D3950] text-slate-200 font-extrabold px-5 py-3.5 rounded-xl text-sm flex items-center justify-center gap-2 transition-colors cursor-pointer"
-                  >
-                    <Dumbbell className="w-4 h-4 text-[#E5A93C]" />
-                    <span>Explore Facilities & Equipment</span>
-                  </a>
-                </div>
-
-                {/* Clickable Quick Helpline Bar */}
-                <div className="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-3 text-xs">
-                  <a
-                    href="tel:9902667407"
-                    className="flex items-center gap-1.5 bg-[#121622] border border-[#232B3E] hover:border-[#E5A93C] px-3 py-1.5 rounded-lg text-slate-300 font-bold transition-colors"
-                  >
-                    <Phone className="w-3.5 h-3.5 text-[#E5A93C]" />
-                    <span>Call 9902667407</span>
-                  </a>
-
-                  <a
-                    href="https://wa.me/919902667407"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 bg-[#121622] border border-[#232B3E] hover:border-emerald-500 px-3 py-1.5 rounded-lg text-emerald-400 font-bold transition-colors"
-                  >
-                    <span>WhatsApp Chat</span>
-                  </a>
-
-                  <a
-                    href="https://www.instagram.com/riyaz_gokul/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 bg-[#121622] border border-[#232B3E] hover:border-pink-500 px-3 py-1.5 rounded-lg text-pink-400 font-bold transition-colors"
-                  >
-                    <InstagramIcon className="w-3.5 h-3.5" />
-                    <span>@riyaz_gokul</span>
-                  </a>
-                </div>
+        <section className="relative pt-10 pb-16 px-4 border-b border-[#232B3E] overflow-hidden">
+          <div className="max-w-4xl mx-auto text-center space-y-6">
+            {/* Brand Logo & Location Flag */}
+            <div className="flex items-center justify-center gap-3">
+              <div className="relative w-14 h-14 rounded-full overflow-hidden flex-shrink-0 drop-shadow-[0_4px_16px_rgba(229,169,60,0.4)]">
+                <Image
+                  src="/karnataka-gym-badge.png"
+                  alt="Karnataka Gym Hubballi Badge"
+                  width={56}
+                  height={56}
+                  className="object-contain w-full h-full rounded-full"
+                  priority
+                />
               </div>
-
-              {/* Right Column: Hero Showcase Card */}
-              <div className="w-full lg:w-96 flex-shrink-0">
-                <div className="bg-[#121622] border-2 border-[#232B3E] rounded-3xl p-6 shadow-2xl space-y-5">
-                  <div className="flex items-center justify-between border-b border-[#232B3E] pb-4">
-                    <div>
-                      <span className="text-[10px] font-black uppercase tracking-wider text-[#E5A93C] block">
-                        Gym Highlights
-                      </span>
-                      <span className="text-base font-extrabold text-white">Karnataka Gym Hubballi</span>
-                    </div>
-                    <div className="w-10 h-10 rounded-xl bg-[#E5A93C]/10 border border-[#E5A93C]/30 flex items-center justify-center">
-                      <Award className="w-5 h-5 text-[#E5A93C]" />
-                    </div>
-                  </div>
-
-                  <div className="space-y-3 text-xs">
-                    <div className="flex items-start gap-3 p-2.5 rounded-xl bg-[#171D2B] border border-[#252E42]">
-                      <div className="w-7 h-7 rounded-lg bg-[#E5A93C] text-slate-950 font-black flex items-center justify-center text-xs flex-shrink-0">
-                        15+
-                      </div>
-                      <div>
-                        <span className="font-bold text-white block">Years of Legacy</span>
-                        <span className="text-slate-400 text-[11px]">Serving the fitness community of Hubballi</span>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-3 p-2.5 rounded-xl bg-[#171D2B] border border-[#252E42]">
-                      <div className="w-7 h-7 rounded-lg bg-blue-500 text-slate-950 font-black flex items-center justify-center text-xs flex-shrink-0">
-                        4K
-                      </div>
-                      <div>
-                        <span className="font-bold text-white block">4,000 Sq.Ft Training Zone</span>
-                        <span className="text-slate-400 text-[11px]">Olympic barbells, pin-loaded machines & cardio</span>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-3 p-2.5 rounded-xl bg-[#171D2B] border border-[#252E42]">
-                      <div className="w-7 h-7 rounded-lg bg-emerald-500 text-slate-950 font-black flex items-center justify-center text-xs flex-shrink-0">
-                        ₹
-                      </div>
-                      <div>
-                        <span className="font-bold text-white block">100% Transparent Pricing</span>
-                        <span className="text-slate-400 text-[11px]">No admission fee, no hidden taxes, starting ₹1,500</span>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-3 p-2.5 rounded-xl bg-[#171D2B] border border-[#252E42]">
-                      <div className="w-7 h-7 rounded-lg bg-purple-500 text-white font-black flex items-center justify-center text-xs flex-shrink-0">
-                        QR
-                      </div>
-                      <div>
-                        <span className="font-bold text-white block">Digital Member App</span>
-                        <span className="text-slate-400 text-[11px]">Contactless QR check-in & daily streak tracking</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="pt-2">
-                    <a
-                      href="#facilities"
-                      className="w-full bg-[#1A2234] hover:bg-[#222C42] border border-[#2D3950] text-[#E5A93C] font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
-                    >
-                      <span>Explore Facilities & Equipment</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </a>
-                  </div>
-                </div>
+              <div className="text-left">
+                <span className="text-xs font-black tracking-widest text-[#E5A93C] uppercase block">
+                  Hubballi, Karnataka
+                </span>
+                <span className="text-[11px] text-slate-400 font-medium">
+                  Kalidas Nagar • Established Strength Center
+                </span>
               </div>
+            </div>
+
+            {/* Primary Hero Headline (High contrast, solid white and warm gold, NO gradient text, NO emojis) */}
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight">
+              BUILD RAW STRENGTH AT <span className="text-[#E5A93C]">KARNATAKA GYM</span>
+            </h1>
+
+            {/* Subtitle */}
+            <p className="text-sm sm:text-base text-slate-300 max-w-2xl mx-auto leading-relaxed font-normal">
+              Hubballi&apos;s home for serious lifters, functional athletes, and beginner fitness journeys. Heavy Olympic free weights, pin-loaded resistance machines, certified coaching, and transparent fees in Indian Rupees.
+            </p>
+
+            {/* Direct Action Gateways for Website Visitors */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+              <a
+                href="#location"
+                className="w-full sm:w-auto bg-[#E5A93C] hover:bg-[#F59E0B] text-slate-950 font-black px-6 py-3.5 rounded-xl text-sm flex items-center justify-center gap-2 shadow-lg shadow-[#E5A93C]/20 transition-all cursor-pointer"
+              >
+                <Calendar className="w-4 h-4 stroke-[2.5]" />
+                <span>Schedule Gym Walkthrough</span>
+              </a>
+
+              <a
+                href="#facilities"
+                className="w-full sm:w-auto bg-[#161D2C] hover:bg-[#1E273A] border border-[#2D3950] text-slate-200 font-extrabold px-5 py-3.5 rounded-xl text-sm flex items-center justify-center gap-2 transition-colors cursor-pointer"
+              >
+                <Dumbbell className="w-4 h-4 text-[#E5A93C]" />
+                <span>Explore Facilities &amp; Equipment</span>
+              </a>
+            </div>
+
+            {/* Clickable Quick Helpline Bar */}
+            <div className="pt-2 flex flex-wrap items-center justify-center gap-3 text-xs">
+              <a
+                href="tel:9902667407"
+                className="flex items-center gap-1.5 bg-[#121622] border border-[#232B3E] hover:border-[#E5A93C] px-3 py-1.5 rounded-lg text-slate-300 font-bold transition-colors"
+              >
+                <Phone className="w-3.5 h-3.5 text-[#E5A93C]" />
+                <span>Call 9902667407</span>
+              </a>
+
+              <a
+                href="https://wa.me/919902667407"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 bg-[#121622] border border-[#232B3E] hover:border-emerald-500 px-3 py-1.5 rounded-lg text-emerald-400 font-bold transition-colors"
+              >
+                <span>WhatsApp Chat</span>
+              </a>
+
+              <a
+                href="https://www.instagram.com/riyaz_gokul/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 bg-[#121622] border border-[#232B3E] hover:border-pink-500 px-3 py-1.5 rounded-lg text-pink-400 font-bold transition-colors"
+              >
+                <InstagramIcon className="w-3.5 h-3.5" />
+                <span>@riyaz_gokul</span>
+              </a>
             </div>
           </div>
         </section>
