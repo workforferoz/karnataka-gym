@@ -109,6 +109,8 @@ interface GymContextType {
   updateGymSettings: (updates: Partial<Settings>) => Promise<{ success: boolean; message: string }>;
   updatePlan: (planId: string, updates: Partial<Plan>) => Promise<{ success: boolean; message: string }>;
   updateAddon: (addonId: string, updates: Partial<AddOn>) => Promise<{ success: boolean; message: string }>;
+  createAddon: (newAddon: Omit<AddOn, 'id'> & { id?: string }) => Promise<{ success: boolean; message: string; addon: AddOn }>;
+  deleteAddon: (addonId: string) => Promise<{ success: boolean; message: string }>;
 
   // Test Runner
   runAutomatedTest: (testId: number) => Promise<TestResult>;
@@ -1019,6 +1021,60 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return { success: true, message: 'Add-on updated successfully in Member App store!' };
   };
 
+  // 7e. Owner Create New Add-on
+  const createAddon = async (
+    newAddonData: Omit<AddOn, 'id'> & { id?: string }
+  ): Promise<{ success: boolean; message: string; addon: AddOn }> => {
+    const id = newAddonData.id || `addon_custom_${Date.now()}`;
+    const newAddon: AddOn = {
+      id,
+      is_available: true,
+      ...newAddonData
+    };
+
+    setAddOns((prev) => [...prev, newAddon]);
+    syncSupabaseInsert('add_ons', newAddon);
+
+    const auditEntry: AuditLog = {
+      id: `audit_addon_create_${Date.now()}`,
+      actor_id: currentUserId,
+      action: 'addon_override',
+      target_user_id: id,
+      timestamp: new Date().toISOString(),
+      reason: `Owner created new add-on "${newAddon.name}"`,
+      details: (newAddon as unknown) as Record<string, unknown>
+    };
+    setAuditLogs((prev) => [auditEntry, ...prev]);
+    syncSupabaseInsert('audit_logs', auditEntry);
+
+    playSuccessChime();
+    return { success: true, message: `"${newAddon.name}" created successfully!`, addon: newAddon };
+  };
+
+  // 7f. Owner Delete Add-on
+  const deleteAddon = async (
+    addonId: string
+  ): Promise<{ success: boolean; message: string }> => {
+    const item = addOns.find((a) => a.id === addonId);
+    setAddOns((prev) => prev.filter((a) => a.id !== addonId));
+    syncSupabaseDelete('add_ons', 'id', addonId);
+
+    const auditEntry: AuditLog = {
+      id: `audit_addon_delete_${Date.now()}`,
+      actor_id: currentUserId,
+      action: 'addon_override',
+      target_user_id: addonId,
+      timestamp: new Date().toISOString(),
+      reason: `Owner removed add-on "${item?.name || addonId}"`,
+      details: { addonId, name: item?.name }
+    };
+    setAuditLogs((prev) => [auditEntry, ...prev]);
+    syncSupabaseInsert('audit_logs', auditEntry);
+
+    playSuccessChime();
+    return { success: true, message: `Add-on deleted successfully.` };
+  };
+
   // 8. Refund Payment & Revert Membership
   const processPaymentRefund = async (
     paymentId: string,
@@ -1478,6 +1534,8 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         updateGymSettings,
         updatePlan,
         updateAddon,
+        createAddon,
+        deleteAddon,
         runAutomatedTest,
         testResults
       }}
