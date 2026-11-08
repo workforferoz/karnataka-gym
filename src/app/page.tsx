@@ -261,7 +261,26 @@ export default function PublicGymWebsite() {
       <main className="flex-1 space-y-20 pb-16">
         {/* 1. HERO SECTION */}
         <section className="relative pt-10 pb-16 px-4 border-b border-[#232B3E] overflow-hidden">
-          <div className="max-w-4xl mx-auto text-center space-y-6">
+          {/* Watermark Background Logo with subtle golden aura */}
+          <div
+            className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden"
+            aria-hidden="true"
+          >
+            <div className="relative w-[300px] h-[300px] sm:w-[440px] sm:h-[440px] lg:w-[520px] lg:h-[520px] opacity-15 sm:opacity-20 transition-opacity drop-shadow-[0_0_70px_rgba(229,169,60,0.3)]">
+              <Image
+                src="/karnataka-gym-logo.png"
+                alt=""
+                fill
+                sizes="(max-width: 640px) 300px, (max-width: 1024px) 440px, 520px"
+                className="object-contain"
+                priority
+              />
+            </div>
+            {/* Subtle warm golden ambient glow behind the logo */}
+            <div className="absolute w-[360px] h-[360px] sm:w-[520px] sm:h-[520px] rounded-full bg-[#E5A93C]/10 blur-3xl pointer-events-none" />
+          </div>
+
+          <div className="relative z-10 max-w-4xl mx-auto text-center space-y-6">
             {/* Primary Hero Headline (High contrast, solid white and warm gold, NO gradient text, NO emojis) */}
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight">
               BUILD RAW STRENGTH AT <span className="text-[#E5A93C]">KARNATAKA GYM</span>
