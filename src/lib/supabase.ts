@@ -112,11 +112,29 @@ export async function fetchGymDataFromSupabase(): Promise<SupabaseGymData | null
   }
 }
 
+function sanitizeForSupabase<T extends Record<string, any>>(table: string, record: T): any {
+  if (table === 'users' && record) {
+    // If table doesn't have email/password/auth_provider columns yet, sanitize payload
+    const copy = { ...record };
+    delete copy.password;
+    delete copy.auth_provider;
+    // Keep email if schema supports it, but fallback if rejected
+    return copy;
+  }
+  return record;
+}
+
 export async function syncSupabaseInsert<T extends Record<string, any>>(table: string, record: T) {
   if (!isSupabaseConfigured) return;
   try {
-    const { error } = await supabase.from(table).insert(record as any);
-    if (error) console.warn(`Supabase insert warning on ${table}:`, error.message);
+    const payload = table === 'users' ? sanitizeForSupabase(table, record) : record;
+    const { error } = await supabase.from(table).insert(payload as any);
+    if (error && table === 'users' && error.message.includes('column')) {
+      const { email, password, auth_provider, ...coreUser } = record as any;
+      await supabase.from(table).insert(coreUser as any);
+    } else if (error) {
+      console.warn(`Supabase insert warning on ${table}:`, error.message);
+    }
   } catch (err) {
     console.warn(`Supabase insert failed on ${table}:`, err);
   }
@@ -125,7 +143,8 @@ export async function syncSupabaseInsert<T extends Record<string, any>>(table: s
 export async function syncSupabaseUpsert<T extends Record<string, any>>(table: string, record: T | T[]) {
   if (!isSupabaseConfigured) return;
   try {
-    const { error } = await supabase.from(table).upsert(record as any);
+    const payload = table === 'users' && !Array.isArray(record) ? sanitizeForSupabase(table, record) : record;
+    const { error } = await supabase.from(table).upsert(payload as any);
     if (error) console.warn(`Supabase upsert warning on ${table}:`, error.message);
   } catch (err) {
     console.warn(`Supabase upsert failed on ${table}:`, err);
@@ -140,8 +159,14 @@ export async function syncSupabaseUpdate<T extends Record<string, any>>(
 ) {
   if (!isSupabaseConfigured) return;
   try {
-    const { error } = await supabase.from(table).update(record as any).eq(idField, idVal);
-    if (error) console.warn(`Supabase update warning on ${table}:`, error.message);
+    const payload = table === 'users' ? sanitizeForSupabase(table, record) : record;
+    const { error } = await supabase.from(table).update(payload as any).eq(idField, idVal);
+    if (error && table === 'users' && error.message.includes('column')) {
+      const { email, password, auth_provider, ...coreUser } = record as any;
+      await supabase.from(table).update(coreUser as any).eq(idField, idVal);
+    } else if (error) {
+      console.warn(`Supabase update warning on ${table}:`, error.message);
+    }
   } catch (err) {
     console.warn(`Supabase update failed on ${table}:`, err);
   }

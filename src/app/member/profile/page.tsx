@@ -19,7 +19,12 @@ import {
   ArrowLeft,
   Save,
   Sparkles,
-  AlertCircle
+  AlertCircle,
+  Mail,
+  KeyRound,
+  Eye,
+  EyeOff,
+  Lock
 } from 'lucide-react';
 
 export default function MemberProfilePage() {
@@ -27,6 +32,9 @@ export default function MemberProfilePage() {
 
   const [name, setName] = useState(currentUser.name);
   const [phone, setPhone] = useState(currentUser.phone);
+  const [email, setEmail] = useState(currentUser.email || '');
+  const [password, setPassword] = useState(currentUser.password || '1234');
+  const [showPassword, setShowPassword] = useState(false);
   const [emergencyContact, setEmergencyContact] = useState(currentUser.emergency_contact || '9902667407');
   const [commPreference, setCommPreference] = useState<'whatsapp' | 'sms' | 'call'>(currentUser.comm_preference || 'whatsapp');
   const [marketingOptIn, setMarketingOptIn] = useState<boolean>(currentUser.marketing_opt_in ?? true);
@@ -55,6 +63,8 @@ export default function MemberProfilePage() {
       await updateUserProfile(currentUser.id, {
         name: cleanName,
         phone: cleanPhone,
+        email: email.trim().toLowerCase() || undefined,
+        password: password.trim() || '1234',
         emergency_contact: cleanEmergency,
         comm_preference: commPreference,
         marketing_opt_in: marketingOptIn,
@@ -178,6 +188,70 @@ export default function MemberProfilePage() {
                 onChange={(e) => setEmergencyContact(e.target.value)}
                 className="w-full bg-[#181F2F] border border-[#2C3852] focus:border-[#E5A93C] rounded-xl py-2 px-3 text-white font-mono focus:outline-none"
               />
+            </div>
+          </div>
+
+          {/* Account Login Credentials Card */}
+          <div className="p-4 rounded-3xl bg-[#121622] border border-[#232B3E] space-y-3.5 text-xs">
+            <div className="flex items-center justify-between border-b border-[#1E2638] pb-1.5">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">
+                Account ID & Login Credentials
+              </span>
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-500/15 text-blue-400 border border-blue-500/30">
+                {currentUser.auth_provider === 'google' ? 'Google Linked' : 'Password Login'}
+              </span>
+            </div>
+
+            <div>
+              <label className="block text-[11px] font-bold text-slate-300 mb-1">Member ID</label>
+              <div className="p-2.5 rounded-xl bg-[#181F2F] border border-[#2C3852] text-xs font-mono text-[#E5A93C] flex items-center justify-between">
+                <span>{currentUser.id}</span>
+                <span className="text-[10px] text-slate-400">Karnataka Gym Hubballi</span>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-[11px] font-bold text-slate-300 mb-1">Registered Email Address</label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                  <Mail className="w-3.5 h-3.5" />
+                </div>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="e.g. yourname@gmail.com"
+                  className="w-full bg-[#181F2F] border border-[#2C3852] focus:border-[#E5A93C] rounded-xl py-2 pl-9 pr-3 text-white focus:outline-none"
+                />
+              </div>
+            </div>
+
+            <div>
+              <div className="flex items-center justify-between mb-1">
+                <label className="block text-[11px] font-bold text-slate-300">Member Login Password / PIN</label>
+                <span className="text-[10px] text-slate-400">Used for ID/Phone Sign In</span>
+              </div>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                  <KeyRound className="w-3.5 h-3.5" />
+                </div>
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter password"
+                  className="w-full bg-[#181F2F] border border-[#2C3852] focus:border-[#E5A93C] rounded-xl py-2 pl-9 pr-10 text-white font-mono focus:outline-none"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-2.5 text-slate-400 hover:text-white cursor-pointer"
+                  title={showPassword ? 'Hide' : 'Show'}
+                >
+                  {showPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                </button>
+              </div>
             </div>
           </div>
 

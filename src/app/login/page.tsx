@@ -22,22 +22,80 @@ import {
   LogIn,
   Eye,
   EyeOff,
-  ShieldAlert
+  ShieldAlert,
+  UserPlus,
+  Mail,
+  User,
+  Sparkles,
+  X,
+  Target,
+  Flame
 } from 'lucide-react';
+
+function GoogleIcon({ className = 'w-4 h-4' }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24">
+      <path
+        fill="#4285F4"
+        d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+      />
+      <path
+        fill="#34A853"
+        d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+      />
+      <path
+        fill="#FBBC05"
+        d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
+      />
+      <path
+        fill="#EA4335"
+        d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
+      />
+    </svg>
+  );
+}
 
 function LoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const requestedRole = searchParams.get('role'); // 'member' | 'trainer' | 'owner'
 
-  const { users, login } = useGym();
+  const {
+    users,
+    plans,
+    login,
+    loginWithCredentials,
+    loginWithGoogle,
+    registerMemberAccount
+  } = useGym();
 
   const [activeTab, setActiveTab] = useState<'member' | 'trainer' | 'owner'>('member');
-  const [phoneInput, setPhoneInput] = useState('');
-  const [otpStep, setOtpStep] = useState(false);
-  const [otpCode, setOtpCode] = useState('');
-  const [matchedUser, setMatchedUser] = useState<typeof users[0] | null>(null);
-  const [errorMsg, setErrorMsg] = useState('');
+  const [memberMode, setMemberMode] = useState<'signin' | 'register'>('signin');
+
+  // Sign In credentials
+  const [loginIdentifier, setLoginIdentifier] = useState('9743247790');
+  const [loginPassword, setLoginPassword] = useState('1234');
+  const [showPassword, setShowPassword] = useState(false);
+  const [loginError, setLoginError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Self-Service Registration fields
+  const [regName, setRegName] = useState('');
+  const [regPhone, setRegPhone] = useState('');
+  const [regEmail, setRegEmail] = useState('');
+  const [regPassword, setRegPassword] = useState('');
+  const [regConfirmPassword, setRegConfirmPassword] = useState('');
+  const [regPlanId, setRegPlanId] = useState(plans[0]?.id || 'plan_quarterly');
+  const [regGoal, setRegGoal] = useState('General Health & Fitness');
+  const [showRegPassword, setShowRegPassword] = useState(false);
+  const [regError, setRegError] = useState('');
+  const [regSuccess, setRegSuccess] = useState('');
+
+  // Google OAuth Modal
+  const [showGoogleModal, setShowGoogleModal] = useState(false);
+  const [customGoogleName, setCustomGoogleName] = useState('');
+  const [customGoogleEmail, setCustomGoogleEmail] = useState('');
+  const [showCustomGoogleInput, setShowCustomGoogleInput] = useState(false);
 
   // Owner authentication credentials
   const [ownerPhone, setOwnerPhone] = useState('9902667407');
@@ -56,52 +114,124 @@ function LoginContent() {
     }
   }, [requestedRole]);
 
-  const handlePhoneSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setErrorMsg('');
+  // Demo Member Profile
+  const demoMember =
+    users.find((u) => u.phone === '9743247790') ||
+    users.find((u) => u.id === 'member_rahul_desai') ||
+    users.find((u) => u.role === 'member') || {
+      id: 'member_rahul_desai',
+      name: 'Rahul Desai',
+      phone: '9743247790',
+      email: 'rahul.desai@gmail.com',
+      password: '1234',
+      role: 'member' as const,
+      marketing_opt_in: true,
+      comm_preference: 'whatsapp' as const,
+      created_at: '2025-01-01'
+    };
 
-    // Rate limiting check
-    const rateCheck = checkRateLimit('login_otp', 5, 60000);
+  // 1. Handle Member ID/Password Sign In
+  const handleCredentialLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoginError('');
+
+    const rateCheck = checkRateLimit('login_credentials', 6, 60000);
     if (!rateCheck.allowed) {
-      setErrorMsg(`Too many lookup attempts. Please wait ${rateCheck.retryAfterSeconds} seconds before trying again.`);
+      setLoginError(`Too many login attempts. Please wait ${rateCheck.retryAfterSeconds} seconds.`);
       return;
     }
 
-    const { sanitized } = sanitizePhone(phoneInput);
-    if (!sanitized) {
-      setErrorMsg('Please enter a valid 10-digit mobile number.');
-      return;
-    }
+    setIsSubmitting(true);
+    try {
+      const res = await loginWithCredentials(loginIdentifier, loginPassword);
+      if (!res.success) {
+        setLoginError(res.message);
+        return;
+      }
 
-    const found =
-      users.find((u) => u.phone === sanitized || u.phone.includes(sanitized)) ||
-      (sanitized === '9743247790' ? demoMember : null);
-
-    if (found) {
-      setMatchedUser(found);
-      setOtpStep(true);
-      setOtpCode('1234'); // auto-fill demo password / OTP
-    } else {
-      setErrorMsg('Mobile number not found in Karnataka Gym register. Please check the number or use Demo Account: 9743247790.');
-    }
-  };
-
-  const handleOtpVerify = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (otpCode.trim() !== '1234') {
-      setErrorMsg('Invalid password/OTP. Please enter demo password: 1234');
-      return;
-    }
-    if (matchedUser) {
-      login(matchedUser.id);
-      if (matchedUser.role === 'owner' || matchedUser.role === 'front_desk' || matchedUser.role === 'trainer') {
+      if (res.user?.role === 'owner' || res.user?.role === 'trainer') {
         router.push('/owner/dashboard');
       } else {
         router.push('/member/home');
       }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
+  // 2. Handle Self-Service Account Setup
+  const handleRegisterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setRegError('');
+    setRegSuccess('');
+
+    if (regPassword.length < 4) {
+      setRegError('Password must be at least 4 characters long.');
+      return;
+    }
+    if (regPassword !== regConfirmPassword) {
+      setRegError('Passwords do not match. Please re-type your password.');
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const res = await registerMemberAccount({
+        name: regName,
+        phone: regPhone,
+        email: regEmail || undefined,
+        password: regPassword,
+        planId: regPlanId,
+        fitnessGoal: regGoal,
+        authProvider: 'password'
+      });
+
+      if (!res.success) {
+        setRegError(res.message);
+        return;
+      }
+
+      setRegSuccess(res.message);
+      setTimeout(() => {
+        router.push('/member/home');
+      }, 1000);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // 3. Handle Google Authentication
+  const handleGoogleSelect = async (account: { name: string; email: string; imageUrl?: string }) => {
+    setShowGoogleModal(false);
+    setIsSubmitting(true);
+    try {
+      const res = await loginWithGoogle(account);
+      if (!res.success) {
+        setLoginError(res.message);
+        return;
+      }
+      if (res.user?.role === 'owner' || res.user?.role === 'trainer') {
+        router.push('/owner/dashboard');
+      } else {
+        router.push('/member/home');
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleCustomGoogleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!customGoogleEmail.includes('@') || !customGoogleName.trim()) {
+      return;
+    }
+    handleGoogleSelect({
+      name: customGoogleName.trim(),
+      email: customGoogleEmail.trim().toLowerCase()
+    });
+  };
+
+  // Direct 1-tap select for Trainers/Demo
   const handleDirectSelect = (user: typeof users[0]) => {
     login(user.id);
     if (user.role === 'owner' || user.role === 'front_desk' || user.role === 'trainer') {
@@ -111,21 +241,20 @@ function LoginContent() {
     }
   };
 
+  // Owner PIN Authentication
   const handleOwnerLogin = (e: React.FormEvent) => {
     e.preventDefault();
     setOwnerError('');
 
-    // Rate limiting check
     const rateCheck = checkRateLimit('login_owner_pin', 5, 60000);
     if (!rateCheck.allowed) {
-      setOwnerError(`Too many login attempts. Please wait ${rateCheck.retryAfterSeconds} seconds before trying again.`);
+      setOwnerError(`Too many login attempts. Please wait ${rateCheck.retryAfterSeconds} seconds.`);
       return;
     }
 
     const { sanitized } = sanitizePhone(ownerPhone);
     const cleanPin = ownerPin.trim();
 
-    // Verify phone is owner phone 9902667407 and PIN is 9902
     const isOwnerPhone = sanitized === '9902667407' || sanitized.endsWith('9902667407');
     const isOwnerPin = cleanPin === '9902';
 
@@ -145,21 +274,7 @@ function LoginContent() {
     router.push('/owner/dashboard');
   };
 
-  // Grouped users
   const trainerUsers = users.filter((u) => u.role === 'trainer');
-  const ownerUsers = users.filter((u) => u.role === 'owner' || u.role === 'front_desk');
-  const demoMember =
-    users.find((u) => u.phone === '9743247790') ||
-    users.find((u) => u.id === 'member_rahul_desai') ||
-    users.find((u) => u.role === 'member') || {
-      id: 'member_rahul_desai',
-      name: 'Rahul Desai',
-      phone: '9743247790',
-      role: 'member' as const,
-      marketing_opt_in: true,
-      comm_preference: 'whatsapp' as const,
-      created_at: '2025-01-01'
-    };
 
   return (
     <div className="min-h-screen flex flex-col bg-[#0B0E14] text-slate-100">
@@ -197,13 +312,13 @@ function LoginContent() {
               Karnataka Gym <span className="text-[#E5A93C]">Hubballi</span>
             </h1>
             <p className="text-xs text-slate-400 mt-1">
-              Select your portal below: Member, Trainer, or Owner.
+              Member Digital Portal • Est. 2011 • Hubballi, Karnataka
             </p>
           </div>
         </div>
 
         {/* 3-Role Toggle Tabs */}
-        <div className="max-w-md mx-auto grid grid-cols-3 gap-2 p-1.5 rounded-2xl bg-[#121622] border border-[#232B3E]">
+        <div className="max-w-md mx-auto grid grid-cols-2 sm:grid-cols-2 gap-2 p-1.5 rounded-2xl bg-[#121622] border border-[#232B3E]">
           {/* Member Tab */}
           <button
             type="button"
@@ -215,7 +330,7 @@ function LoginContent() {
             }`}
           >
             <UserCheck className="w-4 h-4 stroke-[2.5]" />
-            <span>Member</span>
+            <span>Member Portal</span>
           </button>
 
           {/* Trainer Tab */}
@@ -229,7 +344,7 @@ function LoginContent() {
             }`}
           >
             <Dumbbell className="w-4 h-4 stroke-[2.5]" />
-            <span>Trainer</span>
+            <span>Trainer Desk</span>
           </button>
 
           {/* Owner Tab - Only accessible via direct link (?role=owner) */}
@@ -237,40 +352,82 @@ function LoginContent() {
             <button
               type="button"
               onClick={() => setActiveTab('owner')}
-              className={`py-2.5 px-2 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
+              className={`col-span-2 py-2.5 px-2 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
                 activeTab === 'owner'
                   ? 'bg-red-600 text-white shadow-md'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
               <Lock className="w-4 h-4 stroke-[2.5]" />
-              <span>Owner Portal</span>
+              <span>Owner Portal (Private)</span>
             </button>
           )}
         </div>
 
-        {/* TAB 1: MEMBER LOGIN */}
+        {/* TAB 1: MEMBER LOGIN & ACCOUNT SETUP */}
         {activeTab === 'member' && (
           <div className="max-w-md mx-auto space-y-6">
-            {/* OTP Input Card */}
-            <div className="bg-[#121622] border border-[#232B3E] rounded-2xl p-6 shadow-xl space-y-4">
-              <div className="border-b border-[#232B3E] pb-3">
-                <span className="text-xs font-bold text-white block">Member Authentication</span>
-                <span className="text-[11px] text-slate-400">Enter your 10-digit registered mobile number</span>
-              </div>
+            {/* Sub-Switch: Sign In vs Set Up Account */}
+            <div className="grid grid-cols-2 gap-2 p-1 rounded-xl bg-[#161B26] border border-[#232B3E]">
+              <button
+                type="button"
+                onClick={() => {
+                  setMemberMode('signin');
+                  setLoginError('');
+                }}
+                className={`py-2 rounded-lg text-xs font-black transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                  memberMode === 'signin'
+                    ? 'bg-[#E5A93C] text-slate-950 shadow'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                <LogIn className="w-3.5 h-3.5" />
+                <span>Member Sign In</span>
+              </button>
 
-              {!otpStep ? (
-                <form onSubmit={handlePhoneSubmit} className="space-y-4">
+              <button
+                type="button"
+                onClick={() => {
+                  setMemberMode('register');
+                  setRegError('');
+                }}
+                className={`py-2 rounded-lg text-xs font-black transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                  memberMode === 'register'
+                    ? 'bg-blue-600 text-white shadow'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                <UserPlus className="w-3.5 h-3.5" />
+                <span>Set Up Account</span>
+              </button>
+            </div>
+
+            {/* MODE A: SIGN IN FORM */}
+            {memberMode === 'signin' && (
+              <div className="bg-[#121622] border border-[#232B3E] rounded-2xl p-6 shadow-xl space-y-5">
+                <div className="border-b border-[#232B3E] pb-3 flex items-center justify-between">
+                  <div>
+                    <h2 className="text-sm font-extrabold text-white">Member Credentials Login</h2>
+                    <p className="text-[11px] text-slate-400">Login with your Phone, Email, or Member ID</p>
+                  </div>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#E5A93C]/15 text-[#E5A93C] border border-[#E5A93C]/30">
+                    ID & Password
+                  </span>
+                </div>
+
+                <form onSubmit={handleCredentialLogin} className="space-y-4">
+                  {/* ID / Phone / Email Input */}
                   <div>
                     <div className="flex items-center justify-between mb-1.5">
                       <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider">
-                        Mobile Number
+                        Phone, Email, or Member ID
                       </label>
                       <button
                         type="button"
                         onClick={() => {
-                          setPhoneInput('9743247790');
-                          setErrorMsg('');
+                          setLoginIdentifier('9743247790');
+                          setLoginPassword('1234');
+                          setLoginError('');
                         }}
                         className="text-[11px] text-[#E5A93C] hover:underline font-bold cursor-pointer"
                       >
@@ -278,80 +435,302 @@ function LoginContent() {
                       </button>
                     </div>
                     <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                        <User className="w-4 h-4" />
+                      </div>
+                      <input
+                        type="text"
+                        placeholder="e.g. 9743247790 or rahul.desai@gmail.com"
+                        value={loginIdentifier}
+                        onChange={(e) => setLoginIdentifier(e.target.value)}
+                        className="w-full bg-[#181F2F] border border-[#2C3852] focus:border-[#E5A93C] rounded-xl py-2.5 pl-10 pr-4 text-sm font-semibold text-white placeholder-slate-500 focus:outline-none"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  {/* Password Input */}
+                  <div>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider">
+                        Password / PIN
+                      </label>
+                      <span className="text-[11px] text-[#E5A93C] font-semibold">
+                        Demo: 1234
+                      </span>
+                    </div>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                        <KeyRound className="w-4 h-4" />
+                      </div>
+                      <input
+                        type={showPassword ? 'text' : 'password'}
+                        placeholder="Enter 4-digit password (1234)"
+                        value={loginPassword}
+                        onChange={(e) => setLoginPassword(e.target.value)}
+                        className="w-full bg-[#181F2F] border border-[#2C3852] focus:border-[#E5A93C] rounded-xl py-2.5 pl-10 pr-10 text-sm font-semibold text-white placeholder-slate-500 focus:outline-none"
+                        required
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-3 text-slate-400 hover:text-white cursor-pointer"
+                        title={showPassword ? 'Hide' : 'Show'}
+                      >
+                        {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      </button>
+                    </div>
+                  </div>
+
+                  {loginError && (
+                    <div className="p-3 rounded-xl bg-red-950/70 border border-red-800 text-red-200 text-xs flex items-start gap-2">
+                      <ShieldAlert className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
+                      <span>{loginError}</span>
+                    </div>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full bg-[#E5A93C] hover:bg-[#F59E0B] text-slate-950 font-extrabold py-3 rounded-xl text-sm flex items-center justify-center gap-2 shadow-lg shadow-[#E5A93C]/20 transition-all cursor-pointer disabled:opacity-50"
+                  >
+                    <LogIn className="w-4 h-4 stroke-[2.5]" />
+                    <span>{isSubmitting ? 'Signing In...' : 'Sign In with ID & Password'}</span>
+                  </button>
+                </form>
+
+                {/* OR Divider */}
+                <div className="relative flex items-center justify-center my-2">
+                  <div className="border-t border-[#232B3E] w-full"></div>
+                  <span className="bg-[#121622] px-3 text-[10px] font-black uppercase tracking-wider text-slate-500 relative">
+                    OR CONTINUE WITH
+                  </span>
+                </div>
+
+                {/* Google Sign In Button */}
+                <button
+                  type="button"
+                  onClick={() => setShowGoogleModal(true)}
+                  className="w-full bg-white hover:bg-slate-100 text-slate-900 font-extrabold py-3 rounded-xl text-xs sm:text-sm flex items-center justify-center gap-3 shadow-md hover:shadow-lg transition-all cursor-pointer border border-slate-300"
+                >
+                  <GoogleIcon className="w-5 h-5 flex-shrink-0" />
+                  <span>Sign in with Google</span>
+                </button>
+
+                {/* Link to Set Up Account */}
+                <div className="text-center pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setMemberMode('register')}
+                    className="text-xs text-slate-400 hover:text-[#E5A93C] transition-colors"
+                  >
+                    Don't have an account? <strong className="text-[#E5A93C] underline">Set up your account here →</strong>
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* MODE B: SELF-SERVICE REGISTRATION / ACCOUNT SETUP */}
+            {memberMode === 'register' && (
+              <div className="bg-[#121622] border-2 border-blue-600/60 rounded-2xl p-6 shadow-xl space-y-5">
+                <div className="border-b border-[#232B3E] pb-3 flex items-center justify-between">
+                  <div>
+                    <h2 className="text-sm font-extrabold text-white">Set Up Member Account</h2>
+                    <p className="text-[11px] text-slate-400">Join Karnataka Gym Hubballi in 1 minute</p>
+                  </div>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-500/15 text-blue-400 border border-blue-500/30">
+                    New Member
+                  </span>
+                </div>
+
+                {/* 1-Tap Google Setup */}
+                <div>
+                  <button
+                    type="button"
+                    onClick={() => setShowGoogleModal(true)}
+                    className="w-full bg-white hover:bg-slate-100 text-slate-900 font-extrabold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2.5 shadow transition-all cursor-pointer border border-slate-300"
+                  >
+                    <GoogleIcon className="w-4 h-4 flex-shrink-0" />
+                    <span>Quick 1-Tap Set Up with Google</span>
+                  </button>
+
+                  <div className="relative flex items-center justify-center my-3">
+                    <div className="border-t border-[#232B3E] w-full"></div>
+                    <span className="bg-[#121622] px-3 text-[10px] font-black uppercase tracking-wider text-slate-500 relative">
+                      OR REGISTER WITH PHONE
+                    </span>
+                  </div>
+                </div>
+
+                <form onSubmit={handleRegisterSubmit} className="space-y-3.5">
+                  {/* Full Name */}
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-300 uppercase tracking-wider mb-1">
+                      Full Name *
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Ramesh Kulkarni"
+                      value={regName}
+                      onChange={(e) => setRegName(e.target.value)}
+                      className="w-full bg-[#181F2F] border border-[#2C3852] focus:border-blue-500 rounded-xl py-2 px-3 text-xs font-semibold text-white placeholder-slate-500 focus:outline-none"
+                      required
+                    />
+                  </div>
+
+                  {/* Phone Number */}
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-300 uppercase tracking-wider mb-1">
+                      Mobile Number (10 Digits) *
+                    </label>
+                    <div className="relative">
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 font-bold text-xs">
                         +91
                       </div>
                       <input
                         type="tel"
-                        placeholder="e.g. 9743247790"
-                        value={phoneInput}
-                        onChange={(e) => setPhoneInput(e.target.value)}
-                        className="w-full bg-[#181F2F] border border-[#2C3852] focus:border-[#E5A93C] rounded-xl py-2.5 pl-12 pr-4 text-sm font-semibold text-white placeholder-slate-500 focus:outline-none"
+                        placeholder="9845012345"
+                        value={regPhone}
+                        onChange={(e) => setRegPhone(e.target.value)}
                         maxLength={10}
+                        className="w-full bg-[#181F2F] border border-[#2C3852] focus:border-blue-500 rounded-xl py-2 pl-11 pr-3 text-xs font-semibold text-white placeholder-slate-500 focus:outline-none"
                         required
                       />
                     </div>
-                    {errorMsg && (
-                      <p className="text-xs text-red-400 mt-1.5 font-medium">{errorMsg}</p>
-                    )}
                   </div>
 
-                  <button
-                    type="submit"
-                    className="w-full bg-[#E5A93C] hover:bg-[#F59E0B] text-slate-950 font-extrabold py-2.5 rounded-xl text-sm flex items-center justify-center gap-2 shadow-lg shadow-[#E5A93C]/20 transition-all cursor-pointer"
-                  >
-                    <span>Continue to Password / OTP</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
-                </form>
-              ) : (
-                <form onSubmit={handleOtpVerify} className="space-y-4">
-                  <div className="bg-[#181F2F] p-3 rounded-xl border border-[#2C3852] flex items-center justify-between">
-                    <div>
-                      <span className="text-[10px] uppercase text-slate-400 font-bold block">Logging in as:</span>
-                      <span className="text-sm font-extrabold text-white">{matchedUser?.name}</span>
-                      <span className="text-xs text-[#E5A93C] font-mono block">+91 {matchedUser?.phone}</span>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => setOtpStep(false)}
-                      className="text-xs text-slate-400 hover:text-white underline cursor-pointer"
-                    >
-                      Change
-                    </button>
-                  </div>
-
+                  {/* Email (Optional) */}
                   <div>
-                    <label className="block text-xs font-bold text-slate-300 mb-1.5 uppercase tracking-wider flex items-center justify-between">
-                      <span>Enter 4-Digit Password / OTP</span>
-                      <span className="text-[#E5A93C] text-[10px] font-bold">Demo Password: 1234</span>
+                    <label className="block text-[11px] font-bold text-slate-300 uppercase tracking-wider mb-1">
+                      Email Address (Optional)
                     </label>
                     <div className="relative">
-                      <KeyRound className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                        <Mail className="w-3.5 h-3.5" />
+                      </div>
                       <input
-                        type="text"
-                        value={otpCode}
-                        onChange={(e) => setOtpCode(e.target.value)}
-                        placeholder="1234"
-                        className="w-full bg-[#181F2F] border border-[#2C3852] focus:border-[#E5A93C] rounded-xl py-2.5 pl-10 pr-4 text-sm font-mono tracking-widest text-white placeholder-slate-500 focus:outline-none text-center"
-                        maxLength={4}
+                        type="email"
+                        placeholder="e.g. ramesh@gmail.com"
+                        value={regEmail}
+                        onChange={(e) => setRegEmail(e.target.value)}
+                        className="w-full bg-[#181F2F] border border-[#2C3852] focus:border-blue-500 rounded-xl py-2 pl-9 pr-3 text-xs font-semibold text-white placeholder-slate-500 focus:outline-none"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Password & Confirm */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    <div>
+                      <label className="block text-[11px] font-bold text-slate-300 uppercase tracking-wider mb-1">
+                        Create Password *
+                      </label>
+                      <div className="relative">
+                        <input
+                          type={showRegPassword ? 'text' : 'password'}
+                          placeholder="Min 4 digits"
+                          value={regPassword}
+                          onChange={(e) => setRegPassword(e.target.value)}
+                          className="w-full bg-[#181F2F] border border-[#2C3852] focus:border-blue-500 rounded-xl py-2 px-3 text-xs font-semibold text-white placeholder-slate-500 focus:outline-none"
+                          required
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowRegPassword(!showRegPassword)}
+                          className="absolute right-2.5 top-2.5 text-slate-400 hover:text-white"
+                        >
+                          {showRegPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                        </button>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-[11px] font-bold text-slate-300 uppercase tracking-wider mb-1">
+                        Confirm Password *
+                      </label>
+                      <input
+                        type={showRegPassword ? 'text' : 'password'}
+                        placeholder="Re-enter password"
+                        value={regConfirmPassword}
+                        onChange={(e) => setRegConfirmPassword(e.target.value)}
+                        className="w-full bg-[#181F2F] border border-[#2C3852] focus:border-blue-500 rounded-xl py-2 px-3 text-xs font-semibold text-white placeholder-slate-500 focus:outline-none"
                         required
                       />
                     </div>
                   </div>
 
+                  {/* Plan Selection */}
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-300 uppercase tracking-wider mb-1">
+                      Choose Starting Membership Plan
+                    </label>
+                    <select
+                      value={regPlanId}
+                      onChange={(e) => setRegPlanId(e.target.value)}
+                      className="w-full bg-[#181F2F] border border-[#2C3852] focus:border-blue-500 rounded-xl py-2 px-3 text-xs font-semibold text-white focus:outline-none"
+                    >
+                      {plans.map((p) => (
+                        <option key={p.id} value={p.id}>
+                          {p.name} ({p.duration_months} Months) — ₹{p.base_price - (p.discount_amount || 0)}
+                        </option>
+                      ))}
+                      <option value="trial_7days">7-Day Free Karnataka Gym Trial Pass (₹0)</option>
+                    </select>
+                  </div>
+
+                  {/* Fitness Goal */}
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-300 uppercase tracking-wider mb-1">
+                      Primary Fitness Goal
+                    </label>
+                    <select
+                      value={regGoal}
+                      onChange={(e) => setRegGoal(e.target.value)}
+                      className="w-full bg-[#181F2F] border border-[#2C3852] focus:border-blue-500 rounded-xl py-2 px-3 text-xs font-semibold text-white focus:outline-none"
+                    >
+                      <option value="General Health & Fitness">General Health & Fitness</option>
+                      <option value="Raw Strength & Hypertrophy">Raw Strength & Hypertrophy</option>
+                      <option value="Weight Loss & Conditioning">Weight Loss & Conditioning</option>
+                      <option value="Bodybuilding Competition">Bodybuilding Competition</option>
+                    </select>
+                  </div>
+
+                  {regError && (
+                    <div className="p-2.5 rounded-xl bg-red-950/70 border border-red-800 text-red-200 text-xs flex items-start gap-2">
+                      <ShieldAlert className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
+                      <span>{regError}</span>
+                    </div>
+                  )}
+
+                  {regSuccess && (
+                    <div className="p-2.5 rounded-xl bg-emerald-950/70 border border-emerald-800 text-emerald-200 text-xs flex items-center gap-2">
+                      <CheckCircle className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                      <span>{regSuccess}</span>
+                    </div>
+                  )}
+
                   <button
                     type="submit"
-                    className="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-extrabold py-2.5 rounded-xl text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 transition-all cursor-pointer"
+                    disabled={isSubmitting}
+                    className="w-full bg-blue-600 hover:bg-blue-500 text-white font-extrabold py-3 rounded-xl text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-blue-600/30 transition-all cursor-pointer disabled:opacity-50"
                   >
-                    <CheckCircle className="w-4 h-4 stroke-[2.5]" />
-                    <span>Verify & Enter Member Portal</span>
+                    <UserPlus className="w-4 h-4" />
+                    <span>{isSubmitting ? 'Creating Profile...' : 'Complete Account Setup & Enter Gym'}</span>
                   </button>
                 </form>
-              )}
-            </div>
 
-            {/* 1 Demo Member Profile */}
+                <div className="text-center pt-1">
+                  <button
+                    type="button"
+                    onClick={() => setMemberMode('signin')}
+                    className="text-xs text-slate-400 hover:text-blue-400 transition-colors"
+                  >
+                    Already have an account? <strong className="text-blue-400 underline">Sign in with ID & Password →</strong>
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Quick 1-Tap Demo Card */}
             <div className="bg-[#121622] border border-[#232B3E] rounded-2xl p-4 shadow-xl space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
@@ -377,7 +756,7 @@ function LoginContent() {
                       {demoMember.name}
                     </span>
                     <span className="text-xs text-slate-400 font-mono">
-                      +91 {demoMember.phone} • Password: 1234 • Active Plan
+                      +91 {demoMember.phone} • {demoMember.email || 'rahul.desai@gmail.com'}
                     </span>
                   </div>
                 </div>
@@ -389,7 +768,7 @@ function LoginContent() {
               </button>
 
               <p className="text-[11px] text-slate-400 text-center">
-                Click to test QR check-in, workout streak, and renewal features.
+                Click to test QR check-in, live workout streak, and member app features.
               </p>
             </div>
           </div>
@@ -552,6 +931,125 @@ function LoginContent() {
         )}
       </main>
 
+      {/* GOOGLE ACCOUNT CHOOSER MODAL */}
+      {showGoogleModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-150">
+          <div className="bg-[#121622] border-2 border-slate-700 rounded-3xl p-6 max-w-sm w-full space-y-4 shadow-2xl relative">
+            <button
+              type="button"
+              onClick={() => {
+                setShowGoogleModal(false);
+                setShowCustomGoogleInput(false);
+              }}
+              className="absolute right-4 top-4 text-slate-400 hover:text-white p-1 rounded-lg"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            {/* Google Header */}
+            <div className="text-center space-y-2 pt-2">
+              <div className="inline-flex p-3 rounded-2xl bg-white shadow-md">
+                <GoogleIcon className="w-7 h-7" />
+              </div>
+              <h3 className="text-base font-extrabold text-white">Sign in with Google</h3>
+              <p className="text-xs text-slate-400">Choose an account to continue to Karnataka Gym Hubballi</p>
+            </div>
+
+            {!showCustomGoogleInput ? (
+              <div className="space-y-2.5 pt-2">
+                {/* Account 1: Rahul Desai (Member) */}
+                <button
+                  type="button"
+                  onClick={() =>
+                    handleGoogleSelect({
+                      name: 'Rahul Desai',
+                      email: 'rahul.desai@gmail.com',
+                      imageUrl: ''
+                    })
+                  }
+                  className="w-full p-3 rounded-2xl bg-[#181F2F] hover:bg-[#20293D] border border-[#2C3852] hover:border-[#4285F4] transition-all flex items-center gap-3 text-left group cursor-pointer"
+                >
+                  <div className="w-9 h-9 rounded-full bg-blue-600 font-black text-white text-sm flex items-center justify-center flex-shrink-0">
+                    R
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <span className="text-xs font-bold text-white block group-hover:text-blue-400 truncate">
+                      Rahul Desai
+                    </span>
+                    <span className="text-[11px] text-slate-400 truncate block">rahul.desai@gmail.com</span>
+                  </div>
+                  <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-400">
+                    Member
+                  </span>
+                </button>
+
+                {/* Account 2: Custom Google Account Button */}
+                <button
+                  type="button"
+                  onClick={() => setShowCustomGoogleInput(true)}
+                  className="w-full p-3 rounded-2xl bg-[#181F2F] hover:bg-[#20293D] border border-[#2C3852] hover:border-[#4285F4] transition-all flex items-center gap-3 text-left cursor-pointer"
+                >
+                  <div className="w-9 h-9 rounded-full bg-slate-700 text-slate-300 font-bold text-sm flex items-center justify-center flex-shrink-0">
+                    <UserPlus className="w-4 h-4" />
+                  </div>
+                  <div className="flex-1">
+                    <span className="text-xs font-bold text-white block">Use another Google Account</span>
+                    <span className="text-[11px] text-slate-400">Sign in with your personal Gmail</span>
+                  </div>
+                </button>
+              </div>
+            ) : (
+              /* Custom Google Form */
+              <form onSubmit={handleCustomGoogleSubmit} className="space-y-3 pt-2">
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-300 mb-1">Your Full Name</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Sunil Kulkarni"
+                    value={customGoogleName}
+                    onChange={(e) => setCustomGoogleName(e.target.value)}
+                    className="w-full bg-[#181F2F] border border-[#2C3852] focus:border-[#4285F4] rounded-xl py-2 px-3 text-xs text-white placeholder-slate-500 focus:outline-none"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-300 mb-1">Gmail Address</label>
+                  <input
+                    type="email"
+                    placeholder="sunil.gym@gmail.com"
+                    value={customGoogleEmail}
+                    onChange={(e) => setCustomGoogleEmail(e.target.value)}
+                    className="w-full bg-[#181F2F] border border-[#2C3852] focus:border-[#4285F4] rounded-xl py-2 px-3 text-xs text-white placeholder-slate-500 focus:outline-none"
+                    required
+                  />
+                </div>
+
+                <div className="flex gap-2 pt-1">
+                  <button
+                    type="button"
+                    onClick={() => setShowCustomGoogleInput(false)}
+                    className="flex-1 py-2 rounded-xl border border-slate-700 text-slate-400 text-xs font-bold"
+                  >
+                    Back
+                  </button>
+                  <button
+                    type="submit"
+                    className="flex-1 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-black shadow"
+                  >
+                    Continue
+                  </button>
+                </div>
+              </form>
+            )}
+
+            <div className="pt-2 text-center text-[10px] text-slate-500">
+              Karnataka Gym Hubballi uses Google Auth to verify your identity.
+            </div>
+          </div>
+        </div>
+      )}
+
       <Footer />
     </div>
   );
@@ -559,7 +1057,13 @@ function LoginContent() {
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-[#0B0E14] flex items-center justify-center text-white">Loading Login...</div>}>
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-[#0B0E14] text-white flex items-center justify-center text-sm font-bold">
+          Loading Karnataka Gym Hubballi Portal...
+        </div>
+      }
+    >
       <LoginContent />
     </Suspense>
   );

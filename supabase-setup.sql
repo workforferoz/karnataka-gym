@@ -30,6 +30,9 @@ CREATE TABLE users (
     role VARCHAR(20) NOT NULL CHECK (role IN ('member', 'owner', 'front_desk', 'trainer')),
     phone VARCHAR(20) NOT NULL UNIQUE,
     name VARCHAR(100) NOT NULL,
+    email VARCHAR(150),
+    password VARCHAR(100) DEFAULT '1234',
+    auth_provider VARCHAR(50) DEFAULT 'password',
     profile_image TEXT,
     marketing_opt_in BOOLEAN DEFAULT TRUE,
     emergency_contact VARCHAR(20),
@@ -38,6 +41,11 @@ CREATE TABLE users (
     active_diet_plan VARCHAR(100),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
+
+-- Migration helpers if table already exists
+ALTER TABLE users ADD COLUMN IF NOT EXISTS email VARCHAR(150);
+ALTER TABLE users ADD COLUMN IF NOT EXISTS password VARCHAR(100) DEFAULT '1234';
+ALTER TABLE users ADD COLUMN IF NOT EXISTS auth_provider VARCHAR(50) DEFAULT 'password';
 
 CREATE TABLE plans (
     id TEXT PRIMARY KEY,

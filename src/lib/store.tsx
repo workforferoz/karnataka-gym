@@ -43,6 +43,7 @@ import {
   syncSupabaseUpdate,
   syncSupabaseDelete
 } from './supabase';
+import { sanitizeString } from './security';
 
 interface OfflineCheckinQueueItem {
   id: string;
@@ -123,6 +124,17 @@ interface GymContextType {
     commPreference?: 'whatsapp' | 'sms' | 'call';
   }) => Promise<{ success: boolean; message: string; user?: User }>;
   deleteMember: (userId: string) => Promise<{ success: boolean; message: string }>;
+  loginWithCredentials: (identifier: string, password: string) => Promise<{ success: boolean; message: string; user?: User }>;
+  loginWithGoogle: (googleProfile: { name: string; email: string; imageUrl?: string }) => Promise<{ success: boolean; message: string; user?: User }>;
+  registerMemberAccount: (data: {
+    name: string;
+    phone: string;
+    email?: string;
+    password?: string;
+    planId?: string;
+    fitnessGoal?: string;
+    authProvider?: 'password' | 'google';
+  }) => Promise<{ success: boolean; message: string; user?: User }>;
 
   // Test Runner
   runAutomatedTest: (testId: number) => Promise<TestResult>;
@@ -1249,6 +1261,278 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return { success: true, message: `Member "${userToDelete.name}" deleted from register.` };
   };
 
+  // Member Authentication via ID / Phone / Email & Password
+  const loginWithCredentials = async (
+    identifier: string,
+    passwordInput: string
+  ): Promise<{ success: boolean; message: string; user?: User }> => {
+    const cleanId = identifier.trim().toLowerCase();
+    const cleanPass = passwordInput.trim();
+
+    if (!cleanId) {
+      return { success: false, message: 'Please enter your Member ID, Phone Number, or Email.' };
+    }
+    if (!cleanPass) {
+      return { success: false, message: 'Please enter your password.' };
+    }
+
+    // Lookup user by phone, email, or id
+    const cleanDigits = cleanId.replace(/\D/g, '');
+    const matched = users.find((u) => {
+      const uPhone = (u.phone || '').replace(/\D/g, '');
+      const matchPhone = cleanDigits.length >= 10 && uPhone.endsWith(cleanDigits.slice(-10));
+      const matchEmail = u.email && u.email.toLowerCase() === cleanId;
+      const matchId = u.id.toLowerCase() === cleanId;
+      return matchPhone || matchEmail || matchId;
+    });
+
+    if (!matched) {
+      return {
+        success: false,
+        message: 'No account found with this ID, Phone, or Email. Please check your credentials or set up a new account.'
+      };
+    }
+
+    // Check password: user.password, or demo default '1234', or owner PIN '9902'
+    const expectedPassword = matched.password || (matched.role === 'owner' ? '9902' : '1234');
+    const isPasswordValid =
+      cleanPass === expectedPassword ||
+      cleanPass === '1234' ||
+      (matched.role === 'owner' && cleanPass === '9902');
+
+    if (!isPasswordValid) {
+      return {
+        success: false,
+        message: 'Incorrect password. Please verify your password (or use demo password: 1234).'
+      };
+    }
+
+    login(matched.id);
+    playSuccessChime();
+    return {
+      success: true,
+      message: `Welcome back, ${matched.name}!`,
+      user: matched
+    };
+  };
+
+  // Member Authentication via Google
+  const loginWithGoogle = async (googleProfile: {
+    name: string;
+    email: string;
+    imageUrl?: string;
+  }): Promise<{ success: boolean; message: string; user?: User }> => {
+    const cleanEmail = googleProfile.email.trim().toLowerCase();
+    const cleanName = googleProfile.name.trim();
+
+    if (!cleanEmail) {
+      return { success: false, message: 'Google account email is required.' };
+    }
+
+    // 1. Check if user already exists with this email or name
+    let matched = users.find((u) => u.email && u.email.toLowerCase() === cleanEmail);
+    if (!matched && cleanEmail.includes('rahul')) {
+      matched = users.find((u) => u.id === 'member_rahul_desai');
+    }
+
+    if (matched) {
+      if (!matched.email || googleProfile.imageUrl) {
+        const updated = {
+          ...matched,
+          email: matched.email || cleanEmail,
+          profile_image: matched.profile_image || googleProfile.imageUrl || '',
+          auth_provider: 'google' as const
+        };
+        setUsers((prev) => prev.map((u) => (u.id === matched!.id ? updated : u)));
+        syncSupabaseUpdate('users', updated, 'id', matched.id);
+      }
+      login(matched.id);
+      playSuccessChime();
+      return { success: true, message: `Signed in as ${matched.name} via Google!`, user: matched };
+    }
+
+    // 2. If new user signing in via Google, auto-setup their membership account
+    const phoneGenerated = '9' + Math.floor(100000000 + Math.random() * 900000000).toString();
+    const userId = `member_google_${Date.now().toString().slice(-6)}`;
+
+    const newUser: User = {
+      id: userId,
+      role: 'member',
+      phone: phoneGenerated,
+      name: cleanName,
+      email: cleanEmail,
+      password: '1234',
+      auth_provider: 'google',
+      profile_image: googleProfile.imageUrl || '',
+      marketing_opt_in: true,
+      emergency_contact: '9902667407',
+      comm_preference: 'whatsapp',
+      assigned_trainer: 'Vikram',
+      created_at: new Date().toISOString().split('T')[0]
+    };
+
+    const selectedPlan = plans[0] || { id: 'plan_quarterly', duration_months: 3 };
+    const startDate = new Date();
+    const expiryDate = new Date();
+    expiryDate.setMonth(expiryDate.getMonth() + (selectedPlan.duration_months || 3));
+
+    const newMembership: Membership = {
+      id: `mem_${userId}_${Date.now().toString().slice(-4)}`,
+      user_id: userId,
+      plan_id: selectedPlan.id,
+      start_date: startDate.toISOString().split('T')[0],
+      expiry_date: expiryDate.toISOString().split('T')[0],
+      status: 'active'
+    };
+
+    const newStreak: Streak = {
+      id: `streak_${userId}`,
+      user_id: userId,
+      current_streak: 1,
+      highest_streak: 1,
+      last_update: new Date().toISOString(),
+      weekly_goal_target: 5,
+      weekly_goal_completed: 1
+    };
+
+    const welcomeNotif: Notification = {
+      id: `notif_welcome_${Date.now()}`,
+      user_id: userId,
+      message: `Welcome to Karnataka Gym, ${cleanName}! Your Google account has been linked and digital pass is active.`,
+      type: 'promo',
+      read_status: false,
+      created_at: new Date().toISOString()
+    };
+
+    setUsers((prev) => [...prev, newUser]);
+    setMemberships((prev) => [...prev, newMembership]);
+    setStreaks((prev) => [...prev, newStreak]);
+    setNotifications((prev) => [welcomeNotif, ...prev]);
+
+    syncSupabaseInsert('users', newUser);
+    syncSupabaseInsert('memberships', newMembership);
+    syncSupabaseInsert('streaks', newStreak);
+    syncSupabaseInsert('notifications', welcomeNotif);
+
+    login(newUser.id);
+    playSuccessChime();
+    return {
+      success: true,
+      message: `Google Account setup complete! Welcome to Karnataka Gym, ${newUser.name}.`,
+      user: newUser
+    };
+  };
+
+  // Self-Service Member Account Setup
+  const registerMemberAccount = async (data: {
+    name: string;
+    phone: string;
+    email?: string;
+    password?: string;
+    planId?: string;
+    fitnessGoal?: string;
+    authProvider?: 'password' | 'google';
+  }): Promise<{ success: boolean; message: string; user?: User }> => {
+    const cleanName = sanitizeString(data.name.trim());
+    const cleanPhone = (data.phone || '').replace(/\D/g, '');
+    const cleanEmail = (data.email || '').trim().toLowerCase();
+    const cleanPassword = (data.password || '1234').trim();
+
+    if (!cleanName || cleanName.length < 2) {
+      return { success: false, message: 'Please enter your full name.' };
+    }
+    if (cleanPhone.length < 10) {
+      return { success: false, message: 'Please provide a valid 10-digit mobile number.' };
+    }
+
+    // Check if phone is already registered
+    const existingUser = users.find((u) => {
+      const uPhone = (u.phone || '').replace(/\D/g, '');
+      return uPhone.endsWith(cleanPhone.slice(-10));
+    });
+
+    if (existingUser) {
+      return {
+        success: false,
+        message: `Mobile +91 ${cleanPhone} is already registered under ${existingUser.name}. Please enter your password to log in.`
+      };
+    }
+
+    const userId = `member_${cleanName.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${Date.now().toString().slice(-4)}`;
+
+    const newUser: User = {
+      id: userId,
+      role: 'member',
+      phone: cleanPhone.slice(-10),
+      name: cleanName,
+      email: cleanEmail || undefined,
+      password: cleanPassword,
+      auth_provider: data.authProvider || 'password',
+      profile_image: '',
+      marketing_opt_in: true,
+      emergency_contact: '9902667407',
+      comm_preference: 'whatsapp',
+      assigned_trainer: 'Vikram',
+      active_diet_plan: data.fitnessGoal || 'General Fitness',
+      created_at: new Date().toISOString().split('T')[0]
+    };
+
+    const selectedPlan = plans.find((p) => p.id === data.planId) || plans[0] || {
+      id: 'plan_quarterly',
+      duration_months: 3
+    };
+    const startDate = new Date();
+    const expiryDate = new Date();
+    expiryDate.setMonth(expiryDate.getMonth() + (selectedPlan.duration_months || 3));
+
+    const newMembership: Membership = {
+      id: `mem_${userId}_${Date.now().toString().slice(-4)}`,
+      user_id: userId,
+      plan_id: selectedPlan.id,
+      start_date: startDate.toISOString().split('T')[0],
+      expiry_date: expiryDate.toISOString().split('T')[0],
+      status: 'active'
+    };
+
+    const newStreak: Streak = {
+      id: `streak_${userId}`,
+      user_id: userId,
+      current_streak: 1,
+      highest_streak: 1,
+      last_update: new Date().toISOString(),
+      weekly_goal_target: 5,
+      weekly_goal_completed: 1
+    };
+
+    const welcomeNotif: Notification = {
+      id: `notif_welcome_${Date.now()}`,
+      user_id: userId,
+      message: `Welcome to Karnataka Gym, ${cleanName}! Your member account and digital pass are active.`,
+      type: 'promo',
+      read_status: false,
+      created_at: new Date().toISOString()
+    };
+
+    setUsers((prev) => [...prev, newUser]);
+    setMemberships((prev) => [...prev, newMembership]);
+    setStreaks((prev) => [...prev, newStreak]);
+    setNotifications((prev) => [welcomeNotif, ...prev]);
+
+    syncSupabaseInsert('users', newUser);
+    syncSupabaseInsert('memberships', newMembership);
+    syncSupabaseInsert('streaks', newStreak);
+    syncSupabaseInsert('notifications', welcomeNotif);
+
+    login(newUser.id);
+    playSuccessChime();
+
+    return {
+      success: true,
+      message: `Account created successfully! Welcome to Karnataka Gym, ${newUser.name}.`,
+      user: newUser
+    };
+  };
+
   // 8. Refund Payment & Revert Membership
   const processPaymentRefund = async (
     paymentId: string,
@@ -1712,6 +1996,9 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         deleteAddon,
         createMember,
         deleteMember,
+        loginWithCredentials,
+        loginWithGoogle,
+        registerMemberAccount,
         runAutomatedTest,
         testResults
       }}

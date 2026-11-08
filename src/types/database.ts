@@ -40,6 +40,9 @@ export interface User {
   role: UserRole;
   phone: string;
   name: string;
+  email?: string;
+  password?: string;
+  auth_provider?: 'password' | 'google';
   profile_image?: string;
   marketing_opt_in: boolean;
   emergency_contact?: string;
