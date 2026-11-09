@@ -113,16 +113,16 @@ function LoginContent() {
   const [showPin, setShowPin] = useState(false);
   const [ownerError, setOwnerError] = useState('');
 
-  // Sync tab with URL parameter
+  // Role redirection: Trainer and Owner have private dedicated links
   useEffect(() => {
     if (requestedRole === 'owner') {
-      setActiveTab('owner');
+      router.replace('/owner/login');
     } else if (requestedRole === 'trainer') {
-      setActiveTab('trainer');
+      router.replace('/trainer/login');
     } else {
       setActiveTab('member');
     }
-  }, [requestedRole]);
+  }, [requestedRole, router]);
 
   // Demo Member Profile
   const demoMember =
@@ -377,54 +377,7 @@ function LoginContent() {
           </div>
         </div>
 
-        {/* 3-Role Toggle Tabs */}
-        <div className="max-w-md mx-auto grid grid-cols-2 sm:grid-cols-2 gap-2 p-1.5 rounded-2xl bg-[#121622] border border-[#232B3E]">
-          {/* Member Tab */}
-          <button
-            type="button"
-            onClick={() => setActiveTab('member')}
-            className={`py-2.5 px-2 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
-              activeTab === 'member'
-                ? 'bg-[#E5A93C] text-slate-950 shadow-md'
-                : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            <UserCheck className="w-4 h-4 stroke-[2.5]" />
-            <span>Member Portal</span>
-          </button>
-
-          {/* Trainer Tab */}
-          <button
-            type="button"
-            onClick={() => setActiveTab('trainer')}
-            className={`py-2.5 px-2 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
-              activeTab === 'trainer'
-                ? 'bg-emerald-500 text-slate-950 shadow-md'
-                : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            <Dumbbell className="w-4 h-4 stroke-[2.5]" />
-            <span>Trainer Desk</span>
-          </button>
-
-          {/* Owner Tab - Only accessible via direct link (?role=owner) */}
-          {requestedRole === 'owner' && (
-            <button
-              type="button"
-              onClick={() => setActiveTab('owner')}
-              className={`col-span-2 py-2.5 px-2 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
-                activeTab === 'owner'
-                  ? 'bg-red-600 text-white shadow-md'
-                  : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              <Lock className="w-4 h-4 stroke-[2.5]" />
-              <span>Owner Portal (Private)</span>
-            </button>
-          )}
-        </div>
-
-        {/* TAB 1: MEMBER LOGIN & ACCOUNT SETUP */}
+        {/* MEMBER LOGIN & ACCOUNT SETUP */}
         {activeTab === 'member' && (
           <div className="max-w-md mx-auto space-y-6">
             {/* Sub-Switch: Sign In vs Set Up Account */}
