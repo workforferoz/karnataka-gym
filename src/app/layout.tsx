@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { GymProvider } from "@/lib/store";
-import { CookieConsent } from "@/components/CookieConsent";
 
 export const metadata: Metadata = {
   title: {
@@ -42,7 +41,6 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-[#0B0E14] text-slate-100 select-none" suppressHydrationWarning>
         <GymProvider>
           {children}
-          <CookieConsent />
         </GymProvider>
         <script
           dangerouslySetInnerHTML={{
