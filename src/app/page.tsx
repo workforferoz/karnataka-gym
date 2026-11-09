@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { PublicNav } from '@/components/PublicNav';
 import { Footer } from '@/components/Footer';
 import { PWAInstallBanner } from '@/components/PWAInstallBanner';
-import { TestChecklistDrawer } from '@/components/TestChecklistDrawer';
 import { InstagramIcon } from '@/components/InstagramIcon';
 import { WhatsAppIcon } from '@/components/WhatsAppIcon';
 import { sanitizeString, sanitizePhone } from '@/lib/security';
@@ -194,7 +193,6 @@ const TRAINER_PHOTOS = [
 ];
 
 export default function PublicGymWebsite() {
-  const [showTests, setShowTests] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState<typeof FACILITY_PHOTOS[0] | null>(null);
   const [selectedTransformation, setSelectedTransformation] = useState<typeof TRANSFORMATIONS[0] | null>(null);
   const [selectedTrainerPhoto, setSelectedTrainerPhoto] = useState<typeof TRAINER_PHOTOS[0] | null>(null);
@@ -253,7 +251,7 @@ export default function PublicGymWebsite() {
   return (
     <div className="min-h-screen flex flex-col bg-[#0B0E14] text-slate-100 font-sans selection:bg-[#E5A93C] selection:text-slate-950">
       {/* Navigation Bar */}
-      <PublicNav onOpenTests={() => setShowTests(true)} />
+      <PublicNav />
 
       {/* App Install Banner */}
       <PWAInstallBanner />
@@ -1195,9 +1193,6 @@ export default function PublicGymWebsite() {
 
       {/* Website Footer */}
       <Footer />
-
-      {/* Test Runner Drawer */}
-      <TestChecklistDrawer isOpen={showTests} onClose={() => setShowTests(false)} />
     </div>
   );
 }

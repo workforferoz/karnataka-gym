@@ -7,7 +7,6 @@ import { useGym } from '@/lib/store';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { MemberBottomNav } from '@/components/MemberBottomNav';
-import { TestChecklistDrawer } from '@/components/TestChecklistDrawer';
 import {
   QrCode,
   Flame,
@@ -27,7 +26,6 @@ import {
 
 export default function MemberHomePage() {
   const { currentUser, memberships, plans, streaks, attendance, settings } = useGym();
-  const [showTests, setShowTests] = useState(false);
 
   const membership = memberships.find((m) => m.user_id === currentUser.id);
   const plan = plans.find((p) => p.id === membership?.plan_id);
@@ -62,7 +60,7 @@ export default function MemberHomePage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#0B0E14] text-slate-100 pb-20 md:pb-0">
-      <Header onOpenTests={() => setShowTests(true)} />
+      <Header />
 
       <main className="flex-1 max-w-lg w-full mx-auto px-4 py-5 space-y-5">
         {/* Owner Broadcast / Announcement Banner */}
@@ -369,7 +367,6 @@ export default function MemberHomePage() {
 
       <Footer />
       <MemberBottomNav />
-      <TestChecklistDrawer isOpen={showTests} onClose={() => setShowTests(false)} />
     </div>
   );
 }

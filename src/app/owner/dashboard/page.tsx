@@ -6,7 +6,6 @@ import { useGym } from '@/lib/store';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { OwnerBottomNav } from '@/components/OwnerBottomNav';
-import { TestChecklistDrawer } from '@/components/TestChecklistDrawer';
 import {
   Users,
   UserCheck,
@@ -50,7 +49,6 @@ export default function OwnerDashboardPage() {
     runDailyNoShowScan
   } = useGym();
 
-  const [showTests, setShowTests] = useState(false);
   const [scanMessage, setScanMessage] = useState<string | null>(null);
 
   // Marketplace & Pricing Editor State
@@ -162,7 +160,7 @@ export default function OwnerDashboardPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#0B0E14] text-slate-100 pb-20 md:pb-0">
-      <Header onOpenTests={() => setShowTests(true)} />
+      <Header />
 
       <main className="flex-1 max-w-5xl w-full mx-auto px-4 py-6 space-y-6">
         {/* Welcome & Owner Header */}
@@ -907,7 +905,6 @@ export default function OwnerDashboardPage() {
 
       <Footer />
       <OwnerBottomNav />
-      <TestChecklistDrawer isOpen={showTests} onClose={() => setShowTests(false)} />
     </div>
   );
 }

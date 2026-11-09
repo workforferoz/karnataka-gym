@@ -12,16 +12,13 @@ import {
   LogIn,
   Camera,
   Sparkles,
-  Dumbbell,
-  ShieldCheck
+  Dumbbell
 } from 'lucide-react';
 import { InstagramIcon } from '@/components/InstagramIcon';
 
-interface PublicNavProps {
-  onOpenTests?: () => void;
-}
+interface PublicNavProps {}
 
-export const PublicNav: React.FC<PublicNavProps> = ({ onOpenTests }) => {
+export const PublicNav: React.FC<PublicNavProps> = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -227,21 +224,6 @@ export const PublicNav: React.FC<PublicNavProps> = ({ onOpenTests }) => {
               >
                 Contact & Inquiry
               </a>
-
-              {onOpenTests && (
-                <div className="pt-2">
-                  <button
-                    onClick={() => {
-                      setMobileMenuOpen(false);
-                      onOpenTests();
-                    }}
-                    className="w-full text-left px-3 py-2 rounded-lg text-teal-400 bg-teal-950/30 border border-teal-800 flex items-center justify-between cursor-pointer"
-                  >
-                    <span>Run 12-Item Test Checklist</span>
-                    <ShieldCheck className="w-4 h-4" />
-                  </button>
-                </div>
-              )}
             </div>
 
             {/* Direct Contact Bar */}

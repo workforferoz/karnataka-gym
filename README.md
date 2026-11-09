@@ -39,24 +39,6 @@ A modern, mobile-first Progressive Web App (PWA) built with **Next.js 16**, **Re
 
 ---
 
-## 🧪 In-App Automated Test Suite (12 Checkpoints)
-Click the **"Test Checklist"** button in the app header to open the interactive test drawer and execute the 12 system assertions live:
-
-1. ✅ QR Duplicate scan within 5 min rejection
-2. ✅ Scanning with expired membership blocks entry
-3. ✅ Approved pause (freeze) preserves attendance streak
-4. ✅ Offline sync queue pushes upon reconnection
-5. ✅ Assisted check-in prompts for mandatory reason and logs to AuditLogs
-6. ✅ Failed simulated payment does NOT extend membership date
-7. ✅ Duplicate webhook callback does not double-extend membership (idempotency guard)
-8. ✅ Refund updates Payments state and adjusts Memberships table accordingly
-9. ✅ Booking PT with an unavailable trainer throws a conflict error
-10. ✅ Buying out-of-stock supplement fails with clear message
-11. ✅ Member marketing opt-out stops non-transactional promotional notifications
-12. ✅ Owner can edit member active diet plan and override trainer with AuditLog
-
----
-
 ## 🗄️ Database Schema
 The complete PostgreSQL schema is available at `src/lib/schema.sql` covering:
 `users`, `plans`, `memberships`, `attendance`, `streaks`, `no_show_cases`, `follow_ups`, `payments`, `renewal_orders`, `add_ons`, `add_on_orders`, `notifications`, `settings`, `audit_logs`.

@@ -60,14 +60,6 @@ interface CheckinResult {
   streak?: Streak;
 }
 
-interface TestResult {
-  id: string;
-  name: string;
-  passed: boolean;
-  message: string;
-  timestamp: string;
-}
-
 interface GymContextType {
   currentUser: User;
   isLoggedIn: boolean;
@@ -135,10 +127,6 @@ interface GymContextType {
     fitnessGoal?: string;
     authProvider?: 'password' | 'google';
   }) => Promise<{ success: boolean; message: string; user?: User }>;
-
-  // Test Runner
-  runAutomatedTest: (testId: number) => Promise<TestResult>;
-  testResults: Record<number, TestResult>;
 }
 
 const GymContext = createContext<GymContextType | null>(null);
@@ -168,7 +156,6 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [isHydrated, setIsHydrated] = useState<boolean>(false);
   const [isOnline, setIsOnline] = useState<boolean>(true);
   const [offlineQueue, setOfflineQueue] = useState<OfflineCheckinQueueItem[]>([]);
-  const [testResults, setTestResults] = useState<Record<number, TestResult>>({});
 
   const isLoadedRef = useRef<boolean>(false);
 
@@ -407,7 +394,6 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setSettings(INITIAL_SETTINGS);
     setAuditLogs(INITIAL_AUDIT_LOGS);
     setOfflineQueue([]);
-    setTestResults({});
     setCurrentUserId('member_rahul_desai');
     setIsLoggedIn(false);
     try {
@@ -1679,296 +1665,6 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     syncSupabaseDelete('notifications', id, 'id');
   };
 
-  // -------------------------------------------------------------
-  // TEST CHECKLIST AUTOMATION ENGINE (12 Checkpoints)
-  // -------------------------------------------------------------
-  const runAutomatedTest = async (testId: number): Promise<TestResult> => {
-    const now = new Date().toLocaleTimeString();
-    switch (testId) {
-      case 1: {
-        // QR Duplicate Scan within 5 min rejection
-        const testUser = users.find((u) => u.id === 'member_rahul_desai')!;
-        // Ensure recent attendance is right now
-        const res1 = await recordCheckin(testUser.id, 'qr');
-        // Immediate second scan
-        const res2 = await recordCheckin(testUser.id, 'qr');
-        const passed = res2.code === 'DUPLICATE' && !res2.success;
-        const result: TestResult = {
-          id: '1',
-          name: 'QR Duplicate Scan (5-min window rejection)',
-          passed,
-          message: passed
-            ? `PASS: Second scan rejected with status '${res2.code}' and message: "${res2.message}"`
-            : `FAIL: Expected rejection but received code: ${res2.code}`,
-          timestamp: now
-        };
-        setTestResults((prev) => ({ ...prev, 1: result }));
-        return result;
-      }
-
-      case 2: {
-        // Scanning with expired membership blocks entry
-        // Temporarily create an expired user
-        const expiredUser = {
-          id: `test_exp_${Date.now()}`,
-          role: 'member' as const,
-          phone: '9999000011',
-          name: 'Test Expired Member',
-          marketing_opt_in: true,
-          comm_preference: 'whatsapp' as const,
-          created_at: '2025-01-01'
-        };
-        const expiredMem: Membership = {
-          id: `mem_test_exp_${Date.now()}`,
-          user_id: expiredUser.id,
-          plan_id: 'plan_monthly',
-          start_date: '2024-01-01',
-          expiry_date: '2024-02-01', // well in the past
-          status: 'expired'
-        };
-        setUsers((prev) => [...prev, expiredUser]);
-        setMemberships((prev) => [...prev, expiredMem]);
-
-        const res = await recordCheckin(expiredUser.id, 'qr');
-        const passed = res.code === 'EXPIRED' && !res.success;
-        const result: TestResult = {
-          id: '2',
-          name: 'Expired Membership Entry Block',
-          passed,
-          message: passed
-            ? `PASS: Expired membership blocked with message: "${res.message}"`
-            : `FAIL: Expired membership was not blocked. Code: ${res.code}`,
-          timestamp: now
-        };
-        setTestResults((prev) => ({ ...prev, 2: result }));
-        return result;
-      }
-
-      case 3: {
-        // Membership pause (freeze) preserves streak
-        const streakBefore = streaks.find((s) => s.user_id === 'member_rahul_desai')?.current_streak || 14;
-        await freezeMembership('member_rahul_desai', 'Travelling to Bangalore for 10 days');
-        const streakAfter = streaks.find((s) => s.user_id === 'member_rahul_desai')?.current_streak;
-        const passed = streakBefore === streakAfter && streakBefore > 0;
-        await unfreezeMembership('member_rahul_desai');
-        const result: TestResult = {
-          id: '3',
-          name: 'Membership Freeze Streak Preservation',
-          passed,
-          message: passed
-            ? `PASS: Streak preserved at ${streakAfter} days during approved pause.`
-            : `FAIL: Streak altered during freeze (Before: ${streakBefore}, After: ${streakAfter})`,
-          timestamp: now
-        };
-        setTestResults((prev) => ({ ...prev, 3: result }));
-        return result;
-      }
-
-      case 4: {
-        // Offline sync queue pushes upon reconnection
-        const tempId = `offline_test_${Date.now()}`;
-        const queueItem: OfflineCheckinQueueItem = {
-          id: tempId,
-          userId: 'member_priya_patil',
-          timestamp: new Date().toISOString(),
-          method: 'qr'
-        };
-        setOfflineQueue([queueItem]);
-        const syncedCount = await syncOfflineQueue();
-        const passed = syncedCount >= 1;
-        const result: TestResult = {
-          id: '4',
-          name: 'Offline Attendance Sync Queue',
-          passed,
-          message: passed
-            ? `PASS: Queued offline check-in synced successfully into database!`
-            : `FAIL: Could not sync offline queue item.`,
-          timestamp: now
-        };
-        setTestResults((prev) => ({ ...prev, 4: result }));
-        return result;
-      }
-
-      case 5: {
-        // Owner assisted check-in mandatory reason + audit log
-        const emptyReasonRes = await recordCheckin('member_amit_sharma', 'assisted', '');
-        const validReasonRes = await recordCheckin('member_amit_sharma', 'assisted', 'Phone discharged, manual verification');
-        const auditFound = auditLogs.some(
-          (a) => a.action === 'assisted_checkin' && a.target_user_id === 'member_amit_sharma'
-        );
-        const passed = !emptyReasonRes.success && validReasonRes.success && auditFound;
-        const result: TestResult = {
-          id: '5',
-          name: 'Assisted Check-in Mandatory Reason & Audit Log',
-          passed,
-          message: passed
-            ? 'PASS: Empty reason was rejected, valid reason succeeded and created AuditLog record.'
-            : `FAIL: Verification failed. Empty Reason Success: ${emptyReasonRes.success}, Audit Found: ${auditFound}`,
-          timestamp: now
-        };
-        setTestResults((prev) => ({ ...prev, 5: result }));
-        return result;
-      }
-
-      case 6: {
-        // Failed simulated payment does NOT extend membership date
-        const memBefore = memberships.find((m) => m.user_id === 'member_priya_patil')!;
-        const dateBefore = memBefore.expiry_date;
-        const payRes = await renewMembership('member_priya_patil', 'plan_monthly', 'failed');
-        const memAfter = memberships.find((m) => m.user_id === 'member_priya_patil')!;
-        const passed = !payRes.success && memAfter.expiry_date === dateBefore;
-        const result: TestResult = {
-          id: '6',
-          name: 'Failed Payment Membership Non-Extension',
-          passed,
-          message: passed
-            ? `PASS: Failed payment rejected cleanly. Expiry remained unchanged at ${dateBefore}.`
-            : `FAIL: Expiry was modified despite failed payment!`,
-          timestamp: now
-        };
-        setTestResults((prev) => ({ ...prev, 6: result }));
-        return result;
-      }
-
-      case 7: {
-        // Duplicate webhook callback does not double-extend
-        const renewRes = await renewMembership('member_rohan_kulkarni', 'plan_monthly', 'paid');
-        const txnId = renewRes.payment?.transaction_id || '';
-        const dupRes = await simulateDuplicateWebhook(txnId);
-        const passed = !dupRes.success && dupRes.message.includes('IDEMPOTENT CHECK PASSED');
-        const result: TestResult = {
-          id: '7',
-          name: 'Duplicate Webhook Idempotency Guard',
-          passed,
-          message: passed
-            ? `PASS: Duplicate webhook caught by idempotency check: "${dupRes.message}"`
-            : `FAIL: Duplicate webhook was not blocked: ${dupRes.message}`,
-          timestamp: now
-        };
-        setTestResults((prev) => ({ ...prev, 7: result }));
-        return result;
-      }
-
-      case 8: {
-        // Refund updates Payments state and adjusts Memberships table
-        const renewRes = await renewMembership('member_manoj_nayak', 'plan_monthly', 'paid');
-        const payId = renewRes.payment?.id || '';
-        const expBeforeRefund = memberships.find((m) => m.user_id === 'member_manoj_nayak')?.expiry_date;
-        await processPaymentRefund(payId, 'Customer requested refund within 2 hours');
-        const payRecord = payments.find((p) => p.id === payId);
-        const expAfterRefund = memberships.find((m) => m.user_id === 'member_manoj_nayak')?.expiry_date;
-        const passed = payRecord?.status === 'refunded' && expBeforeRefund !== expAfterRefund;
-        const result: TestResult = {
-          id: '8',
-          name: 'Refund Payment & Membership Duration Adjustment',
-          passed,
-          message: passed
-            ? `PASS: Payment marked as refunded and expiry date rolled back from ${expBeforeRefund} to ${expAfterRefund}.`
-            : `FAIL: Refund verification failed. Status: ${payRecord?.status}`,
-          timestamp: now
-        };
-        setTestResults((prev) => ({ ...prev, 8: result }));
-        return result;
-      }
-
-      case 9: {
-        // Booking PT with an unavailable trainer throws conflict error
-        const res = await purchaseAddOn('member_rahul_desai', 'addon_pt_rakesh');
-        const passed = !res.success && res.message.includes('Booking Conflict');
-        const result: TestResult = {
-          id: '9',
-          name: 'PT Trainer Availability Conflict Check',
-          passed,
-          message: passed
-            ? `PASS: Booking conflict thrown as expected: "${res.message}"`
-            : `FAIL: Overbooking was allowed without error: ${res.message}`,
-          timestamp: now
-        };
-        setTestResults((prev) => ({ ...prev, 9: result }));
-        return result;
-      }
-
-      case 10: {
-        // Buying out-of-stock supplement fails with clear message
-        const res = await purchaseAddOn('member_rahul_desai', 'addon_bcaa'); // stock 0
-        const passed = !res.success && res.message.includes('Stock Unavailable');
-        const result: TestResult = {
-          id: '10',
-          name: 'Out-of-Stock Supplement Purchase Guard',
-          passed,
-          message: passed
-            ? `PASS: Out-of-stock purchase rejected with: "${res.message}"`
-            : `FAIL: Allowed purchase of out-of-stock item: ${res.message}`,
-          timestamp: now
-        };
-        setTestResults((prev) => ({ ...prev, 10: result }));
-        return result;
-      }
-
-      case 11: {
-        // Member marketing opt-out stops promotional notifications
-        // Sneha Joshi has marketing_opt_in = false
-        const sent = sendNotification(
-          'member_sneha_joshi',
-          'Huge 50% discount on supplements this Diwali!',
-          'promo'
-        );
-        const passed = sent === false;
-        const result: TestResult = {
-          id: '11',
-          name: 'Marketing Opt-out Suppresses Non-Transactional Notifications',
-          passed,
-          message: passed
-            ? 'PASS: Promotional notification was suppressed because member opted out.'
-            : 'FAIL: Promotional notification was sent to opted-out member!',
-          timestamp: now
-        };
-        setTestResults((prev) => ({ ...prev, 11: result }));
-        return result;
-      }
-
-      case 12: {
-        // Owner can edit a member active diet plan and override trainer with audit log
-        const res = await ownerOverrideMemberPlan(
-          'member_priya_patil',
-          undefined,
-          'Veg High-Protein Nutrition Guide',
-          'Vikram',
-          'Upgraded nutrition protocol by Owner Riyaz'
-        );
-        const updatedUser = users.find((u) => u.id === 'member_priya_patil');
-        const auditEntry = auditLogs.find(
-          (a) => a.action === 'profile_override' && a.target_user_id === 'member_priya_patil'
-        );
-        const passed =
-          res.success &&
-          updatedUser?.active_diet_plan === 'Veg High-Protein Nutrition Guide' &&
-          updatedUser?.assigned_trainer === 'Vikram' &&
-          !!auditEntry;
-        const result: TestResult = {
-          id: '12',
-          name: 'Owner Diet Plan & Trainer Override with Audit Log',
-          passed,
-          message: passed
-            ? 'PASS: Diet plan and trainer overridden successfully, immutable audit record created!'
-            : `FAIL: Override or audit log missing.`,
-          timestamp: now
-        };
-        setTestResults((prev) => ({ ...prev, 12: result }));
-        return result;
-      }
-
-      default:
-        return {
-          id: String(testId),
-          name: 'Unknown Test',
-          passed: false,
-          message: 'Unknown test id',
-          timestamp: now
-        };
-    }
-  };
-
   return (
     <GymContext.Provider
       value={{
@@ -2018,9 +1714,7 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         deleteMember,
         loginWithCredentials,
         loginWithGoogle,
-        registerMemberAccount,
-        runAutomatedTest,
-        testResults
+        registerMemberAccount
       }}
     >
       {children}

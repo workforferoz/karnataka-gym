@@ -9,7 +9,6 @@ import {
   Bell,
   WifiOff,
   RefreshCw,
-  CheckCircle,
   X,
   ExternalLink,
   Menu,
@@ -28,11 +27,9 @@ import {
   LogIn
 } from 'lucide-react';
 
-interface HeaderProps {
-  onOpenTests?: () => void;
-}
+interface HeaderProps {}
 
-export const Header: React.FC<HeaderProps> = ({ onOpenTests }) => {
+export const Header: React.FC<HeaderProps> = () => {
   const {
     currentUser,
     isLoggedIn,
@@ -141,18 +138,6 @@ export const Header: React.FC<HeaderProps> = ({ onOpenTests }) => {
             <Globe className="w-3.5 h-3.5 text-[#E5A93C]" />
             <span className="hidden lg:inline">Gym Website</span>
           </Link>
-
-          {/* Test Checklist Trigger */}
-          {onOpenTests && (
-            <button
-              onClick={onOpenTests}
-              className="flex items-center gap-1 bg-[#1C2436] hover:bg-[#253047] border border-[#354360] text-emerald-400 text-xs font-semibold px-2.5 py-1.5 rounded-lg transition-colors cursor-pointer"
-              title="Run 12-Item Test Checklist"
-            >
-              <CheckCircle className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Test Checklist</span>
-            </button>
-          )}
 
           {/* Notifications Bell */}
           <div className="relative">
