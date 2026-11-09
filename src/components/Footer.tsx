@@ -55,7 +55,7 @@ export const Footer: React.FC = () => {
         {/* Legal & Compliance Links */}
         <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-400">
           <div>
-            <span>© 2026 {settings.gym_name || 'Karnataka Gym Hubballi'}. All rights reserved.</span>
+            <span>© {new Date().getFullYear()} {settings.gym_name || 'Karnataka Gym Hubballi'}. All rights reserved.</span>
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-4">
@@ -65,6 +65,10 @@ export const Footer: React.FC = () => {
             <span className="text-slate-600">•</span>
             <Link href="/terms" className="hover:text-white transition-colors">
               Terms of Service
+            </Link>
+            <span className="text-slate-600">•</span>
+            <Link href="/data-deletion" className="hover:text-white transition-colors">
+              Data Deletion
             </Link>
           </div>
         </div>
