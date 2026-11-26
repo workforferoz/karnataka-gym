@@ -643,36 +643,6 @@ export default function PublicGymWebsite() {
             ))}
           </div>
 
-          {/* Bottom Motivation Banner */}
-          <div className="rounded-2xl bg-gradient-to-r from-[#171D2B] via-[#121622] to-[#171D2B] border border-[#2D3950] p-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-            <div className="space-y-1">
-              <h4 className="text-base font-black text-white flex items-center justify-center sm:justify-start gap-2">
-                <Flame className="w-4 h-4 text-[#E5A93C]" />
-                <span>Ready to Write Your Own Transformation Story?</span>
-              </h4>
-              <p className="text-xs text-slate-300 max-w-xl">
-                Get individualized strength training guidance and sensible nutrition coaching. Visit Karnataka Gym in Kalidas Nagar, Hubballi today.
-              </p>
-            </div>
-            <div className="flex items-center gap-2.5 flex-shrink-0">
-              <a
-                href="#location"
-                className="bg-[#E5A93C] hover:bg-[#F59E0B] text-slate-950 font-black px-4 py-2.5 rounded-xl text-xs transition-colors cursor-pointer"
-              >
-                Book Gym Walkthrough
-              </a>
-              <a
-                href="https://wa.me/919902667407?text=Hi%20Karnataka%20Gym%2C%20I%20saw%20your%20member%20transformations%20and%20want%20to%20know%20more."
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-[#1A2234] hover:bg-[#232E44] border border-emerald-600/40 text-emerald-400 font-bold px-4 py-2.5 rounded-xl text-xs transition-colors inline-flex items-center gap-1.5"
-              >
-                <WhatsAppIcon className="w-3.5 h-3.5" />
-                <span>WhatsApp Us</span>
-              </a>
-            </div>
-          </div>
-
           {/* Transformation Modal Lightbox */}
           {selectedTransformation && (
             <div
