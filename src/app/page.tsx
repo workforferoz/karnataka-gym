@@ -594,9 +594,8 @@ export default function PublicGymWebsite() {
                       {photo.desc}
                     </p>
                   </div>
-                  <div className="pt-2 border-t border-[#1C2538] flex items-center justify-between text-[11px] text-slate-400">
+                  <div className="pt-2 border-t border-[#1C2538] text-[11px] text-slate-400">
                     <span className="font-semibold">{photo.specs}</span>
-                    <span className="text-[#E5A93C] font-bold">View Photo</span>
                   </div>
                 </div>
               </div>
