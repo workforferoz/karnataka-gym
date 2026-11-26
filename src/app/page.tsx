@@ -162,12 +162,6 @@ export default function PublicGymWebsite() {
           </div>
 
           <div className="relative z-10 max-w-5xl mx-auto text-center space-y-7">
-            {/* Live Operational Status Indicator */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#131826] border border-[#232D42] text-xs font-semibold text-slate-300 shadow-sm">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span>{content.hero.liveStatusText}</span>
-            </div>
-
             {/* Primary Hero Headline */}
             <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black text-white leading-[1.08] tracking-tight uppercase">
               {content.hero.headlinePart1}<br />
@@ -642,9 +636,6 @@ export default function PublicGymWebsite() {
         {/* 6. TRANSPARENT MEMBERSHIP PRICING */}
         <section id="pricing" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-20 space-y-8">
           <div className="text-center max-w-2xl mx-auto space-y-3">
-            <span className="text-xs font-black uppercase tracking-widest text-[#E5A93C]">
-              Transparent Pricing
-            </span>
             <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
               Honest Plans. No Hidden Surcharges.
             </h2>
@@ -823,9 +814,6 @@ export default function PublicGymWebsite() {
             {/* Right: Walk-in Inquiry Form */}
             <div className="rounded-3xl bg-[#0F1420] border border-[#1E273A] p-6 sm:p-8 space-y-6">
               <div>
-                <span className="text-xs font-black uppercase tracking-widest text-[#E5A93C]">
-                  Free Walkthrough
-                </span>
                 <h2 className="text-2xl font-black text-white mt-1">Schedule a Gym Walkthrough</h2>
                 <p className="text-xs text-slate-400 mt-1">
                   Visit our facility in Hubballi, inspect the equipment, and discuss your fitness goals.
