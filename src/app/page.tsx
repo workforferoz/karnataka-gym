@@ -820,36 +820,6 @@ export default function PublicGymWebsite() {
             ))}
           </div>
 
-          {/* Trainer Consultation CTA Banner */}
-          <div className="rounded-2xl bg-gradient-to-r from-[#171D2B] via-[#121622] to-[#171D2B] border border-[#2D3950] p-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-            <div className="space-y-1">
-              <h4 className="text-base font-black text-white flex items-center justify-center sm:justify-start gap-2">
-                <Award className="w-4 h-4 text-[#E5A93C]" />
-                <span>Want 1-on-1 Guidance from Head Coach Riyaz?</span>
-              </h4>
-              <p className="text-xs text-slate-300 max-w-xl">
-                Whether you need beginner form instruction, competition prep, or targeted fat loss, Coach Riyaz provides direct personal coaching at Kalidas Nagar.
-              </p>
-            </div>
-            <div className="flex items-center gap-2.5 flex-shrink-0">
-              <a
-                href="https://wa.me/919902667407?text=Hi%20Coach%20Riyaz%2C%20I%20want%20to%20discuss%20training%20at%20Karnataka%20Gym."
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-2.5 rounded-xl text-xs transition-colors inline-flex items-center gap-1.5 shadow-md"
-              >
-                <WhatsAppIcon className="w-3.5 h-3.5" />
-                <span>Chat with Coach</span>
-              </a>
-              <a
-                href="#location"
-                className="bg-[#1A2234] hover:bg-[#232E44] border border-[#374561] text-[#E5A93C] font-bold px-4 py-2.5 rounded-xl text-xs transition-colors"
-              >
-                Visit Gym Floor
-              </a>
-            </div>
-          </div>
-
           {/* Trainer Modal Lightbox */}
           {selectedTrainerPhoto && (
             <div
