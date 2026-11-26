@@ -21,7 +21,7 @@ export const Footer: React.FC = () => {
                 className="hover:text-[#E5A93C] transition-colors"
                 title="View on Google Maps"
               >
-                Kalidas Nagar, Hubballi, Karnataka 580031 ↗
+                Kalidas Nagar, Hubballi, Karnataka 580031
               </a>
             </div>
           </div>

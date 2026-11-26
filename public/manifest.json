@@ -1,7 +1,7 @@
 {
-  "name": "Karnataka Gym - Retention & Attendance PWA",
+  "name": "Karnataka Gym Hubballi",
   "short_name": "Karnataka Gym",
-  "description": "Smart Gym Attendance, Retention, Renewals & Marketplace for Karnataka Gym, Hubballi",
+  "description": "Official gym website for Karnataka Gym Hubballi. Facilities, equipment, coaching, and plans.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0B0E14",

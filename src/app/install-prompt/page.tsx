@@ -34,7 +34,7 @@ export default function InstallPromptPage() {
       }
       setDeferredPrompt(null);
     } else {
-      alert('Mobile browser menu (three dots ⋮ ya Share icon) par tap karke "Add to Home Screen" select karein!');
+      alert('Open your mobile browser menu and select "Add to Home Screen" to install.');
     }
   };
 
@@ -77,7 +77,7 @@ export default function InstallPromptPage() {
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#E5A93C] to-[#F59E0B] hover:from-[#d89e34] hover:to-[#e08f06] text-slate-950 font-black px-6 py-3 rounded-2xl text-sm shadow-xl shadow-[#E5A93C]/30 active:scale-95 transition-all cursor-pointer"
           >
             <Download className="w-5 h-5 stroke-[2.5]" />
-            <span>{installed ? 'App Already Installed! ✓' : 'Install App / Add to Home Screen'}</span>
+            <span>{installed ? 'App Already Installed' : 'Install App / Add to Home Screen'}</span>
           </button>
         </div>
 
@@ -91,7 +91,7 @@ export default function InstallPromptPage() {
             </div>
             <ol className="text-xs text-slate-300 space-y-2.5 list-decimal list-inside leading-relaxed">
               <li>Open this website in <strong>Google Chrome</strong>.</li>
-              <li>Tap the <strong>three dots menu (⋮)</strong> in the top-right corner.</li>
+              <li>Tap the <strong>three dots menu</strong> in the top-right corner.</li>
               <li>Select <strong>&quot;Install app&quot;</strong> or <strong>&quot;Add to Home Screen&quot;</strong>.</li>
               <li>Tap <strong>Add/Install</strong> to complete setup.</li>
             </ol>

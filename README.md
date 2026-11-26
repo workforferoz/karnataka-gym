@@ -2,7 +2,7 @@
 
 The official high-performance website for **Karnataka Gym** in Hubballi, Karnataka. Built with **Next.js 16**, **React 19**, and **Tailwind CSS**.
 
-## 🚀 Key Brand Highlights
+## Key Brand Highlights
 - **Gym Name:** Karnataka Gym
 - **Helpline Phone:** `9902667407` (WhatsApp & Call deep links enabled)
 - **Instagram:** [`@riyaz_gokul`](https://www.instagram.com/riyaz_gokul/)
@@ -12,7 +12,7 @@ The official high-performance website for **Karnataka Gym** in Hubballi, Karnata
 
 ---
 
-## 📱 Website Sections & Pages
+## Website Sections & Pages
 
 - `/` - Official Gym Landing Page:
   - Hero with high-contrast headline and background watermark logo
@@ -30,7 +30,7 @@ The official high-performance website for **Karnataka Gym** in Hubballi, Karnata
 
 ---
 
-## 🛠️ Run & Deploy
+## Run & Deploy
 
 ```bash
 # Run Development Server
