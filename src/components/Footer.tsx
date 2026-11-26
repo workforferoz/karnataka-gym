@@ -29,7 +29,7 @@ export const Footer: React.FC = () => {
             <Clock className="w-4 h-4 text-[#E5A93C] flex-shrink-0 mt-0.5" />
             <div>
               <span className="text-slate-200 font-bold block">Operating Hours</span>
-              <span>Mon - Sat: 5:30 AM - 10:00 PM | Sun: 6:00 AM - 12:00 PM</span>
+              <span>Mon - Sat: 5:30 AM - 10:00 PM | Sun: 6:00 AM - 1:00 PM</span>
             </div>
           </div>
           <div className="flex items-start gap-2.5">
@@ -55,7 +55,7 @@ export const Footer: React.FC = () => {
             <span>© {new Date().getFullYear()} Karnataka Gym Hubballi. All rights reserved.</span>
           </div>
 
-          <div className="flex wrap items-center justify-center gap-4">
+          <div className="flex flex-wrap items-center justify-center gap-4">
             <Link href="/privacy-policy" className="hover:text-white transition-colors">
               Privacy Policy
             </Link>

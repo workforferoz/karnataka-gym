@@ -68,6 +68,9 @@ export const PublicNav: React.FC<PublicNavProps> = () => {
             <Dumbbell className="w-3.5 h-3.5 text-[#E5A93C]" />
             <span>Trainer</span>
           </a>
+          <a href="#pricing" className="hover:text-[#E5A93C] transition-colors">
+            Pricing
+          </a>
           <a href="#location" className="hover:text-[#E5A93C] transition-colors">
             Location & Hours
           </a>
@@ -160,6 +163,13 @@ export const PublicNav: React.FC<PublicNavProps> = () => {
               >
                 <Dumbbell className="w-4 h-4 text-[#E5A93C]" />
                 <span>Head Coach & Trainer</span>
+              </a>
+              <a
+                href="#pricing"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block px-3 py-2 rounded-lg text-slate-300 hover:bg-[#181F2F]"
+              >
+                Membership Pricing
               </a>
               <a
                 href="#location"
