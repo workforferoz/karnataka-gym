@@ -1,21 +1,13 @@
-const CACHE_NAME = 'karnataka-gym-cache-v2';
+const CACHE_NAME = 'karnataka-gym-cache-v3';
 const urlsToCache = [
   '/',
   '/manifest.json',
   '/karnataka-gym-logo.png',
   '/karnataka-gym-badge.png',
   '/karnataka-gym-banner.jpg',
-  '/member/home',
-  '/member/check-in',
-  '/member/history',
-  '/member/renew',
-  '/member/add-ons',
-  '/member/profile',
-  '/owner/dashboard',
-  '/owner/churn-risk',
-  '/owner/manage/members',
-  '/owner/assisted-checkin',
-  '/owner/summary'
+  '/privacy-policy',
+  '/terms',
+  '/data-deletion'
 ];
 
 self.addEventListener('install', (event) => {

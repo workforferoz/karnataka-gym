@@ -1,47 +1,32 @@
-# Karnataka Gym - Retention & Attendance Management PWA (Hubballi)
+# Karnataka Gym - Official Website (Hubballi)
 
-A modern, mobile-first Progressive Web App (PWA) built with **Next.js 16**, **React 19**, **Tailwind CSS**, and **Supabase / PostgreSQL Schema** for **Karnataka Gym** in Hubballi, Karnataka.
+The official high-performance website for **Karnataka Gym** in Hubballi, Karnataka. Built with **Next.js 16**, **React 19**, and **Tailwind CSS**.
 
 ## 🚀 Key Brand Highlights
 - **Gym Name:** Karnataka Gym
 - **Helpline Phone:** `9902667407` (WhatsApp & Call deep links enabled)
-- **Instagram:** `@KARNATAKA_GYM_HUBLI`
 - **Instagram:** [`@riyaz_gokul`](https://www.instagram.com/riyaz_gokul/)
 - **Location:** Kalidas Nagar, Hubballi, Karnataka 580031 ([Google Maps](https://maps.app.goo.gl/dXnSdvRU9gwHd7sAA))
 - **Logo:** Circular black and gold badge with bodybuilder silhouette and stars (`/karnataka-gym-logo.png`)
-- **Aesthetic:** Dark, trustworthy gym aesthetic (`#0B0E14`), high-contrast mobile typography, gold (`#E5A93C`) badges, Hinglish/English microcopy (*"Mera Plan"*, *"Renew Aaj Hi Karein"*, *"Aaj Ka Check-in"*, *"Badhai Ho! 🎉"*).
+- **Aesthetic:** Dark, premium gym aesthetic (`#0B0E14`), high-contrast mobile typography, gold (`#E5A93C`) accents.
 
 ---
 
-## 📱 Complete Screen Map
+## 📱 Website Sections & Pages
 
-### Public & Auth
-- `/` - Hubballi Gym Portal Gateway with 1-tap Member & Owner access
-- `/login` - Mobile Number OTP Simulator + Instant 1-Click Profile Switcher (30+ seeded accounts)
-- `/install-prompt` - PWA Installation instructions for Android (Chrome) and Apple iOS (Safari)
-
-### Member Portal (`/member/*`)
-- `/member/home` - Active membership badge, expiry countdown, weekly goal progress bar, workout streak flame 🔥
-- `/member/check-in` - Session-bound personal QR pass + camera counter scanner simulator with duplicate, expired & offline states
-- `/member/history` - Comprehensive attendance calendar with timestamps, check-in method (QR / Front Desk), and status
-- `/member/renew` - 7-day reminder banner, 1/3/6/12 month options, GST bill breakdown, and simulated Razorpay/UPI gateway modal
-- `/member/add-ons` - Transparent marketplace for Personal Training (Vikram, Pooja, Rakesh), Diet Plans, and Supplements (strictly tracked stock)
-- `/member/profile` - Profile picture picker, contacts, emergency contact, communication channel preference, and marketing opt-out switch
-
-### Owner / Manager Cockpit (`/owner/*`)
-- `/owner/dashboard` - 8 Key Retention Metrics (Active members, today's check-ins, 7-day active, open no-show cases, returned members, renewals due, add-on revenue) + Daily 23:59 scan trigger
-- `/owner/churn-risk` - The Red-List table of members absent for 10+ days (12-18 days). Actions: WhatsApp deep link, Call, and Mark Follow-Up Outcome
-- `/owner/manage/members` - Full CRUD for gym members. Enroll new members, remove profiles, edit plans, freeze membership (preserves streak!), and override diets/trainers with audit logs
-- `/owner/manage/plans` - Membership tier pricing and discount configurator
-- `/owner/manage/addons` - Personal Training packages, Diet plans, and physical supplement stock inventory management
-- `/owner/assisted-checkin` - Front desk manual check-in with mandatory reason dropdown and audit log creation
-- `/owner/summary` - Daily operations report with footfall graph, peak hours distribution, and printable view
-
----
-
-## 🗄️ Database Schema
-The complete PostgreSQL schema is available at `src/lib/schema.sql` covering:
-`users`, `plans`, `memberships`, `attendance`, `streaks`, `no_show_cases`, `follow_ups`, `payments`, `renewal_orders`, `add_ons`, `add_on_orders`, `notifications`, `settings`, `audit_logs`.
+- `/` - Official Gym Landing Page:
+  - Hero with high-contrast headline and background watermark logo
+  - About Karnataka Gym (History, philosophy, coaching since 2011)
+  - Facilities & Strength Equipment Overview
+  - Real Facility Photo Gallery
+  - Genuine Member Transformations
+  - Head Coach & Certified Trainer Profile
+  - Transparent Membership Pricing & Plans
+  - Location, Timings, & Interactive Inquiry Form
+- `/privacy-policy` - Privacy Policy (DPDP Act compliant)
+- `/terms` - Terms of Service & Membership Rules
+- `/data-deletion` - Right to Erasure / Data Deletion Request Page
+- `/install-prompt` - PWA App installation instructions
 
 ---
 

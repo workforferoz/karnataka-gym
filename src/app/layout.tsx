@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     default: "Karnataka Gym | Hubballi",
     template: "%s | Karnataka Gym Hubballi",
   },
-  description: "Official gym attendance, member portal, instant QR check-in & membership renewals for Karnataka Gym Hubballi. Contact: 9902667407",
+  description: "Official gym website for Karnataka Gym Hubballi. Explore heavy Olympic weights, pin-loaded resistance machines, certified coaching, transformations, and membership fees. Contact: 9902667407",
   manifest: "/manifest.json",
   icons: {
     icon: "/karnataka-gym-logo.png",

@@ -2,14 +2,14 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Header } from '@/components/Header';
+import { PublicNav } from '@/components/PublicNav';
 import { Footer } from '@/components/Footer';
 import { ArrowLeft, CheckCircle } from 'lucide-react';
 
 export default function TermsPage() {
   return (
     <div className="min-h-screen flex flex-col bg-[#0B0E14] text-slate-100 pb-20 md:pb-0">
-      <Header />
+      <PublicNav />
 
       <main className="flex-1 max-w-3xl w-full mx-auto px-4 py-8 space-y-6">
         <Link

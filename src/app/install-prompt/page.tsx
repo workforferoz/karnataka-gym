@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Header } from '@/components/Header';
+import { PublicNav } from '@/components/PublicNav';
 import { Footer } from '@/components/Footer';
 import { Download, Smartphone, Share, PlusSquare, ArrowLeft, CheckCircle, Zap, ShieldCheck } from 'lucide-react';
 
@@ -40,7 +40,7 @@ export default function InstallPromptPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#0B0E14] text-slate-100">
-      <Header />
+      <PublicNav />
 
       <main className="flex-1 max-w-2xl w-full mx-auto px-4 py-8 space-y-6">
         <Link
@@ -68,7 +68,7 @@ export default function InstallPromptPage() {
               Install Karnataka Gym App
             </h1>
             <p className="text-xs text-slate-300 max-w-md mx-auto mt-1">
-              Add Karnataka Gym directly to your phone&apos;s home screen for fast 1-tap QR entry and offline streak tracking.
+              Add Karnataka Gym directly to your phone&apos;s home screen for instant access to facilities, coach guidance, and gym timings.
             </p>
           </div>
 

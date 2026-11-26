@@ -9,7 +9,6 @@ import {
   Menu,
   X,
   ChevronRight,
-  LogIn,
   Camera,
   Sparkles,
   Dumbbell
@@ -78,7 +77,7 @@ export const PublicNav: React.FC<PublicNavProps> = () => {
           </a>
         </div>
 
-        {/* Desktop Right Controls: Phone + Single Unified Login Dropdown */}
+        {/* Desktop Right Controls: Phone + Join Now Button */}
         <div className="hidden md:flex items-center gap-3">
           {/* Clickable Phone */}
           <a
@@ -90,27 +89,25 @@ export const PublicNav: React.FC<PublicNavProps> = () => {
             <span>9902667407</span>
           </a>
 
-          {/* Member Direct Login Button */}
-          <Link
-            href="/login"
-            className="bg-[#E5A93C] hover:bg-[#F59E0B] text-slate-950 text-xs font-black px-4 py-2 rounded-xl flex items-center gap-2 shadow-md shadow-[#E5A93C]/20 transition-all cursor-pointer active:scale-95"
-            title="Member Login Portal"
+          {/* Join Now CTA Button */}
+          <a
+            href="#contact"
+            className="bg-[#E5A93C] hover:bg-[#F59E0B] text-slate-950 text-xs font-black px-4 py-2 rounded-xl flex items-center gap-1.5 shadow-md shadow-[#E5A93C]/20 transition-all cursor-pointer active:scale-95"
+            title="Join Karnataka Gym"
           >
-            <LogIn className="w-4 h-4 stroke-[2.5]" />
-            <span>Login</span>
-          </Link>
+            <span>Join Now</span>
+          </a>
         </div>
 
         {/* Mobile Action Controls */}
         <div className="flex md:hidden items-center gap-2">
-          {/* Mobile Login Button */}
-          <Link
-            href="/login"
-            className="bg-[#E5A93C] text-slate-950 text-xs font-black px-3 py-1.5 rounded-lg flex items-center gap-1.5"
+          {/* Mobile Join Now Button */}
+          <a
+            href="#contact"
+            className="bg-[#E5A93C] text-slate-950 text-xs font-black px-3 py-1.5 rounded-lg flex items-center gap-1"
           >
-            <LogIn className="w-3.5 h-3.5 stroke-[2.5]" />
-            <span>Login</span>
-          </Link>
+            <span>Join Now</span>
+          </a>
 
           <button
             onClick={() => setMobileMenuOpen(true)}
@@ -152,19 +149,16 @@ export const PublicNav: React.FC<PublicNavProps> = () => {
               </button>
             </div>
 
-            {/* Member Login Button in Mobile Menu */}
+            {/* Join CTA in Mobile Menu */}
             <div className="py-4">
-              <Link
-                href="/login"
+              <a
+                href="#contact"
                 onClick={() => setMobileMenuOpen(false)}
                 className="w-full bg-[#E5A93C] hover:bg-[#F59E0B] text-slate-950 font-extrabold py-2.5 px-3 rounded-xl text-xs flex items-center justify-between shadow-sm active:scale-95 transition-all"
               >
-                <div className="flex items-center gap-2">
-                  <LogIn className="w-4 h-4 stroke-[2.5]" />
-                  <span>Member Login</span>
-                </div>
+                <span>Join Karnataka Gym</span>
                 <ChevronRight className="w-4 h-4" />
-              </Link>
+              </a>
             </div>
 
             {/* Navigation Section Links */}

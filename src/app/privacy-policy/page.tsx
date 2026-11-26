@@ -2,14 +2,14 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Header } from '@/components/Header';
+import { PublicNav } from '@/components/PublicNav';
 import { Footer } from '@/components/Footer';
 import { ArrowLeft, ShieldCheck, Mail, Phone, MapPin } from 'lucide-react';
 
 export default function PrivacyPolicyPage() {
   return (
     <div className="min-h-screen flex flex-col bg-[#0B0E14] text-slate-100 pb-20 md:pb-0">
-      <Header />
+      <PublicNav />
 
       <main className="flex-1 max-w-3xl w-full mx-auto px-4 py-8 space-y-6">
         <Link
@@ -67,8 +67,7 @@ export default function PrivacyPolicyPage() {
           <section className="space-y-2">
             <h2 className="text-sm font-bold text-white uppercase tracking-wider">4. Marketing Communications & Opt-Out</h2>
             <p>
-              We respect your right to undisturbed communication. You can turn off promotional discount messages at any time from your <Link href="/member/profile" className="text-[#E5A93C] underline font-bold">Member Profile</Link>.
-              Transactional notifications (such as membership expiry reminders and check-in verifications) remain active to ensure seamless gym access.
+              We respect your right to undisturbed communication. You can request to opt out of promotional messages at any time by contacting us directly via WhatsApp or phone at <a href="tel:9902667407" className="text-[#E5A93C] underline font-bold">9902667407</a>.
             </p>
           </section>
 
