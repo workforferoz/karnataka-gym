@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { PublicNav } from '@/components/PublicNav';
 import { Footer } from '@/components/Footer';
@@ -8,6 +8,14 @@ import { PWAInstallBanner } from '@/components/PWAInstallBanner';
 import { InstagramIcon } from '@/components/InstagramIcon';
 import { WhatsAppIcon } from '@/components/WhatsAppIcon';
 import { sanitizeString, sanitizePhone, checkRateLimit } from '@/lib/sanitize';
+import {
+  DEFAULT_CONTENT,
+  SiteContent,
+  FacilityItem,
+  TransformationItem,
+  TrainerPhotoItem,
+  PricingPlanItem,
+} from '@/data/default-content';
 import {
   Phone,
   Mail,
@@ -26,246 +34,23 @@ import {
   Check
 } from 'lucide-react';
 
-const FACILITY_PHOTOS = [
-  {
-    src: '/facility/gym-floor-wide.webp',
-    title: 'Olympic Free Weights & Training Floor',
-    tag: 'Free Weights & Olympic Benches',
-    specs: 'Commercial Olympic benches • 50kg+ Dumbbell line • Shock-absorbing rubber floor',
-    desc: 'Spacious training floor with commercial Olympic bench press stations, heavy dumbbell rack, shock-absorbing rubber matting, and dual cable towers.',
-  },
-  {
-    src: '/facility/strength-cable-station.webp',
-    title: 'Dual Cable Crossover & Arm Station',
-    tag: 'Multi-Station Cable Towers',
-    specs: 'Dual 100kg weight stacks • Multi-grip pull-up bar • Preacher curl bench',
-    desc: 'Heavy-duty cable crossover system with multi-grip chin-up station, preacher curl bench, and anatomical muscle guides for joint-safe resistance.',
-  },
-  {
-    src: '/facility/leg-press-cardio.webp',
-    title: 'Plate-Loaded Leg Press & Cardio Suite',
-    tag: 'Leg Press, Pec Fly & Treadmill',
-    specs: '45° Linear bearing leg press • Selectorized pec fly • Commercial cardio',
-    desc: 'Commercial 45° plate-loaded leg press machine, selectorized pec fly station, and digital commercial treadmill for cardio conditioning.',
-  },
-  {
-    src: '/facility/free-weights-mirrors.webp',
-    title: 'Resistance Machine Line & Mirror Wall',
-    tag: 'Resistance Equipment & Mirror Wall',
-    specs: 'Full-span posture mirrors • Selectorized pin stacks • Heavy adjustable benches',
-    desc: 'Full wall-to-wall mirror setup for posture and technique verification, paired with selectorized resistance machines and heavy-duty benches.',
-  },
-];
-
-const TRANSFORMATIONS = [
-  {
-    id: 'transformation-1',
-    src: '/transformations/transformation-1-male-fatloss.webp',
-    title: 'Fat Loss & Stamina Rebuild',
-    badge: '18kg Fat Loss • 20 Weeks',
-    story: 'Shifted from long hours of sedentary routine to disciplined daily resistance workouts and a calorie-managed diet under Coach Riyaz.',
-    achievements: [
-      'Substantial reduction in visceral fat',
-      'Daily cardiovascular stamina improved',
-      'Consistent strength training 5 days a week'
-    ],
-  },
-  {
-    id: 'transformation-2',
-    src: '/transformations/transformation-2-female-toning.webp',
-    title: 'Body Recomposition & Core Toning',
-    badge: 'Lean Muscle & Toning • 16 Weeks',
-    story: 'Dedicated strength training focusing on core stability, compound lifts, and balanced nutrition without extreme starvation diets.',
-    achievements: [
-      'Inches lost across waist and hips',
-      'Enhanced functional core strength',
-      'Structured home-diet meal balance'
-    ],
-  },
-  {
-    id: 'transformation-3',
-    src: '/transformations/transformation-3-lifestyle-fitness.webp',
-    title: 'Lifestyle Fitness & Fat Loss',
-    badge: 'Sustainable Fitness • 24 Weeks',
-    story: 'Replaced fad diets with structured push-pull-legs training splits and regular cardio conditioning at Karnataka Gym.',
-    achievements: [
-      'Consistent fat loss over months',
-      'Noticeable postural correction',
-      'Increased energy throughout the day'
-    ],
-  },
-  {
-    id: 'transformation-4',
-    src: '/transformations/transformation-4-core-conditioning.webp',
-    title: 'Middle-Age Strength & Waistline Trim',
-    badge: 'Trained at Karnataka Gym • 18 Weeks',
-    story: 'Trained directly on the Karnataka Gym floor with barbell complexes, plate resistance, and coach-guided nutrition protocols.',
-    achievements: [
-      'Visible abdominal fat loss & tone',
-      'Joint mobility & heavy compound strength',
-      'Proven proof of work right in Hubballi'
-    ],
-  },
-  {
-    id: 'transformation-5',
-    src: '/transformations/transformation-5-active-fitness.webp',
-    title: 'Active Lifestyle & Core Slimming',
-    badge: 'Weight Loss & Energy • 14 Weeks',
-    story: 'Shifted from long hours of sedentary desk work to consistent daily workouts, burning stubborn body fat while boosting cardiovascular fitness.',
-    achievements: [
-      'Visible waist & midsection trimming',
-      'Consistent daily morning workout habit',
-      'Enhanced endurance and daily energy'
-    ],
-  },
-  {
-    id: 'transformation-6',
-    src: '/transformations/transformation-6-lifestyle-toning.webp',
-    title: 'Postural Alignment & Waistline Tone',
-    badge: 'Postural Correction • 16 Weeks',
-    story: 'Replaced extreme food restriction with strength-based resistance training and structured, nutrient-dense home-cooked meals.',
-    achievements: [
-      'Inches reduced from waist and hips',
-      'Improved shoulder and spinal posture',
-      'Sustainable eating without starving'
-    ],
-  },
-  {
-    id: 'transformation-7',
-    src: '/transformations/transformation-7-athletic-conditioning.webp',
-    title: 'Athletic Conditioning & Leaning Out',
-    badge: 'Athletic Conditioning • 20 Weeks',
-    story: 'Committed to full-body resistance splits and HIIT cardio, transforming overall stamina and dropping body fat percentage steadily.',
-    achievements: [
-      'Full-body lean muscle toning',
-      'Athletic agility and high energy levels',
-      'Consistent 4-day gym training schedule'
-    ],
-  },
-  {
-    id: 'transformation-8',
-    src: '/transformations/transformation-8-strength-recomposition.webp',
-    title: 'Body Recomposition & Confidence',
-    badge: 'Strength & Confidence • 22 Weeks',
-    story: 'Combined progressive weight resistance with balanced daily protein intake, creating a fit, toned silhouette with renewed self-confidence.',
-    achievements: [
-      'Noticeable total body inch loss',
-      'Increased upper and lower body strength',
-      'Long-term sustainable lifestyle habits'
-    ],
-  },
-];
-
-const TRAINER_PHOTOS = [
-  {
-    id: 'trainer-photo-1',
-    src: '/trainers/coach-riyaz-conditioning.webp',
-    title: 'Peak Conditioning & Core Striations',
-    tag: 'Discipline & Definition',
-    desc: 'Elite core definition, serratus cuts, and competition-level conditioning built through years of disciplined, progressive weight training.',
-  },
-  {
-    id: 'trainer-photo-2',
-    src: '/trainers/coach-riyaz-side-chest.webp',
-    title: 'Side Chest & Arm Hypertrophy',
-    tag: 'Karnataka Gym Floor',
-    desc: 'Classic bodybuilding side chest pose on the Karnataka Gym floor, showing chest fullness, shoulder striations, and tricep separation.',
-  },
-  {
-    id: 'trainer-photo-3',
-    src: '/trainers/coach-riyaz-dumbbells.webp',
-    title: 'Olympic Dumbbell Bicep Training',
-    tag: 'Free Weight Mastery',
-    desc: 'Vascular dumbbell training on the main gym floor. Teaching members proper tempo, peak contraction, and zero-momentum form.',
-  },
-  {
-    id: 'trainer-photo-4',
-    src: '/trainers/coach-riyaz-most-muscular.webp',
-    title: 'Most Muscular & Quadricep Power',
-    tag: 'Competition-Ready Physique',
-    desc: 'Front most muscular pose showcasing quad separation, abdominal vascularity, and thick traps forged with heavy compound training.',
-  },
-];
-
-const PRICING_PLANS = [
-  {
-    id: 'monthly',
-    name: 'Monthly Plan',
-    price: '₹1,500',
-    duration: '1 Month',
-    perMonth: '₹1,500 / month',
-    badge: null,
-    highlight: false,
-    description: 'Ideal for beginners and short-term fitness goals without long commitments.',
-    features: [
-      'Full gym floor & free weights access',
-      'Selectorized pin-loaded resistance machines',
-      'Cardio suite (treadmill & conditioning equipment)',
-      'Clean locker & changing facilities',
-      'General workout & form guidance',
-      'Zero admission or registration fee'
-    ]
-  },
-  {
-    id: 'quarterly',
-    name: 'Quarterly Plan',
-    price: '₹4,000',
-    duration: '3 Months',
-    perMonth: '₹1,333 / month',
-    badge: 'Most Popular',
-    highlight: true,
-    description: 'The proven sweet spot to build habit consistency and visible physical changes.',
-    features: [
-      'Save ₹500 compared to monthly rate',
-      'Full gym floor & Olympic equipment access',
-      'All selectorized resistance stations included',
-      'Cardio suite & locker access',
-      'Personalized split routine consultation',
-      'Zero admission fee • No hidden charges'
-    ]
-  },
-  {
-    id: 'half_yearly',
-    name: 'Half-Yearly Plan',
-    price: '₹7,500',
-    duration: '6 Months',
-    perMonth: '₹1,250 / month',
-    badge: 'Great Value',
-    highlight: false,
-    description: 'Complete body recomposition window for dedicated lifters and fitness athletes.',
-    features: [
-      'Save ₹1,500 over monthly rates',
-      'Includes 15-day membership freeze option',
-      'Full unrestricted gym floor access',
-      'All heavy Olympic free weights (up to 50kg+)',
-      'Cardio suite & locker facility included',
-      'Progress check-ins & form reviews'
-    ]
-  },
-  {
-    id: 'yearly',
-    name: 'Yearly Plan',
-    price: '₹12,000',
-    duration: '12 Months',
-    perMonth: '₹1,000 / month',
-    badge: 'Best Value',
-    highlight: false,
-    description: 'Our most economical plan for a lifetime fitness commitment in Hubballi.',
-    features: [
-      'Save ₹6,000 annually (effectively ₹1,000/mo)',
-      'Includes 30-day membership pause option',
-      'Unrestricted year-round facility access',
-      'Full Olympic barbells, cages & cable towers',
-      'Free lock & locker room facility',
-      'Highest long-term transformation rate'
-    ]
-  }
-];
-
 export default function PublicGymWebsite() {
-  const [selectedPhoto, setSelectedPhoto] = useState<typeof FACILITY_PHOTOS[0] | null>(null);
-  const [selectedTransformation, setSelectedTransformation] = useState<typeof TRANSFORMATIONS[0] | null>(null);
-  const [selectedTrainerPhoto, setSelectedTrainerPhoto] = useState<typeof TRAINER_PHOTOS[0] | null>(null);
+  const [content, setContent] = useState<SiteContent>(DEFAULT_CONTENT);
+  const [selectedPhoto, setSelectedPhoto] = useState<FacilityItem | null>(null);
+  const [selectedTransformation, setSelectedTransformation] = useState<TransformationItem | null>(null);
+  const [selectedTrainerPhoto, setSelectedTrainerPhoto] = useState<TrainerPhotoItem | null>(null);
+
+  // Sync with dynamic CMS content saved by admin
+  useEffect(() => {
+    fetch('/api/content')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data && data.general) {
+          setContent(data);
+        }
+      })
+      .catch((err) => console.warn('Could not load dynamic content:', err));
+  }, []);
 
   // Inquiry form states
   const [inquiryName, setInquiryName] = useState('');
@@ -325,6 +110,19 @@ export default function PublicGymWebsite() {
       return;
     }
 
+    // Submit inquiry to backend so it lands in Admin Console Inbox
+    fetch('/api/inquiries', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: cleanName,
+        phone: cleanPhone,
+        goal: inquiryGoal,
+        date: inquiryDate,
+        time: inquiryTime,
+      }),
+    }).catch((err) => console.warn('Inquiry background sync:', err));
+
     setInquiryStatus('success');
     setInquiryMessage(`Dhanyavad ${cleanName}! Your gym walkthrough has been confirmed for ${inquiryDate} (${inquiryTime}). Coach Riyaz / front desk staff will contact you at +91 ${cleanPhone}.`);
     setInquiryName('');
@@ -371,18 +169,18 @@ export default function PublicGymWebsite() {
             {/* Live Operational Status Indicator */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#131826] border border-[#232D42] text-xs font-semibold text-slate-300 shadow-sm">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span>Facility Open Today • Hubballi Floor Active (5:30 AM - 10:00 PM)</span>
+              <span>{content.hero.liveStatusText}</span>
             </div>
 
             {/* Primary Hero Headline */}
             <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black text-white leading-[1.08] tracking-tight uppercase">
-              BUILD RAW STRENGTH.<br />
-              <span className="text-[#E5A93C]">KARNATAKA GYM</span> HUBBALLI
+              {content.hero.headlinePart1}<br />
+              <span className="text-[#E5A93C]">{content.hero.headlineHighlight}</span> {content.hero.headlinePart2}
             </h1>
 
             {/* Subtitle */}
             <p className="text-sm sm:text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed">
-              Hubballi&apos;s home for serious lifters, functional athletes, and beginner fitness journeys since 2011. Heavy Olympic iron, pin-loaded resistance machines, and certified coaching under Coach Riyaz at Kalidas Nagar.
+              {content.hero.subtitle}
             </p>
 
             {/* Direct Action Gateways */}
@@ -407,16 +205,16 @@ export default function PublicGymWebsite() {
             {/* Quick Contact Bar */}
             <div className="pt-2 flex flex-wrap items-center justify-center gap-3 text-xs">
               <a
-                href="tel:9902667407"
+                href={`tel:${content.general.phone}`}
                 className="flex items-center gap-1.5 bg-[#121724] border border-[#242F46] hover:border-[#E5A93C] px-3.5 py-2 rounded-xl text-slate-300 font-bold transition-colors"
                 title="Call Karnataka Gym"
               >
                 <Phone className="w-3.5 h-3.5 text-[#E5A93C]" />
-                <span>Call 9902667407</span>
+                <span>Call {content.general.phone}</span>
               </a>
 
               <a
-                href="https://wa.me/919902667407"
+                href={`https://wa.me/91${content.general.whatsapp}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1.5 bg-[#121724] border border-[#242F46] hover:border-emerald-500 px-3.5 py-2 rounded-xl text-emerald-400 font-bold transition-colors"
@@ -427,43 +225,33 @@ export default function PublicGymWebsite() {
               </a>
 
               <a
-                href="https://www.instagram.com/riyaz_gokul/"
+                href={`https://www.instagram.com/${content.general.instagram.replace('@', '')}/`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1.5 bg-[#121724] border border-[#242F46] hover:border-pink-500 px-3.5 py-2 rounded-xl text-pink-400 font-bold transition-colors"
                 title="Visit Coach Riyaz Instagram"
               >
                 <InstagramIcon className="w-3.5 h-3.5" />
-                <span>@riyaz_gokul</span>
+                <span>{content.general.instagram}</span>
               </a>
             </div>
 
             {/* Metric / Trust Pillars Horizontal Ticker */}
             <div className="pt-8 border-t border-[#1C2538] grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-              <div className="p-4 rounded-2xl bg-[#0F1420] border border-[#1E273A]">
-                <span className="text-2xl sm:text-3xl font-black text-white block">14+ Years</span>
-                <span className="text-[11px] text-slate-400 font-medium tracking-wide uppercase mt-1 block">
-                  Hubballi Legacy (Est. 2011)
-                </span>
-              </div>
-              <div className="p-4 rounded-2xl bg-[#0F1420] border border-[#1E273A]">
-                <span className="text-2xl sm:text-3xl font-black text-[#E5A93C] block">50kg+</span>
-                <span className="text-[11px] text-slate-400 font-medium tracking-wide uppercase mt-1 block">
-                  Olympic Free Weights Rack
-                </span>
-              </div>
-              <div className="p-4 rounded-2xl bg-[#0F1420] border border-[#1E273A]">
-                <span className="text-2xl sm:text-3xl font-black text-white block">100% Real</span>
-                <span className="text-[11px] text-slate-400 font-medium tracking-wide uppercase mt-1 block">
-                  Local Member Results
-                </span>
-              </div>
-              <div className="p-4 rounded-2xl bg-[#0F1420] border border-[#1E273A]">
-                <span className="text-2xl sm:text-3xl font-black text-emerald-400 block">₹0 Hidden</span>
-                <span className="text-[11px] text-slate-400 font-medium tracking-wide uppercase mt-1 block">
-                  Zero Admission Surcharge
-                </span>
-              </div>
+              {content.hero.stats.map((st, idx) => (
+                <div key={idx} className="p-4 rounded-2xl bg-[#0F1420] border border-[#1E273A]">
+                  <span
+                    className={`text-2xl sm:text-3xl font-black block ${
+                      st.highlight ? 'text-[#E5A93C]' : 'text-white'
+                    }`}
+                  >
+                    {st.value}
+                  </span>
+                  <span className="text-[11px] text-slate-400 font-medium tracking-wide uppercase mt-1 block">
+                    {st.label}
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
         </section>
@@ -473,65 +261,31 @@ export default function PublicGymWebsite() {
           <div className="rounded-3xl bg-[#0F1420] border border-[#1E273A] p-6 sm:p-10 space-y-8">
             <div className="max-w-3xl space-y-3">
               <span className="text-xs font-black uppercase tracking-widest text-[#E5A93C]">
-                Our Training Heritage
+                {content.about.eyebrow}
               </span>
               <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
-                Authentic Strength Culture in Hubballi
+                {content.about.heading}
               </h2>
               <p className="text-sm text-slate-300 leading-relaxed">
-                Founded with a commitment to pure hard work and measurable physical results, <strong>Karnataka Gym</strong> is Hubballi&apos;s trusted strength institution. Centrally situated at Kalidas Nagar, our facility is engineered for serious lifters, working professionals, and beginners looking for practical fitness without ego or gimmicks.
+                {content.about.description}
               </p>
             </div>
 
             {/* 4 Architectural Pillar Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-              <div className="p-5 rounded-2xl bg-[#141A28] border border-[#242F46] space-y-2">
-                <div className="flex items-center gap-2.5">
-                  <span className="w-8 h-8 rounded-xl bg-[#E5A93C]/10 border border-[#E5A93C]/30 text-[#E5A93C] flex items-center justify-center font-black">
-                    01
-                  </span>
-                  <h3 className="text-sm font-black text-white">Heavy Olympic Free Weights</h3>
+              {content.about.pillars.map((pillar) => (
+                <div key={pillar.id} className="p-5 rounded-2xl bg-[#141A28] border border-[#242F46] space-y-2">
+                  <div className="flex items-center gap-2.5">
+                    <span className="w-8 h-8 rounded-xl bg-[#E5A93C]/10 border border-[#E5A93C]/30 text-[#E5A93C] flex items-center justify-center font-black">
+                      {pillar.number}
+                    </span>
+                    <h3 className="text-sm font-black text-white">{pillar.title}</h3>
+                  </div>
+                  <p className="text-slate-300 leading-relaxed">
+                    {pillar.desc}
+                  </p>
                 </div>
-                <p className="text-slate-300 leading-relaxed">
-                  Commercial Olympic flat, incline, and decline bench presses, heavy squat stations, and a complete line of precision cast-iron dumbbells up to 50kg for progressive overload.
-                </p>
-              </div>
-
-              <div className="p-5 rounded-2xl bg-[#141A28] border border-[#242F46] space-y-2">
-                <div className="flex items-center gap-2.5">
-                  <span className="w-8 h-8 rounded-xl bg-[#E5A93C]/10 border border-[#E5A93C]/30 text-[#E5A93C] flex items-center justify-center font-black">
-                    02
-                  </span>
-                  <h3 className="text-sm font-black text-white">Biomechanical Pin-Loaded Machines</h3>
-                </div>
-                <p className="text-slate-300 leading-relaxed">
-                  Selectorized cable crossovers, 45° linear incline leg presses, pec fly machines, and lat pulldowns engineered for peak contraction with natural joint paths.
-                </p>
-              </div>
-
-              <div className="p-5 rounded-2xl bg-[#141A28] border border-[#242F46] space-y-2">
-                <div className="flex items-center gap-2.5">
-                  <span className="w-8 h-8 rounded-xl bg-[#E5A93C]/10 border border-[#E5A93C]/30 text-[#E5A93C] flex items-center justify-center font-black">
-                    03
-                  </span>
-                  <h3 className="text-sm font-black text-white">Coaching Under Coach Riyaz</h3>
-                </div>
-                <p className="text-slate-300 leading-relaxed">
-                  Learn directly from 14+ years of competitive bodybuilding discipline. Form verification, injury prevention, and customized training splits tailored to your structure.
-                </p>
-              </div>
-
-              <div className="p-5 rounded-2xl bg-[#141A28] border border-[#242F46] space-y-2">
-                <div className="flex items-center gap-2.5">
-                  <span className="w-8 h-8 rounded-xl bg-[#E5A93C]/10 border border-[#E5A93C]/30 text-[#E5A93C] flex items-center justify-center font-black">
-                    04
-                  </span>
-                  <h3 className="text-sm font-black text-white">Real Indian Diet & Nutrition Guidance</h3>
-                </div>
-                <p className="text-slate-300 leading-relaxed">
-                  No extreme starvation protocols or forced supplement packages. Practical nutrition frameworks built around real Indian home-cooked meals (dal, eggs, paneer, chicken, rice).
-                </p>
-              </div>
+              ))}
             </div>
           </div>
         </section>
@@ -558,9 +312,9 @@ export default function PublicGymWebsite() {
 
           {/* 4-Photo Showcase Grid */}
           <div id="facility-tour" className="grid grid-cols-1 md:grid-cols-2 gap-6 scroll-mt-20">
-            {FACILITY_PHOTOS.map((photo, index) => (
+            {content.facilities.map((photo, index) => (
               <div
-                key={photo.src}
+                key={photo.id || photo.src}
                 onClick={() => setSelectedPhoto(photo)}
                 className="group relative bg-[#0F1420] border-2 border-[#1E273A] hover:border-[#E5A93C] rounded-3xl overflow-hidden shadow-xl transition-all duration-300 cursor-pointer flex flex-col"
               >
@@ -660,7 +414,7 @@ export default function PublicGymWebsite() {
 
           {/* 8-Item Transformation Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {TRANSFORMATIONS.map((item) => (
+            {content.transformations.map((item) => (
               <div
                 key={item.id}
                 onClick={() => setSelectedTransformation(item)}
@@ -779,26 +533,33 @@ export default function PublicGymWebsite() {
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-[#1E273A]">
               <div className="space-y-2 max-w-2xl">
                 <span className="text-xs font-black uppercase tracking-widest text-[#E5A93C]">
-                  Certified Mentorship
+                  {content.trainer.title}
                 </span>
                 <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
-                  Train Under Head Coach Riyaz
+                  Train Under {content.trainer.name}
                 </h2>
                 <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                  At Karnataka Gym, we don&apos;t preach theories from a desk. Train directly under competition-proven bodybuilding discipline, biomechanically sound lifting mechanics, and authentic Indian diet planning.
+                  {content.trainer.bio}
                 </p>
+                <div className="pt-1 flex flex-wrap gap-2">
+                  {content.trainer.specialties.map((spec, idx) => (
+                    <span key={idx} className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#141A28] border border-[#242F46] text-[#E5A93C]">
+                      {spec}
+                    </span>
+                  ))}
+                </div>
               </div>
 
               <div className="flex items-center gap-2 flex-shrink-0">
                 <a
-                  href="https://www.instagram.com/riyaz_gokul/"
+                  href={`https://www.instagram.com/${content.trainer.instagramHandle.replace('@', '')}/`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-4 py-2.5 rounded-xl bg-[#141A28] border border-[#242F46] hover:border-pink-500 text-pink-400 font-bold text-xs inline-flex items-center gap-2 transition-all cursor-pointer"
                   title="Follow Coach Riyaz on Instagram"
                 >
                   <InstagramIcon className="w-4 h-4" />
-                  <span>@riyaz_gokul</span>
+                  <span>{content.trainer.instagramHandle}</span>
                   <ExternalLink className="w-3.5 h-3.5 opacity-80" />
                 </a>
               </div>
@@ -806,7 +567,7 @@ export default function PublicGymWebsite() {
 
             {/* 4 Coach Photos Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {TRAINER_PHOTOS.map((photo) => (
+              {content.trainer.photos.map((photo) => (
                 <div
                   key={photo.id}
                   onClick={() => setSelectedTrainerPhoto(photo)}
@@ -915,7 +676,7 @@ export default function PublicGymWebsite() {
 
           {/* 4-Tier Pricing Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {PRICING_PLANS.map((plan) => (
+            {content.pricing.map((plan) => (
               <div
                 key={plan.id}
                 className={`relative rounded-3xl p-6 flex flex-col justify-between transition-all duration-300 ${
@@ -997,9 +758,9 @@ export default function PublicGymWebsite() {
                 <div className="flex items-start gap-3">
                   <MapPin className="w-5 h-5 text-[#E5A93C] flex-shrink-0 mt-0.5" />
                   <div className="text-xs space-y-1">
-                    <span className="font-extrabold text-white block text-sm">Karnataka Gym</span>
+                    <span className="font-extrabold text-white block text-sm">{content.general.gymName}</span>
                     <p className="text-slate-200 font-semibold leading-relaxed">
-                      Kalidas Nagar, Hubballi, Karnataka 580031
+                      {content.general.address}
                     </p>
                     <span className="text-[#E5A93C] font-medium block text-[11px] pt-0.5">
                       Direct Facility Location • Hubballi
@@ -1008,7 +769,7 @@ export default function PublicGymWebsite() {
                 </div>
 
                 <a
-                  href="https://maps.app.goo.gl/dXnSdvRU9gwHd7sAA"
+                  href={content.general.mapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full inline-flex items-center justify-center gap-2 bg-[#0F1420] hover:bg-[#182030] border border-[#2D3950] hover:border-[#E5A93C] text-[#E5A93C] font-bold text-xs py-2.5 px-4 rounded-xl transition-all shadow-sm group cursor-pointer"
@@ -1028,12 +789,16 @@ export default function PublicGymWebsite() {
                 </span>
                 <div className="space-y-2 text-xs">
                   <div className="flex items-center justify-between p-3 rounded-xl bg-[#141A28] border border-[#242F46]">
-                    <span className="font-bold text-white">Monday - Saturday</span>
-                    <span className="text-[#E5A93C] font-mono font-bold">5:30 AM - 10:00 PM</span>
+                    <span className="font-bold text-white">Monday - Saturday (Morning)</span>
+                    <span className="text-[#E5A93C] font-mono font-bold">{content.general.morningHours}</span>
+                  </div>
+                  <div className="flex items-center justify-between p-3 rounded-xl bg-[#141A28] border border-[#242F46]">
+                    <span className="font-bold text-white">Monday - Saturday (Evening)</span>
+                    <span className="text-[#E5A93C] font-mono font-bold">{content.general.eveningHours}</span>
                   </div>
                   <div className="flex items-center justify-between p-3 rounded-xl bg-[#141A28] border border-[#242F46]">
                     <span className="font-bold text-white">Sunday</span>
-                    <span className="text-amber-400 font-mono font-bold">6:00 AM - 1:00 PM</span>
+                    <span className="text-amber-400 font-mono font-bold">{content.general.sundayHours}</span>
                   </div>
                 </div>
               </div>
@@ -1045,16 +810,16 @@ export default function PublicGymWebsite() {
                 </span>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
                   <a
-                    href="tel:9902667407"
+                    href={`tel:${content.general.phone}`}
                     className="p-3 rounded-xl bg-[#141A28] border border-[#242F46] hover:border-[#E5A93C] flex items-center justify-center sm:justify-start gap-2.5 text-slate-200 font-bold transition-colors group cursor-pointer"
                     title="Call Karnataka Gym Helpline"
                   >
                     <Phone className="w-4 h-4 text-[#E5A93C] group-hover:scale-110 transition-transform flex-shrink-0" />
-                    <span>Call 9902667407</span>
+                    <span>Call {content.general.phone}</span>
                   </a>
 
                   <a
-                    href="https://wa.me/919902667407"
+                    href={`https://wa.me/91${content.general.whatsapp}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="p-3 rounded-xl bg-[#141A28] border border-[#242F46] hover:border-emerald-500 flex items-center justify-center sm:justify-start gap-2.5 text-emerald-400 font-bold transition-colors group cursor-pointer"
@@ -1065,7 +830,7 @@ export default function PublicGymWebsite() {
                   </a>
 
                   <a
-                    href="mailto:karnatakagymhubli@gmail.com"
+                    href={`mailto:${content.general.email}`}
                     className="p-3 rounded-xl bg-[#141A28] border border-[#242F46] hover:border-[#E5A93C] flex items-center justify-center sm:justify-start gap-2.5 text-slate-200 font-bold transition-colors group cursor-pointer"
                     title="Email Karnataka Gym"
                   >

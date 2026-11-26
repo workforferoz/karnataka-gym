@@ -44,3 +44,6 @@ scripts/compiled/
 # legacy sql
 supabase-setup.sql
 *.sql
+
+# local lead inquiries data
+data/inquiries.json
