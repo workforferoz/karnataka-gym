@@ -8,7 +8,7 @@ import { Footer } from '@/components/Footer';
 import { PWAInstallBanner } from '@/components/PWAInstallBanner';
 import { InstagramIcon } from '@/components/InstagramIcon';
 import { WhatsAppIcon } from '@/components/WhatsAppIcon';
-import { sanitizeString, sanitizePhone } from '@/lib/security';
+import { sanitizeString, sanitizePhone } from '@/lib/sanitize';
 import {
   Phone,
   Mail,
@@ -19,7 +19,6 @@ import {
   ArrowRight,
   UserCheck,
   Lock,
-  QrCode,
   Flame,
   Award,
   Zap,

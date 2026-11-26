@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import { GymProvider } from "@/lib/store";
 
 export const metadata: Metadata = {
   title: {
@@ -39,9 +38,7 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/karnataka-gym-logo.png" />
       </head>
       <body className="min-h-full flex flex-col bg-[#0B0E14] text-slate-100 select-none" suppressHydrationWarning>
-        <GymProvider>
-          {children}
-        </GymProvider>
+        {children}
         <script
           dangerouslySetInnerHTML={{
             __html: `

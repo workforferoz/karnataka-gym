@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { PublicNav } from '@/components/PublicNav';
 import { Footer } from '@/components/Footer';
-import { sanitizePhone, sanitizeString } from '@/lib/security';
+import { sanitizePhone, sanitizeString } from '@/lib/sanitize';
 import { ArrowLeft, Trash2, CheckCircle, ShieldAlert } from 'lucide-react';
 
 export default function DataDeletionPage() {
