@@ -7,15 +7,17 @@ export default function NotFound() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#0B0E14] text-slate-100 p-4">
       <div className="max-w-md w-full bg-[#121622] border-2 border-[#232B3E] rounded-3xl p-6 md:p-8 text-center space-y-6 shadow-2xl">
-        <div className="w-20 h-20 rounded-full overflow-hidden mx-auto flex-shrink-0 drop-shadow-[0_4px_16px_rgba(229,169,60,0.35)]">
-          <Image
-            src="/karnataka-gym-badge.png"
-            alt="Karnataka Gym Hubballi"
-            width={80}
-            height={80}
-            className="w-full h-full object-contain rounded-full"
-          />
-        </div>
+        <Link href="/" title="Go to Karnataka Gym Home" className="inline-block group cursor-pointer">
+          <div className="w-20 h-20 rounded-full overflow-hidden mx-auto flex-shrink-0 drop-shadow-[0_4px_16px_rgba(229,169,60,0.35)] group-hover:scale-105 transition-transform">
+            <Image
+              src="/karnataka-gym-badge.png"
+              alt="Karnataka Gym Hubballi"
+              width={80}
+              height={80}
+              className="w-full h-full object-contain rounded-full"
+            />
+          </div>
+        </Link>
 
         <div className="space-y-2">
           <span className="text-4xl font-black text-[#E5A93C] font-mono block">404</span>

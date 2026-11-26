@@ -1,10 +1,14 @@
-'use client';
-
 import React from 'react';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { PublicNav } from '@/components/PublicNav';
 import { Footer } from '@/components/Footer';
 import { ArrowLeft, ShieldCheck, Mail, Phone, MapPin } from 'lucide-react';
+
+export const metadata: Metadata = {
+  title: 'Privacy Policy | Karnataka Gym Hubballi',
+  description: 'Privacy Policy and data protection standards for Karnataka Gym Hubballi. Compliant with Digital Personal Data Protection (DPDP) Act, India.',
+};
 
 export default function PrivacyPolicyPage() {
   return (

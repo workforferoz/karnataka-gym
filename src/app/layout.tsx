@@ -9,8 +9,12 @@ export const metadata: Metadata = {
   description: "Official gym website for Karnataka Gym Hubballi. Explore heavy Olympic weights, pin-loaded resistance machines, certified coaching, transformations, and membership fees. Contact: 9902667407",
   manifest: "/manifest.json",
   icons: {
-    icon: "/karnataka-gym-logo.png",
-    apple: "/karnataka-gym-logo.png",
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/karnataka-gym-logo.png", type: "image/png" }
+    ],
+    apple: "/apple-icon.png",
+    shortcut: "/favicon.ico",
   },
   appleWebApp: {
     capable: true,
@@ -35,7 +39,9 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark h-full antialiased bg-[#0B0E14] text-slate-100" suppressHydrationWarning>
       <head>
-        <link rel="apple-touch-icon" href="/karnataka-gym-logo.png" />
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" type="image/png" href="/karnataka-gym-logo.png" />
+        <link rel="apple-touch-icon" href="/apple-icon.png" />
       </head>
       <body className="min-h-full flex flex-col bg-[#0B0E14] text-slate-100 select-none" suppressHydrationWarning>
         {children}

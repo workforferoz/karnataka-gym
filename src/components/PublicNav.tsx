@@ -13,6 +13,7 @@ import {
   Dumbbell
 } from 'lucide-react';
 import { InstagramIcon } from '@/components/InstagramIcon';
+import { WhatsAppIcon } from '@/components/WhatsAppIcon';
 
 interface PublicNavProps {}
 
@@ -97,8 +98,13 @@ export const PublicNav: React.FC<PublicNavProps> = () => {
           <div className="w-80 bg-[#0F131D] border-l border-[#232B3E] h-full flex flex-col p-5 shadow-2xl animate-in slide-in-from-right duration-250">
             {/* Header */}
             <div className="flex items-center justify-between pb-4">
-              <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 relative rounded-full overflow-hidden flex-shrink-0">
+              <Link
+                href="/"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center gap-2.5 group"
+                title="Karnataka Gym Home"
+              >
+                <div className="w-9 h-9 relative rounded-full overflow-hidden flex-shrink-0 drop-shadow-sm">
                   <Image
                     src="/karnataka-gym-badge.png"
                     alt="Karnataka Gym"
@@ -108,13 +114,15 @@ export const PublicNav: React.FC<PublicNavProps> = () => {
                   />
                 </div>
                 <div>
-                  <span className="text-sm font-extrabold text-white block">Karnataka Gym</span>
+                  <span className="text-sm font-extrabold text-white group-hover:text-[#E5A93C] transition-colors block">
+                    Karnataka Gym
+                  </span>
                   <span className="text-[10px] text-slate-400">Hubballi, Karnataka</span>
                 </div>
-              </div>
+              </Link>
               <button
                 onClick={() => setMobileMenuOpen(false)}
-                className="p-1.5 text-slate-400 hover:text-white rounded-lg"
+                className="p-1.5 text-slate-400 hover:text-white rounded-lg cursor-pointer"
                 aria-label="Close mobile menu"
               >
                 <X className="w-5 h-5" />
@@ -203,7 +211,17 @@ export const PublicNav: React.FC<PublicNavProps> = () => {
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 p-2.5 rounded-xl bg-[#171D2B] text-emerald-400 font-bold hover:border-emerald-500 border border-transparent transition-colors"
               >
+                <WhatsAppIcon className="w-4 h-4 text-emerald-400" />
                 <span>WhatsApp: 9902667407</span>
+              </a>
+
+              <a
+                href="mailto:karnatakagymhubli@gmail.com"
+                className="flex items-center gap-2 p-2.5 rounded-xl bg-[#171D2B] text-slate-200 font-bold hover:border-[#E5A93C] border border-transparent transition-colors"
+                title="Email Karnataka Gym"
+              >
+                <Mail className="w-4 h-4 text-[#E5A93C]" />
+                <span className="truncate">karnatakagymhubli@gmail.com</span>
               </a>
 
               <a

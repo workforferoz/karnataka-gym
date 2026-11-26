@@ -2,14 +2,14 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { MapPin, Clock, Code } from 'lucide-react';
+import { MapPin, Clock, Code, Mail } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   return (
     <footer className="bg-[#080B10] pt-8 pb-24 md:pb-10 px-4 text-slate-400 text-xs">
       <div className="max-w-6xl mx-auto space-y-6">
         {/* Business Details & Studio Credit Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-slate-400">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-slate-400">
           <div className="flex items-start gap-2.5">
             <MapPin className="w-4 h-4 text-[#E5A93C] flex-shrink-0 mt-0.5" />
             <div>
@@ -30,6 +30,28 @@ export const Footer: React.FC = () => {
             <div>
               <span className="text-slate-200 font-bold block">Operating Hours</span>
               <span>Mon - Sat: 5:30 AM - 10:00 PM | Sun: 6:00 AM - 1:00 PM</span>
+            </div>
+          </div>
+          <div className="flex items-start gap-2.5">
+            <Mail className="w-4 h-4 text-[#E5A93C] flex-shrink-0 mt-0.5" />
+            <div>
+              <span className="text-slate-200 font-bold block">Direct Inquiries</span>
+              <div className="space-y-0.5">
+                <a
+                  href="tel:9902667407"
+                  className="text-slate-300 hover:text-[#E5A93C] transition-colors block"
+                  title="Call Karnataka Gym Helpline"
+                >
+                  Phone: <span className="text-[#E5A93C] font-bold">9902667407</span>
+                </a>
+                <a
+                  href="mailto:karnatakagymhubli@gmail.com"
+                  className="text-slate-300 hover:text-[#E5A93C] transition-colors block break-all"
+                  title="Email Karnataka Gym"
+                >
+                  karnatakagymhubli@gmail.com
+                </a>
+              </div>
             </div>
           </div>
           <div className="flex items-start gap-2.5">

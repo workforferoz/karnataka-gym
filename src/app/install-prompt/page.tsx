@@ -53,15 +53,17 @@ export default function InstallPromptPage() {
 
         {/* Hero Card */}
         <div className="text-center p-6 rounded-3xl bg-gradient-to-b from-[#171D2B] to-[#101420] border-2 border-[#E5A93C]/40 space-y-4 shadow-2xl">
-          <div className="relative w-20 h-20 mx-auto rounded-full overflow-hidden flex-shrink-0 drop-shadow-[0_4px_16px_rgba(229,169,60,0.35)]">
-            <Image
-              src="/karnataka-gym-badge.png"
-              alt="Karnataka Gym Hubballi"
-              width={80}
-              height={80}
-              className="object-contain w-full h-full rounded-full"
-            />
-          </div>
+          <Link href="/" title="Go to Karnataka Gym Home" className="inline-block group cursor-pointer">
+            <div className="relative w-20 h-20 mx-auto rounded-full overflow-hidden flex-shrink-0 drop-shadow-[0_4px_16px_rgba(229,169,60,0.35)] group-hover:scale-105 transition-transform">
+              <Image
+                src="/karnataka-gym-badge.png"
+                alt="Karnataka Gym Hubballi"
+                width={80}
+                height={80}
+                className="object-contain w-full h-full rounded-full"
+              />
+            </div>
+          </Link>
 
           <div>
             <h1 className="text-2xl font-extrabold text-white">
