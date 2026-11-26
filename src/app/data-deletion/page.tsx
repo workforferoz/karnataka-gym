@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { PublicNav } from '@/components/PublicNav';
 import { Footer } from '@/components/Footer';
-import { sanitizePhone, sanitizeString } from '@/lib/sanitize';
+import { sanitizePhone, sanitizeString, checkRateLimit } from '@/lib/sanitize';
 import { ArrowLeft, Trash2, CheckCircle, ShieldAlert } from 'lucide-react';
 
 export default function DataDeletionPage() {
@@ -17,6 +17,12 @@ export default function DataDeletionPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg('');
+
+    const rateCheck = checkRateLimit('data_deletion', 3, 60000);
+    if (!rateCheck.allowed) {
+      setErrorMsg(`Too many requests. Please wait ${rateCheck.retryAfterSeconds} seconds before submitting again.`);
+      return;
+    }
 
     const phoneValidation = sanitizePhone(phone);
     if (!phoneValidation.isValid) {

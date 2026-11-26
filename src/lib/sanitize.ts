@@ -27,3 +27,31 @@ export const sanitizeEmail = (email: string): { isValid: boolean; sanitized: str
   const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(clean);
   return { isValid, sanitized: clean };
 };
+
+/**
+ * Client-side Rate Limiter.
+ * Prevents spam on form submissions.
+ */
+const rateLimitMap = new Map<string, { count: number; expiresAt: number }>();
+
+export const checkRateLimit = (
+  actionKey: string,
+  maxAttempts: number = 3,
+  windowMs: number = 60000
+): { allowed: boolean; retryAfterSeconds: number } => {
+  const now = Date.now();
+  const entry = rateLimitMap.get(actionKey);
+
+  if (!entry || now > entry.expiresAt) {
+    rateLimitMap.set(actionKey, { count: 1, expiresAt: now + windowMs });
+    return { allowed: true, retryAfterSeconds: 0 };
+  }
+
+  if (entry.count >= maxAttempts) {
+    const retryAfter = Math.ceil((entry.expiresAt - now) / 1000);
+    return { allowed: false, retryAfterSeconds: Math.max(1, retryAfter) };
+  }
+
+  entry.count++;
+  return { allowed: true, retryAfterSeconds: 0 };
+};

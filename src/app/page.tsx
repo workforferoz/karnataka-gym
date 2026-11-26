@@ -7,7 +7,7 @@ import { Footer } from '@/components/Footer';
 import { PWAInstallBanner } from '@/components/PWAInstallBanner';
 import { InstagramIcon } from '@/components/InstagramIcon';
 import { WhatsAppIcon } from '@/components/WhatsAppIcon';
-import { sanitizeString, sanitizePhone } from '@/lib/sanitize';
+import { sanitizeString, sanitizePhone, checkRateLimit } from '@/lib/sanitize';
 import {
   Phone,
   MapPin,
@@ -289,6 +289,13 @@ export default function PublicGymWebsite() {
   const handleInquirySubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setInquiryStatus('idle');
+
+    const rateCheck = checkRateLimit('walkthrough_inquiry', 3, 60000);
+    if (!rateCheck.allowed) {
+      setInquiryStatus('error');
+      setInquiryMessage(`Too many requests. Please wait ${rateCheck.retryAfterSeconds} seconds before submitting again.`);
+      return;
+    }
 
     if (!inquiryConsent) {
       setInquiryStatus('error');

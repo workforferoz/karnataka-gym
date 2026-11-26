@@ -23,13 +23,13 @@ const securityHeaders = [
   },
   {
     key: "Permissions-Policy",
-    value: "camera=(self), microphone=(), geolocation=(), browsing-topics=()",
+    value: "camera=(), microphone=(), geolocation=(), browsing-topics=()",
   },
   {
     key: "Content-Security-Policy",
     value: `
       default-src 'self';
-      script-src 'self' 'unsafe-eval' 'unsafe-inline';
+      script-src 'self' 'unsafe-inline';
       style-src 'self' 'unsafe-inline';
       img-src 'self' blob: data: https://images.unsplash.com;
       font-src 'self' data:;
