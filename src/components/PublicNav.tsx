@@ -8,7 +8,6 @@ import {
   Mail,
   Menu,
   X,
-  ChevronRight,
   Camera,
   Sparkles,
   Dumbbell
@@ -50,7 +49,7 @@ export const PublicNav: React.FC<PublicNavProps> = () => {
         </Link>
 
         {/* Desktop Navigation Links */}
-        <div className="hidden lg:flex items-center gap-6 text-xs font-bold text-slate-300">
+        <div className="hidden md:flex items-center gap-6 text-xs font-bold text-slate-300">
           <a href="#about" className="hover:text-[#E5A93C] transition-colors">
             About
           </a>
@@ -77,41 +76,11 @@ export const PublicNav: React.FC<PublicNavProps> = () => {
           </a>
         </div>
 
-        {/* Desktop Right Controls: Phone + Join Now Button */}
-        <div className="hidden md:flex items-center gap-3">
-          {/* Clickable Phone */}
-          <a
-            href="tel:9902667407"
-            className="flex items-center gap-1.5 bg-[#121622] border border-[#232B3E] hover:border-[#E5A93C] text-xs font-bold px-3 py-2 rounded-xl text-slate-200 transition-colors"
-            title="Call Karnataka Gym Helpline"
-          >
-            <Phone className="w-3.5 h-3.5 text-[#E5A93C]" />
-            <span>9902667407</span>
-          </a>
-
-          {/* Join Now CTA Button */}
-          <a
-            href="#contact"
-            className="bg-[#E5A93C] hover:bg-[#F59E0B] text-slate-950 text-xs font-black px-4 py-2 rounded-xl flex items-center gap-1.5 shadow-md shadow-[#E5A93C]/20 transition-all cursor-pointer active:scale-95"
-            title="Join Karnataka Gym"
-          >
-            <span>Join Now</span>
-          </a>
-        </div>
-
-        {/* Mobile Action Controls */}
-        <div className="flex md:hidden items-center gap-2">
-          {/* Mobile Join Now Button */}
-          <a
-            href="#contact"
-            className="bg-[#E5A93C] text-slate-950 text-xs font-black px-3 py-1.5 rounded-lg flex items-center gap-1"
-          >
-            <span>Join Now</span>
-          </a>
-
+        {/* Mobile Hamburger Button */}
+        <div className="flex md:hidden items-center">
           <button
             onClick={() => setMobileMenuOpen(true)}
-            className="p-2 bg-[#121622] border border-[#232B3E] hover:border-[#E5A93C] rounded-lg text-slate-300"
+            className="p-2 bg-[#121622] border border-[#232B3E] hover:border-[#E5A93C] rounded-lg text-slate-300 cursor-pointer"
             aria-label="Open Mobile Menu"
           >
             <Menu className="w-5 h-5 text-white" />
@@ -147,18 +116,6 @@ export const PublicNav: React.FC<PublicNavProps> = () => {
               >
                 <X className="w-5 h-5" />
               </button>
-            </div>
-
-            {/* Join CTA in Mobile Menu */}
-            <div className="py-4">
-              <a
-                href="#contact"
-                onClick={() => setMobileMenuOpen(false)}
-                className="w-full bg-[#E5A93C] hover:bg-[#F59E0B] text-slate-950 font-extrabold py-2.5 px-3 rounded-xl text-xs flex items-center justify-between shadow-sm active:scale-95 transition-all"
-              >
-                <span>Join Karnataka Gym</span>
-                <ChevronRight className="w-4 h-4" />
-              </a>
             </div>
 
             {/* Navigation Section Links */}
