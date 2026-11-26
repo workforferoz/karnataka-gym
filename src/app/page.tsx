@@ -282,22 +282,16 @@ export default function PublicGymWebsite() {
 
         {/* 3. FACILITIES & EQUIPMENT SHOWCASE */}
         <section id="facilities" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-20 space-y-8">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-            <div className="space-y-2">
-              <span className="text-xs font-black uppercase tracking-widest text-[#E5A93C]">
-                Facility Tour
-              </span>
-              <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
-                Built for Heavy, Uncompromised Training
-              </h2>
-              <p className="text-xs sm:text-sm text-slate-300 max-w-xl">
-                Inspect our real equipment floor in Hubballi. Commercial-grade steel, biomechanically sound resistance machines, and clean training stations.
-              </p>
-            </div>
-            <div className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#0F1420] border border-[#1E273A] text-xs font-bold text-slate-200">
-              <MapPin className="w-3.5 h-3.5 text-[#E5A93C]" />
-              <span>Kalidas Nagar Facility Floor</span>
-            </div>
+          <div className="space-y-2 max-w-2xl">
+            <span className="text-xs font-black uppercase tracking-widest text-[#E5A93C]">
+              Facility Tour
+            </span>
+            <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
+              Built for Heavy, Uncompromised Training
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-300">
+              Inspect our real equipment floor in Hubballi. Commercial-grade steel, biomechanically sound resistance machines, and clean training stations.
+            </p>
           </div>
 
           {/* 4-Photo Showcase Grid */}
@@ -391,9 +385,6 @@ export default function PublicGymWebsite() {
         {/* 4. REAL MEMBER TRANSFORMATIONS */}
         <section id="transformations" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-20 space-y-8">
           <div className="space-y-2 max-w-2xl">
-            <span className="text-xs font-black uppercase tracking-widest text-[#E5A93C]">
-              Social Proof & Results
-            </span>
             <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
               Real Hubballi Transformations
             </h2>
@@ -505,9 +496,6 @@ export default function PublicGymWebsite() {
           <div className="rounded-3xl bg-[#0F1420] border border-[#1E273A] p-6 sm:p-10 space-y-8">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-[#1E273A]">
               <div className="space-y-2 max-w-2xl">
-                <span className="text-xs font-black uppercase tracking-widest text-[#E5A93C]">
-                  {content.trainer.title}
-                </span>
                 <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
                   Train Under {content.trainer.name}
                 </h2>
