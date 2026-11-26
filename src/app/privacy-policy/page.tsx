@@ -74,8 +74,8 @@ export default function PrivacyPolicyPage() {
           <section className="space-y-2">
             <h2 className="text-sm font-bold text-white uppercase tracking-wider">5. Data Deletion & Member Rights</h2>
             <p>
-              Under Indian DPDP Act regulations, members have the right to request full erasure of their personal profile and attendance history.
-              To exercise your right to be forgotten, submit a formal request via our <Link href="/data-deletion" className="text-[#E5A93C] underline font-bold">Data Deletion Request Page</Link> or email us directly.
+              Under Indian DPDP Act regulations, you have the right to request full erasure of your contact details at any time.
+              To request data deletion, contact us directly via email at <a href="mailto:karnatakagymhubli@gmail.com" className="text-[#E5A93C] underline font-bold">karnatakagymhubli@gmail.com</a> or call <a href="tel:9902667407" className="text-[#E5A93C] underline font-bold">9902667407</a>.
             </p>
           </section>
 

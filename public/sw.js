@@ -6,8 +6,7 @@ const urlsToCache = [
   '/karnataka-gym-badge.png',
   '/karnataka-gym-banner.jpg',
   '/privacy-policy',
-  '/terms',
-  '/data-deletion'
+  '/terms'
 ];
 
 self.addEventListener('install', (event) => {

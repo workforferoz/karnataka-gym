@@ -85,10 +85,6 @@ export const Footer: React.FC = () => {
             <Link href="/terms" className="hover:text-white transition-colors">
               Terms of Service
             </Link>
-            <span className="text-slate-600">•</span>
-            <Link href="/data-deletion" className="hover:text-white transition-colors">
-              Data Deletion
-            </Link>
           </div>
         </div>
       </div>

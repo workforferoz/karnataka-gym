@@ -25,7 +25,6 @@ The official high-performance website for **Karnataka Gym** in Hubballi, Karnata
   - Location, Timings, & Interactive Inquiry Form
 - `/privacy-policy` - Privacy Policy (DPDP Act compliant)
 - `/terms` - Terms of Service & Membership Rules
-- `/data-deletion` - Right to Erasure / Data Deletion Request Page
 - `/install-prompt` - PWA App installation instructions
 
 ---
