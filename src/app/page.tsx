@@ -28,7 +28,6 @@ import {
   AlertCircle,
   ExternalLink,
   Camera,
-  Maximize2,
   X,
   Sparkles,
   TrendingUp
@@ -496,13 +495,6 @@ export default function PublicGymWebsite() {
                       {photo.tag}
                     </span>
                   </div>
-
-                  {/* Expand Icon top-right */}
-                  <div className="absolute top-3 right-3 opacity-90 group-hover:opacity-100 transition-opacity">
-                    <span className="w-8 h-8 rounded-full bg-black/75 border border-white/20 text-white flex items-center justify-center backdrop-blur-sm shadow-md group-hover:border-[#E5A93C] group-hover:text-[#E5A93C] transition-colors">
-                      <Maximize2 className="w-4 h-4" />
-                    </span>
-                  </div>
                 </div>
 
                 {/* Content Details */}
@@ -515,12 +507,8 @@ export default function PublicGymWebsite() {
                       {photo.desc}
                     </p>
                   </div>
-                  <div className="pt-3 flex items-center justify-between text-[11px]">
-                    <span className="text-slate-400 font-medium">Karnataka Gym • Ground Floor Facility</span>
-                    <span className="text-[#E5A93C] font-bold group-hover:underline flex items-center gap-1">
-                      <span>Enlarge Photo</span>
-                      <Maximize2 className="w-3 h-3" />
-                    </span>
+                  <div className="pt-3 text-[11px] text-slate-400 font-medium">
+                    <span>Karnataka Gym • Ground Floor Facility</span>
                   </div>
                 </div>
               </div>
@@ -842,13 +830,6 @@ export default function PublicGymWebsite() {
                       {photo.tag}
                     </span>
                   </div>
-
-                  {/* Expand icon top-right */}
-                  <div className="absolute top-2.5 right-2.5 opacity-90 group-hover:opacity-100 transition-opacity">
-                    <span className="w-7 h-7 rounded-full bg-black/75 border border-white/20 text-white flex items-center justify-center backdrop-blur-sm shadow-md group-hover:border-[#E5A93C] group-hover:text-[#E5A93C] transition-colors">
-                      <Maximize2 className="w-3.5 h-3.5" />
-                    </span>
-                  </div>
                 </div>
 
                 {/* Content Details */}
@@ -861,12 +842,8 @@ export default function PublicGymWebsite() {
                       {photo.desc}
                     </p>
                   </div>
-                  <div className="pt-2 flex items-center justify-between text-[10px]">
-                    <span className="text-slate-400 font-medium">Head Coach Riyaz</span>
-                    <span className="text-[#E5A93C] font-bold group-hover:underline flex items-center gap-1">
-                      <span>Enlarge</span>
-                      <Maximize2 className="w-2.5 h-2.5" />
-                    </span>
+                  <div className="pt-2 text-[10px] text-slate-400 font-medium">
+                    <span>Head Coach Riyaz</span>
                   </div>
                 </div>
               </div>
