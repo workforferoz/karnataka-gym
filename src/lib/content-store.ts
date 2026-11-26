@@ -106,7 +106,7 @@ export async function saveSiteContent(newContent: SiteContent): Promise<SiteCont
       badgeText: sanitizeText(newContent.general?.badgeText) || DEFAULT_CONTENT.general.badgeText,
       phone: sanitizeText(newContent.general?.phone) || DEFAULT_CONTENT.general.phone,
       whatsapp: sanitizeText(newContent.general?.whatsapp) || DEFAULT_CONTENT.general.whatsapp,
-      email: sanitizeText(newContent.general?.email) || DEFAULT_CONTENT.general.email,
+      email: sanitizeText(newContent.general?.email) || '',
       instagram: sanitizeText(newContent.general?.instagram) || DEFAULT_CONTENT.general.instagram,
       address: sanitizeText(newContent.general?.address) || DEFAULT_CONTENT.general.address,
       mapsUrl: sanitizeText(newContent.general?.mapsUrl) || DEFAULT_CONTENT.general.mapsUrl,

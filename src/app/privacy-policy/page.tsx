@@ -39,7 +39,7 @@ export default function PrivacyPolicyPage() {
             <h2 className="text-sm font-bold text-white uppercase tracking-wider">1. Business Identity</h2>
             <p>
               This Progressive Web Application (PWA) is owned and operated by <strong>Karnataka Gym</strong>, located at Kalidas Nagar, Hubballi, Karnataka 580031 (<a href="https://maps.app.goo.gl/dXnSdvRU9gwHd7sAA" target="_blank" rel="noopener noreferrer" className="text-[#E5A93C] underline">Google Maps Location</a>).
-              For privacy inquiries, contact our Data Protection Officer at <a href="mailto:karnatakagymhubli@gmail.com" className="text-[#E5A93C] underline">karnatakagymhubli@gmail.com</a> or call <a href="tel:9902667407" className="text-[#E5A93C] underline">9902667407</a>.
+              For privacy inquiries, contact our Data Protection Officer by phone at <a href="tel:9902667407" className="text-[#E5A93C] underline font-bold">9902667407</a>.
             </p>
           </section>
 
@@ -75,7 +75,7 @@ export default function PrivacyPolicyPage() {
             <h2 className="text-sm font-bold text-white uppercase tracking-wider">5. Data Deletion & Member Rights</h2>
             <p>
               Under Indian DPDP Act regulations, you have the right to request full erasure of your contact details at any time.
-              To request data deletion, contact us directly via email at <a href="mailto:karnatakagymhubli@gmail.com" className="text-[#E5A93C] underline font-bold">karnatakagymhubli@gmail.com</a> or call <a href="tel:9902667407" className="text-[#E5A93C] underline font-bold">9902667407</a>.
+              To request data deletion, contact us directly by phone or WhatsApp at <a href="tel:9902667407" className="text-[#E5A93C] underline font-bold">9902667407</a>.
             </p>
           </section>
 
@@ -85,7 +85,6 @@ export default function PrivacyPolicyPage() {
               <div><strong>Facility:</strong> Karnataka Gym Hubballi</div>
               <div><strong>Address:</strong> Kalidas Nagar, Hubballi, Karnataka 580031 (<a href="https://maps.app.goo.gl/dXnSdvRU9gwHd7sAA" target="_blank" rel="noopener noreferrer" className="text-[#E5A93C] underline">Google Maps</a>)</div>
               <div><strong>Helpline:</strong> +91 9902667407</div>
-              <div><strong>Official Email:</strong> karnatakagymhubli@gmail.com</div>
               <div><strong>Instagram:</strong> @riyaz_gokul</div>
             </div>
           </section>

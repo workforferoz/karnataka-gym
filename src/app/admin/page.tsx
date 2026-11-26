@@ -433,21 +433,6 @@ export default function AdminDashboardPage() {
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="font-bold text-slate-300">Official Email</label>
-                    <input
-                      type="email"
-                      value={content.general.email}
-                      onChange={(e) =>
-                        setContent({
-                          ...content,
-                          general: { ...content.general, email: e.target.value },
-                        })
-                      }
-                      className="w-full px-3.5 py-2.5 bg-[#141A28] border border-[#242F46] rounded-xl text-white focus:outline-none focus:border-[#E5A93C]"
-                    />
-                  </div>
-
-                  <div className="space-y-1.5">
                     <label className="font-bold text-slate-300">Instagram Handle</label>
                     <input
                       type="text"

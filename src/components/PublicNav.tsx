@@ -5,7 +5,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import {
   Phone,
-  Mail,
   Menu,
   X,
   Camera,
@@ -211,15 +210,6 @@ export const PublicNav: React.FC = () => {
               >
                 <WhatsAppIcon className="w-4 h-4 text-emerald-400" />
                 <span>WhatsApp: 9902667407</span>
-              </a>
-
-              <a
-                href="mailto:karnatakagymhubli@gmail.com"
-                className="flex items-center gap-2 p-2.5 rounded-xl bg-[#171D2B] text-slate-200 font-bold hover:border-[#E5A93C] border border-transparent transition-colors"
-                title="Email Karnataka Gym"
-              >
-                <Mail className="w-4 h-4 text-[#E5A93C]" />
-                <span className="truncate">karnatakagymhubli@gmail.com</span>
               </a>
 
               <a

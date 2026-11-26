@@ -99,7 +99,7 @@ export const DEFAULT_CONTENT: SiteContent = {
     badgeText: 'Hubballi • Est. 2011',
     phone: '9902667407',
     whatsapp: '9902667407',
-    email: 'karnatakagymhubli@gmail.com',
+    email: '',
     instagram: '@riyaz_gokul',
     address: 'Kalidas Nagar, Hubballi, Karnataka 580031',
     mapsUrl: 'https://maps.app.goo.gl/dXnSdvRU9gwHd7sAA',

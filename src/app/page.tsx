@@ -17,7 +17,6 @@ import {
 } from '@/data/default-content';
 import {
   Phone,
-  Mail,
   MapPin,
   Clock,
   CheckCircle,
@@ -766,7 +765,7 @@ export default function PublicGymWebsite() {
                 <span className="text-xs font-bold text-slate-300 uppercase tracking-wider block">
                   Official Communication
                 </span>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                   <a
                     href={`tel:${content.general.phone}`}
                     className="p-3 rounded-xl bg-[#141A28] border border-[#242F46] hover:border-[#E5A93C] flex items-center justify-center sm:justify-start gap-2.5 text-slate-200 font-bold transition-colors group cursor-pointer"
@@ -785,15 +784,6 @@ export default function PublicGymWebsite() {
                   >
                     <WhatsAppIcon className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform flex-shrink-0" />
                     <span>WhatsApp Chat</span>
-                  </a>
-
-                  <a
-                    href={`mailto:${content.general.email}`}
-                    className="p-3 rounded-xl bg-[#141A28] border border-[#242F46] hover:border-[#E5A93C] flex items-center justify-center sm:justify-start gap-2.5 text-slate-200 font-bold transition-colors group cursor-pointer"
-                    title="Email Karnataka Gym"
-                  >
-                    <Mail className="w-4 h-4 text-[#E5A93C] group-hover:scale-110 transition-transform flex-shrink-0" />
-                    <span className="truncate">Email Us</span>
                   </a>
                 </div>
               </div>
