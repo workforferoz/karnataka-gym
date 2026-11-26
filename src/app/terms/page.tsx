@@ -34,8 +34,8 @@ export default function TermsPage() {
           <section className="space-y-2">
             <h2 className="text-sm font-bold text-white uppercase tracking-wider">1. Membership & Facility Access</h2>
             <p>
-              Memberships at Karnataka Gym Hubballi are non-transferable and assigned to the registered mobile number.
-              Entry requires scanning your active session QR pass at the entrance scanner or verification by front-desk staff.
+              Memberships at Karnataka Gym Hubballi are non-transferable and registered at the gym front desk.
+              Facility access is verified directly by on-duty coaching and front-desk staff.
             </p>
           </section>
 

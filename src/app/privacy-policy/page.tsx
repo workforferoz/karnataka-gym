@@ -42,25 +42,21 @@ export default function PrivacyPolicyPage() {
           <section className="space-y-2">
             <h2 className="text-sm font-bold text-white uppercase tracking-wider">2. Data We Collect (No Unnecessary Data)</h2>
             <p>
-              We collect strictly minimal operational data required to deliver gym retention, attendance verification, and membership renewal services:
+              We do not require user accounts, logins, or passwords. We collect strictly minimal contact data only when you voluntarily submit a gym walkthrough request:
             </p>
             <ul className="list-disc list-inside space-y-1 text-slate-400">
-              <li><strong>Member Identity:</strong> Full Name and Mobile Number for OTP authentication and attendance binding.</li>
-              <li><strong>Attendance Log:</strong> Timestamp and method (QR scan or assisted front-desk check-in).</li>
-              <li><strong>Membership Details:</strong> Active plan duration, start date, and expiry date.</li>
-              <li><strong>Emergency Contact:</strong> Optional phone number provided by the member for gym floor safety.</li>
-              <li><strong>Communication Preference:</strong> Your choice between WhatsApp, SMS, or Phone Call.</li>
+              <li><strong>Contact Identity:</strong> Full Name and 10-digit Mobile Number provided in the walkthrough request form.</li>
+              <li><strong>Fitness Interest:</strong> Selected primary fitness goal and preferred visit timing.</li>
             </ul>
             <p className="text-slate-400">
-              We do <strong>not</strong> collect Aadhaar numbers, biometric fingerprint templates, location tracking coordinates, or browsing history.
+              We do <strong>not</strong> collect passwords, payment cards, biometric data, location tracking coordinates, or browsing history.
             </p>
           </section>
 
           <section className="space-y-2">
-            <h2 className="text-sm font-bold text-white uppercase tracking-wider">3. Camera Access Policy</h2>
+            <h2 className="text-sm font-bold text-white uppercase tracking-wider">3. Permissions & Device Access</h2>
             <p>
-              The mobile camera permission is used solely in real-time to scan gym entrance QR codes on physical turnstiles.
-              We <strong>never</strong> record, store, or transmit photos or video streams to any external server.
+              This website does not require or request access to your device camera, microphone, contacts, or location.
             </p>
           </section>
 

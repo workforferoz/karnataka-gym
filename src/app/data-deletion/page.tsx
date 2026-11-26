@@ -51,7 +51,7 @@ export default function DataDeletionPage() {
           </span>
           <h1 className="text-2xl font-black text-white">Data Deletion Request</h1>
           <p className="text-xs text-slate-400">
-            Submit a formal request to purge your personal profile, attendance logs, and contact details from Karnataka Gym Hubballi records.
+            Submit a formal request to purge your inquiry and contact details from Karnataka Gym Hubballi records.
           </p>
         </div>
 
@@ -60,7 +60,7 @@ export default function DataDeletionPage() {
             <CheckCircle className="w-12 h-12 text-emerald-400 mx-auto" />
             <h2 className="text-base font-black text-white">Data Deletion Request Received</h2>
             <p className="text-xs text-slate-200 leading-relaxed max-w-sm mx-auto">
-              Your request for mobile number <strong className="text-white">+91 {phone}</strong> has been logged. In accordance with DPDP regulations, all personal logs and contact records will be purged within 7 business days.
+              Your request for mobile number <strong className="text-white">+91 {phone}</strong> has been logged. In accordance with DPDP regulations, all contact and inquiry records will be purged within 7 business days.
             </p>
             <div className="pt-2">
               <Link
@@ -96,7 +96,7 @@ export default function DataDeletionPage() {
 
             <div>
               <label className="block text-[11px] font-bold text-slate-300 mb-1">
-                Reason for Account & Data Removal
+                Reason for Data Removal
               </label>
               <select
                 value={reason}
