@@ -15,9 +15,7 @@ import {
 import { InstagramIcon } from '@/components/InstagramIcon';
 import { WhatsAppIcon } from '@/components/WhatsAppIcon';
 
-interface PublicNavProps {}
-
-export const PublicNav: React.FC<PublicNavProps> = () => {
+export const PublicNav: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (

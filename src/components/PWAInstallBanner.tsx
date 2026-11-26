@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { Download, X } from 'lucide-react';
 
 interface BeforeInstallPromptEvent extends Event {
@@ -10,35 +11,30 @@ interface BeforeInstallPromptEvent extends Event {
 }
 
 export const PWAInstallBanner: React.FC = () => {
+  const router = useRouter();
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [showBanner, setShowBanner] = useState(false);
-  const [isIOS, setIsIOS] = useState(false);
-  const [isInstalled, setIsInstalled] = useState(false);
+  const [isInstalled] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return (
+      window.matchMedia('(display-mode: standalone)').matches ||
+      (window.navigator as unknown as { standalone?: boolean }).standalone === true
+    );
+  });
 
   useEffect(() => {
-    // Check if dismissed in this session
+    if (isInstalled) return;
+
     try {
       if (sessionStorage.getItem('karnataka_gym_pwa_dismissed') === 'true') {
         return;
       }
-    } catch (e) {
+    } catch {
       // ignore
     }
 
-    // Check if running in standalone mode (already installed)
-    if (
-      window.matchMedia('(display-mode: standalone)').matches ||
-      (window.navigator as unknown as { standalone?: boolean }).standalone === true
-    ) {
-      setIsInstalled(true);
-      return;
-    }
-
-    // Check if iOS mobile
     const userAgent = window.navigator.userAgent.toLowerCase();
     const isMobile = /iphone|ipad|ipod|android/.test(userAgent);
-    const iOSDevice = /iphone|ipad|ipod/.test(userAgent);
-    setIsIOS(iOSDevice);
 
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
@@ -48,26 +44,24 @@ export const PWAInstallBanner: React.FC = () => {
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
 
-    // Only prompt on mobile devices, not on desktop browser
+    let timer: NodeJS.Timeout | undefined;
     if (isMobile) {
-      const timer = setTimeout(() => {
+      timer = setTimeout(() => {
         try {
           if (sessionStorage.getItem('karnataka_gym_pwa_dismissed') !== 'true') {
             setShowBanner(true);
           }
-        } catch (e) {}
+        } catch {
+          // ignore
+        }
       }, 3000);
-
-      return () => {
-        window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-        clearTimeout(timer);
-      };
     }
 
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+      if (timer) clearTimeout(timer);
     };
-  }, []);
+  }, [isInstalled]);
 
   const handleInstallClick = async () => {
     if (deferredPrompt) {
@@ -78,7 +72,7 @@ export const PWAInstallBanner: React.FC = () => {
       }
       setDeferredPrompt(null);
     } else {
-      window.location.href = '/install-prompt';
+      router.push('/install-prompt');
     }
   };
 
@@ -86,7 +80,9 @@ export const PWAInstallBanner: React.FC = () => {
     setShowBanner(false);
     try {
       sessionStorage.setItem('karnataka_gym_pwa_dismissed', 'true');
-    } catch (e) {}
+    } catch {
+      // ignore
+    }
   };
 
   if (isInstalled || !showBanner) return null;
@@ -118,14 +114,13 @@ export const PWAInstallBanner: React.FC = () => {
             onClick={handleInstallClick}
             className="flex items-center gap-1 bg-[#E5A93C] hover:bg-[#F59E0B] text-slate-950 font-bold text-xs px-3 py-1.5 rounded-xl shadow cursor-pointer transition-colors"
           >
-            <Download className="w-3.5 h-3.5 stroke-[2.5]" />
+            <Download className="w-3.5 h-3.5" />
             <span>Install</span>
           </button>
-
           <button
             onClick={handleDismiss}
-            className="p-1 text-slate-400 hover:text-white rounded-lg cursor-pointer"
-            title="Dismiss"
+            className="p-1 text-slate-400 hover:text-white rounded-lg transition-colors cursor-pointer"
+            aria-label="Dismiss app install banner"
           >
             <X className="w-4 h-4" />
           </button>

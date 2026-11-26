@@ -14,23 +14,19 @@ import {
   FacilityItem,
   TransformationItem,
   TrainerPhotoItem,
-  PricingPlanItem,
 } from '@/data/default-content';
 import {
   Phone,
   Mail,
   MapPin,
   Clock,
-  ShieldCheck,
   CheckCircle,
   ArrowRight,
   Dumbbell,
   Calendar,
   AlertCircle,
   ExternalLink,
-  Camera,
   X,
-  Sparkles,
   Check
 } from 'lucide-react';
 

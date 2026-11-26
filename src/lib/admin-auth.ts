@@ -1,5 +1,4 @@
 // Security utilities for Admin Authentication and Session Management
-import { cookies } from 'next/headers';
 import { NextRequest } from 'next/server';
 
 export const ADMIN_COOKIE_NAME = 'kg_admin_session';
@@ -15,7 +14,7 @@ interface SessionPayload {
 // Memory cache for login rate limiting (IP-based)
 const loginAttempts = new Map<string, { count: number; lockedUntil: number }>();
 
-export function checkLoginRateLimit(ip: string, maxAttempts = 5, lockTimeMs = 15 * 60 * 1000): {
+export function checkLoginRateLimit(ip: string, maxAttempts = 5): {
   allowed: boolean;
   remainingAttempts: number;
   retryAfterSeconds?: number;
@@ -172,18 +171,6 @@ export async function verifyAdminRequest(req: NextRequest): Promise<boolean> {
   if (!cookie) return false;
   const result = await verifySessionToken(cookie);
   return result.valid;
-}
-
-export async function isCurrentUserAdmin(): Promise<boolean> {
-  try {
-    const cookieStore = await cookies();
-    const token = cookieStore.get(ADMIN_COOKIE_NAME)?.value;
-    if (!token) return false;
-    const { valid } = await verifySessionToken(token);
-    return valid;
-  } catch {
-    return false;
-  }
 }
 
 // Constant-time string comparison to resist timing attacks

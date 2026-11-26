@@ -5,20 +5,24 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { PublicNav } from '@/components/PublicNav';
 import { Footer } from '@/components/Footer';
-import { Download, Smartphone, Share, PlusSquare, ArrowLeft, CheckCircle, Zap, ShieldCheck } from 'lucide-react';
+import { Download, Smartphone, Share, ArrowLeft, CheckCircle, Zap, ShieldCheck } from 'lucide-react';
+
+interface BeforeInstallPromptEvent extends Event {
+  prompt: () => Promise<void>;
+  userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
+}
 
 export default function InstallPromptPage() {
-  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
-  const [installed, setInstalled] = useState(false);
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+  const [installed, setInstalled] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return window.matchMedia('(display-mode: standalone)').matches;
+  });
 
   useEffect(() => {
-    if (window.matchMedia('(display-mode: standalone)').matches) {
-      setInstalled(true);
-    }
-
-    const handler = (e: any) => {
+    const handler = (e: Event) => {
       e.preventDefault();
-      setDeferredPrompt(e);
+      setDeferredPrompt(e as BeforeInstallPromptEvent);
     };
 
     window.addEventListener('beforeinstallprompt', handler);

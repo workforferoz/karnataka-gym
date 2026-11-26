@@ -9,9 +9,6 @@ import {
   SiteContent,
   FacilityItem,
   TransformationItem,
-  TrainerPhotoItem,
-  PillarItem,
-  PricingPlanItem,
 } from '@/data/default-content';
 import { InquiryRecord } from '@/lib/content-store';
 import {
@@ -32,14 +29,9 @@ import {
   Trash2,
   Plus,
   Phone,
-  Mail,
-  Clock,
-  MapPin,
   Calendar,
-  MessageSquare,
 } from 'lucide-react';
 import { WhatsAppIcon } from '@/components/WhatsAppIcon';
-import { InstagramIcon } from '@/components/InstagramIcon';
 
 type TabKey =
   | 'general'

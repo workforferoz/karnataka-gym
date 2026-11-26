@@ -22,12 +22,6 @@ export const sanitizePhone = (phone: string): { isValid: boolean; sanitized: str
   return { isValid, sanitized: clean };
 };
 
-export const sanitizeEmail = (email: string): { isValid: boolean; sanitized: string } => {
-  const clean = sanitizeString(email).toLowerCase();
-  const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(clean);
-  return { isValid, sanitized: clean };
-};
-
 /**
  * Client-side Rate Limiter.
  * Prevents spam on form submissions.

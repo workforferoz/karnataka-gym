@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { PublicNav } from '@/components/PublicNav';
 import { Footer } from '@/components/Footer';
-import { ArrowLeft, CheckCircle } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Terms of Membership | Karnataka Gym Hubballi',
