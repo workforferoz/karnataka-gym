@@ -439,7 +439,7 @@ export default function PublicGymWebsite() {
                 </div>
 
                 {/* Content Details */}
-                <div className="p-4 flex-1 flex flex-col justify-between space-y-2.5">
+                <div className="p-4 flex-1 flex flex-col justify-between">
                   <div className="space-y-1">
                     <span className="text-[10px] font-extrabold text-[#E5A93C] block uppercase tracking-wider">
                       {item.badge}
@@ -447,18 +447,9 @@ export default function PublicGymWebsite() {
                     <h3 className="text-sm font-black text-white group-hover:text-[#E5A93C] transition-colors leading-snug">
                       {item.title}
                     </h3>
-                    <p className="text-[11px] text-slate-300 line-clamp-2 leading-relaxed">
+                    <p className="text-[11px] text-slate-300 line-clamp-3 leading-relaxed mt-1">
                       {item.story}
                     </p>
-                  </div>
-
-                  <div className="pt-2 border-t border-[#1C2538] space-y-1">
-                    {item.achievements.slice(0, 2).map((ach, idx) => (
-                      <div key={idx} className="flex items-center gap-1.5 text-[10px] text-slate-300">
-                        <CheckCircle className="w-3 h-3 text-emerald-400 flex-shrink-0" />
-                        <span className="truncate">{ach}</span>
-                      </div>
-                    ))}
                   </div>
                 </div>
               </div>
@@ -506,17 +497,9 @@ export default function PublicGymWebsite() {
                   </div>
                 </div>
 
-                <div className="p-5 bg-[#0A0D14] border-t border-[#1E273A] space-y-3">
+                <div className="p-5 bg-[#0A0D14] border-t border-[#1E273A] space-y-2">
                   <h4 className="text-base font-black text-white">{selectedTransformation.title}</h4>
                   <p className="text-xs text-slate-300 leading-relaxed">{selectedTransformation.story}</p>
-                  <div className="pt-2 space-y-1.5">
-                    {selectedTransformation.achievements.map((ach, idx) => (
-                      <div key={idx} className="flex items-center gap-2 text-xs text-slate-200">
-                        <Check className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-                        <span>{ach}</span>
-                      </div>
-                    ))}
-                  </div>
                 </div>
               </div>
             </div>
